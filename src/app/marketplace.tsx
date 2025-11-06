@@ -34,6 +34,7 @@ import { UserEngagementSystem, UserProgressTracker } from '@/components/UserEnga
 import { SocialProofFeed, SocialProofWidget } from '@/components/SocialProof'
 import { ChatLauncher } from '@/components/XMTPChat'
 import { FrameDiscovery } from '@/components/FrameShare'
+import NFTCreator from '@/components/NFTCreator'
 
 interface NFTItem {
   tokenId: string
@@ -71,6 +72,7 @@ export default function MarketplaceContent() {
   const [filterBy, setFilterBy] = useState('all')
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
   const [showFilters, setShowFilters] = useState(false)
+  const [currentView, setCurrentView] = useState<'browse' | 'create' | 'frames'>('browse')
 
   // Mock data with proper typing
   useEffect(() => {
@@ -281,6 +283,50 @@ export default function MarketplaceContent() {
                 </motion.div>
               </motion.div>
 
+              {/* Navigation Tabs */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                className="bg-white dark:bg-gray-800 rounded-2xl p-2 shadow-lg border border-gray-200 dark:border-gray-700"
+              >
+                <div className="flex space-x-2">
+                  <button
+                    onClick={() => setCurrentView('browse')}
+                    className={`flex-1 flex items-center justify-center space-x-2 py-3 px-6 rounded-xl font-semibold transition-all ${
+                      currentView === 'browse'
+                        ? 'bg-blue-600 text-white shadow-md'
+                        : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                    }`}
+                  >
+                    <FiGrid className="w-4 h-4" />
+                    <span>Browse NFTs</span>
+                  </button>
+                  <button
+                    onClick={() => setCurrentView('create')}
+                    className={`flex-1 flex items-center justify-center space-x-2 py-3 px-6 rounded-xl font-semibold transition-all ${
+                      currentView === 'create'
+                        ? 'bg-purple-600 text-white shadow-md'
+                        : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                    }`}
+                  >
+                    <FiArrowUp className="w-4 h-4" />
+                    <span>Create NFT</span>
+                  </button>
+                  <button
+                    onClick={() => setCurrentView('frames')}
+                    className={`flex-1 flex items-center justify-center space-x-2 py-3 px-6 rounded-xl font-semibold transition-all ${
+                      currentView === 'frames'
+                        ? 'bg-indigo-600 text-white shadow-md'
+                        : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                    }`}
+                  >
+                    <FiBookmark className="w-4 h-4" />
+                    <span>Frames</span>
+                  </button>
+                </div>
+              </motion.div>
+
               {/* Stats */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <StatsCard
@@ -313,12 +359,15 @@ export default function MarketplaceContent() {
                 />
               </div>
 
-              {/* Search and Filters */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-200 dark:border-gray-700 transition-colors duration-300"
-              >
+              {/* Conditional View Content */}
+              {currentView === 'browse' && (
+                <>
+                  {/* Search and Filters */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-200 dark:border-gray-700 transition-colors duration-300"
+                  >
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
                   {/* Search */}
                   <div className="relative flex-1 max-w-md">
@@ -452,6 +501,26 @@ export default function MarketplaceContent() {
                   ))}
                 </AnimatePresence>
               </div>
+                </>
+              )}
+
+              {currentView === 'create' && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                >
+                  <NFTCreator />
+                </motion.div>
+              )}
+
+              {currentView === 'frames' && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                >
+                  <FrameDiscovery />
+                </motion.div>
+              )}
             </div>
 
             {/* Sidebar */}
