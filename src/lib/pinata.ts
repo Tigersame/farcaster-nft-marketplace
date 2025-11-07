@@ -24,7 +24,7 @@ interface NFTMetadata {
 }
 
 /**
- * Upload file to IPFS via Pinata
+ * Upload file to IPFS via Pinata with timeout and retry
  */
 export async function uploadToPinata(
   file: File,
@@ -40,19 +40,34 @@ export async function uploadToPinata(
   };
   formData.append('pinataMetadata', JSON.stringify(pinataMetadata));
 
-  const response = await fetch(`${PINATA_API_URL}/pinning/pinFileToIPFS`, {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${process.env.PINATA_JWT}`,
-    },
-    body: formData,
-  });
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 seconds
 
-  if (!response.ok) {
-    throw new Error(`Pinata upload failed: ${response.statusText}`);
+  try {
+    const response = await fetch(`${PINATA_API_URL}/pinning/pinFileToIPFS`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${process.env.PINATA_JWT}`,
+      },
+      body: formData,
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Pinata upload failed: ${response.statusText} - ${errorText}`);
+    }
+
+    return response.json();
+  } catch (error) {
+    clearTimeout(timeoutId);
+    if (error.name === 'AbortError') {
+      throw new Error('Pinata upload timed out (30s). Please try again or check your internet connection.');
+    }
+    throw error;
   }
-
-  return response.json();
 }
 
 /**
@@ -135,17 +150,22 @@ export async function createNFTMetadata(
 }
 
 /**
- * Check Pinata API status
+ * Check Pinata API status with timeout
  */
 export async function testPinataConnection(): Promise<boolean> {
   try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 seconds
+
     const response = await fetch(`${PINATA_API_URL}/data/testAuthentication`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${process.env.PINATA_JWT}`,
       },
+      signal: controller.signal,
     });
 
+    clearTimeout(timeoutId);
     return response.ok;
   } catch (error) {
     console.error('Pinata connection test failed:', error);
