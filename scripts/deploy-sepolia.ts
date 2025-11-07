@@ -1,16 +1,30 @@
-import { ethers } from "hardhat";
+const { ethers } = require("hardhat");
+require('dotenv').config({ path: '.env.local' });
 
 async function main() {
   console.log("🧪 Deploying FarcasterNFTMarketplace to Base Sepolia testnet...\n");
 
+  // Check if private key is loaded
+  if (!process.env.PRIVATE_KEY) {
+    console.error("❌ No PRIVATE_KEY found in .env.local");
+    console.log("Please add your wallet private key to .env.local:");
+    console.log("PRIVATE_KEY=your_private_key_here");
+    process.exit(1);
+  }
+
   // Get deployer account
   const [deployer] = await ethers.getSigners();
+  
+  if (!deployer) {
+    console.error("❌ No deployer account found. Check your PRIVATE_KEY in .env.local");
+    process.exit(1);
+  }
   console.log("📝 Deploying with account:", deployer.address);
   
   const balance = await ethers.provider.getBalance(deployer.address);
   console.log("💰 Account balance:", ethers.formatEther(balance), "ETH\n");
 
-  if (balance === 0n) {
+  if (balance.toString() === "0") {
     console.log("⚠️  Warning: Account has no ETH!");
     console.log("   Get testnet ETH from: https://www.coinbase.com/faucets/base-ethereum-goerli-faucet");
     return;

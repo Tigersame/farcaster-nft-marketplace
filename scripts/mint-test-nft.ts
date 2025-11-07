@@ -1,4 +1,4 @@
-import { ethers } from "hardhat";
+const { ethers } = require("hardhat");
 
 async function main() {
   const contractAddress = process.env.NEXT_PUBLIC_MARKETPLACE_CONTRACT;

@@ -3,9 +3,8 @@ pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
 
 /**
  * @title FarcasterNFTMarketplace
@@ -13,10 +12,9 @@ import "@openzeppelin/contracts/utils/Counters.sol";
  * Optimized for Base Network and Farcaster integration
  */
 contract FarcasterNFTMarketplace is ERC721URIStorage, ReentrancyGuard, Ownable {
-    using Counters for Counters.Counter;
     
-    Counters.Counter private _tokenIdCounter;
-    Counters.Counter private _itemsSold;
+    uint256 private _nextTokenId = 1;
+    uint256 private _itemsSold = 0;
     
     // Platform fee (2.5% = 250 basis points)
     uint256 public platformFee = 250;
@@ -53,7 +51,7 @@ contract FarcasterNFTMarketplace is ERC721URIStorage, ReentrancyGuard, Ownable {
     event RoyaltyPaid(uint256 indexed tokenId, address indexed creator, uint256 amount);
     event PlatformFeeUpdated(uint256 oldFee, uint256 newFee);
     
-    constructor() ERC721("Farcaster NFT", "FNFT") {}
+    constructor() ERC721("Farcaster NFT", "FNFT") Ownable(msg.sender) {}
     
     /**
      * @dev Mint a new NFT with metadata URI
@@ -66,8 +64,7 @@ contract FarcasterNFTMarketplace is ERC721URIStorage, ReentrancyGuard, Ownable {
     ) public returns (uint256) {
         require(royaltyPercentage <= 1000, "Royalty too high"); // Max 10%
         
-        _tokenIdCounter.increment();
-        uint256 newTokenId = _tokenIdCounter.current();
+        uint256 newTokenId = _nextTokenId++;
         
         _safeMint(msg.sender, newTokenId);
         _setTokenURI(newTokenId, metadataURI);
@@ -90,7 +87,7 @@ contract FarcasterNFTMarketplace is ERC721URIStorage, ReentrancyGuard, Ownable {
      * @param price Sale price in wei
      */
     function listNFT(uint256 tokenId, uint256 price) public {
-        require(_exists(tokenId), "Token does not exist");
+        require(tokenId > 0 && tokenId < _nextTokenId, "Token does not exist");
         require(ownerOf(tokenId) == msg.sender, "Not token owner");
         require(price > 0, "Price must be greater than 0");
         require(!listings[tokenId].isActive, "Already listed");
@@ -144,7 +141,7 @@ contract FarcasterNFTMarketplace is ERC721URIStorage, ReentrancyGuard, Ownable {
             payable(msg.sender).transfer(msg.value - listing.price);
         }
         
-        _itemsSold.increment();
+        _itemsSold++;
         emit NFTSold(tokenId, msg.sender, listing.seller, listing.price);
     }
     
@@ -208,7 +205,7 @@ contract FarcasterNFTMarketplace is ERC721URIStorage, ReentrancyGuard, Ownable {
      * @dev Get all active listings
      */
     function getActiveListings() public view returns (Listing[] memory) {
-        uint256 totalTokens = _tokenIdCounter.current();
+        uint256 totalTokens = _nextTokenId - 1;
         uint256 activeCount = 0;
         
         // Count active listings
@@ -237,7 +234,7 @@ contract FarcasterNFTMarketplace is ERC721URIStorage, ReentrancyGuard, Ownable {
      * @param tokenId Token ID to query
      */
     function getNFTMetadata(uint256 tokenId) public view returns (NFTMetadata memory) {
-        require(_exists(tokenId), "Token does not exist");
+        require(tokenId > 0 && tokenId < _nextTokenId, "Token does not exist");
         return nftMetadata[tokenId];
     }
     
@@ -249,8 +246,8 @@ contract FarcasterNFTMarketplace is ERC721URIStorage, ReentrancyGuard, Ownable {
         uint256 totalSold,
         uint256 activeListings
     ) {
-        totalNFTs = _tokenIdCounter.current();
-        totalSold = _itemsSold.current();
+        totalNFTs = _nextTokenId - 1;
+        totalSold = _itemsSold;
         
         uint256 active = 0;
         for (uint256 i = 1; i <= totalNFTs; i++) {
@@ -262,31 +259,9 @@ contract FarcasterNFTMarketplace is ERC721URIStorage, ReentrancyGuard, Ownable {
     }
     
     /**
-     * @dev Override to prevent transfers of listed NFTs
-     */
-    function _beforeTokenTransfer(
-        address from,
-        address to,
-        uint256 tokenId,
-        uint256 batchSize
-    ) internal virtual override {
-        super._beforeTokenTransfer(from, to, tokenId, batchSize);
-        
-        // Allow transfers from marketplace contract (for buying)
-        if (from == address(this)) {
-            return;
-        }
-        
-        // Ensure NFT is not listed when transferring
-        if (from != address(0) && to != address(0)) {
-            require(!listings[tokenId].isActive, "Cannot transfer listed NFT");
-        }
-    }
-    
-    /**
      * @dev Get total supply
      */
     function totalSupply() public view returns (uint256) {
-        return _tokenIdCounter.current();
+        return _nextTokenId - 1;
     }
 }
