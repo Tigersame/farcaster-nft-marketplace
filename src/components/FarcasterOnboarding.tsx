@@ -87,7 +87,8 @@ export function FarcasterOnboarding({ onComplete, isConnected }: OnboardingProps
         break
       case 'connect':
         // Trigger wallet connection
-        document.querySelector('[data-testid="rk-connect-button"]')?.click()
+        const button = document.querySelector('[data-testid="rk-connect-button"]') as HTMLElement
+        button?.click()
         break
     }
   }
