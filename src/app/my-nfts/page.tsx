@@ -43,9 +43,11 @@ export default function MyNFTsPage() {
   }
 
   // Filter NFTs owned by connected wallet
-  const myNFTs = listings?.filter((listing: any) => 
-    listing.seller.toLowerCase() === address?.toLowerCase()
-  ) || []
+  const myNFTs = Array.isArray(listings) 
+    ? listings.filter((listing: any) => 
+        listing.seller.toLowerCase() === address?.toLowerCase()
+      )
+    : []
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-6">
@@ -82,11 +84,14 @@ export default function MyNFTsPage() {
                 key={nft.tokenId}
                 tokenId={nft.tokenId.toString()}
                 name={`Farcaster NFT #${nft.tokenId}`}
+                description="A unique NFT from the Farcaster marketplace"
                 ethPrice={nft.price}
-                imageUrl="/api/placeholder/400/400"
+                price={nft.price}
+                image="/api/placeholder/400/400"
                 seller={nft.seller}
                 listedAt={new Date(nft.listedAt * 1000).toISOString()}
                 owner={nft.seller}
+                onBuy={() => {}}
               />
             ))}
           </div>

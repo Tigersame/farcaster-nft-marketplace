@@ -36,6 +36,7 @@ import { ChatLauncher } from '@/components/XMTPChat'
 import { FrameDiscovery } from '@/components/FrameShare'
 import NFTCreator from '@/components/NFTCreator'
 import { AdminPanel } from '@/components/AdminPanel'
+import { LiveDataDemo } from '@/components/LiveDataDemo'
 
 interface NFTItem {
   tokenId: string
@@ -73,7 +74,7 @@ export default function MarketplaceContent() {
   const [filterBy, setFilterBy] = useState('all')
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
   const [showFilters, setShowFilters] = useState(false)
-  const [currentView, setCurrentView] = useState<'browse' | 'create' | 'frames'>('browse')
+  const [currentView, setCurrentView] = useState<'browse' | 'create' | 'frames' | 'live-data'>('browse')
 
   // Mock data with proper typing
   useEffect(() => {
@@ -318,6 +319,17 @@ export default function MarketplaceContent() {
                     <span>Create NFT</span>
                   </button>
                   <button
+                    onClick={() => setCurrentView('live-data')}
+                    className={`flex-1 flex items-center justify-center space-x-2 py-3 px-6 rounded-xl font-semibold transition-all ${
+                      currentView === 'live-data'
+                        ? 'bg-green-600 text-white shadow-md'
+                        : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                    }`}
+                  >
+                    <FiZap className="w-4 h-4" />
+                    <span>Live Data</span>
+                  </button>
+                  <button
                     onClick={() => setCurrentView('frames')}
                     className={`flex-1 flex items-center justify-center space-x-2 py-3 px-6 rounded-xl font-semibold transition-all ${
                       currentView === 'frames'
@@ -514,6 +526,15 @@ export default function MarketplaceContent() {
                   animate={{ opacity: 1, y: 0 }}
                 >
                   <NFTCreator />
+                </motion.div>
+              )}
+
+              {currentView === 'live-data' && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                >
+                  <LiveDataDemo />
                 </motion.div>
               )}
 

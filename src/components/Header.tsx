@@ -22,6 +22,9 @@ export function Header() {
             <a href="/my-nfts" className="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
               My NFTs
             </a>
+            <a href="/admin/login" className="text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 transition-colors font-medium">
+              🔧 Admin
+            </a>
           </nav>
 
           <div className="flex items-center space-x-4">

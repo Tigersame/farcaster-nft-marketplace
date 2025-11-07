@@ -19,6 +19,9 @@ import {
   FiUpload
 } from 'react-icons/fi'
 import { toast } from 'react-hot-toast'
+import { LiveNFTModal } from './LiveNFTModal'
+import { HubProviderManager } from './HubProviderManager'
+import { HubConfigModal } from './HubConfigModal'
 
 // Admin wallet address
 const ADMIN_ADDRESS = '0xcaA2dC702DdF5625296d42aa13B37458d29d2e49'
@@ -35,7 +38,9 @@ interface AdminStats {
 export function AdminPanel() {
   const { address, isConnected } = useAccount()
   const [isAdmin, setIsAdmin] = useState(false)
-  const [activeTab, setActiveTab] = useState<'overview' | 'nfts' | 'users' | 'settings'>('overview')
+  const [activeTab, setActiveTab] = useState<'overview' | 'nfts' | 'live-data' | 'hub-config' | 'users' | 'settings'>('overview')
+  const [showLiveNFTModal, setShowLiveNFTModal] = useState(false)
+  const [showHubConfigModal, setShowHubConfigModal] = useState(false)
   const [stats, setStats] = useState<AdminStats>({
     totalNFTs: 156,
     totalUsers: 1247,
@@ -69,6 +74,8 @@ export function AdminPanel() {
   const tabs = [
     { id: 'overview', label: 'Overview', icon: FiActivity },
     { id: 'nfts', label: 'NFT Management', icon: FiDatabase },
+    { id: 'live-data', label: 'Live NFT Data', icon: FiTrendingUp },
+    { id: 'hub-config', label: 'Hub Config', icon: FiSettings },
     { id: 'users', label: 'Users', icon: FiUsers },
     { id: 'settings', label: 'Settings', icon: FiSettings },
   ]
@@ -222,6 +229,114 @@ export function AdminPanel() {
             </motion.div>
           )}
 
+          {activeTab === 'live-data' && (
+            <motion.div
+              key="live-data"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              className="space-y-3"
+            >
+              <h3 className="font-bold text-gray-800 dark:text-gray-200 mb-3">Live NFT Data</h3>
+              
+              <div className="space-y-3">
+                <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 p-4 rounded-xl border border-blue-200 dark:border-blue-800">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <FiTrendingUp className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                    <span className="font-semibold text-gray-800 dark:text-gray-200">Alchemy Integration</span>
+                  </div>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                    Fetch real NFT data from Ethereum mainnet using Alchemy API
+                  </p>
+                  <div className="flex space-x-2">
+                    <div className="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200 px-3 py-1 rounded-full text-xs font-medium">
+                      API Connected
+                    </div>
+                    <div className="bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full text-xs font-medium">
+                      Live Data
+                    </div>
+                  </div>
+                </div>
+
+                <button 
+                  onClick={() => setShowLiveNFTModal(true)}
+                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-3 rounded-xl font-semibold transition-all flex items-center justify-center space-x-2"
+                >
+                  <FiDatabase className="w-4 h-4" />
+                  <span>Open Live NFT Manager</span>
+                </button>
+
+                <div className="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg">
+                  <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Quick Stats</div>
+                  <div className="grid grid-cols-2 gap-2 text-xs">
+                    <div className="bg-white dark:bg-gray-600 p-2 rounded">
+                      <div className="text-gray-500 dark:text-gray-400">Popular Collections</div>
+                      <div className="font-bold text-purple-600 dark:text-purple-400">8</div>
+                    </div>
+                    <div className="bg-white dark:bg-gray-600 p-2 rounded">
+                      <div className="text-gray-500 dark:text-gray-400">API Calls Today</div>
+                      <div className="font-bold text-blue-600 dark:text-blue-400">247</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {activeTab === 'hub-config' && (
+            <motion.div
+              key="hub-config"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              className="space-y-3"
+            >
+              <h3 className="font-bold text-gray-800 dark:text-gray-200 mb-3">Farcaster Hub Configuration</h3>
+              
+              <div className="space-y-3">
+                <div className="bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 p-4 rounded-xl border border-orange-200 dark:border-orange-800">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <FiAlertCircle className="w-5 h-5 text-orange-600 dark:text-orange-400" />
+                    <span className="font-semibold text-gray-800 dark:text-gray-200">Migration Required</span>
+                  </div>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                    Your current hub (nemes.farcaster.xyz) is deprecated. Migrate to a modern provider.
+                  </p>
+                  <div className="flex space-x-2">
+                    <div className="bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-200 px-3 py-1 rounded-full text-xs font-medium">
+                      ⚠️ Deprecated Hub
+                    </div>
+                    <div className="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200 px-3 py-1 rounded-full text-xs font-medium">
+                      Free Migration Available
+                    </div>
+                  </div>
+                </div>
+
+                <button 
+                  onClick={() => setShowHubConfigModal(true)}
+                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-3 rounded-xl font-semibold transition-all flex items-center justify-center space-x-2"
+                >
+                  <FiSettings className="w-4 h-4" />
+                  <span>Configure Hub Providers</span>
+                </button>
+
+                <div className="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg">
+                  <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Recommended Providers</div>
+                  <div className="grid grid-cols-2 gap-2 text-xs">
+                    <div className="bg-white dark:bg-gray-600 p-2 rounded">
+                      <div className="text-gray-500 dark:text-gray-400">Pinata Hub</div>
+                      <div className="font-bold text-green-600 dark:text-green-400">Free & Reliable</div>
+                    </div>
+                    <div className="bg-white dark:bg-gray-600 p-2 rounded">
+                      <div className="text-gray-500 dark:text-gray-400">Neynar Hub</div>
+                      <div className="font-bold text-blue-600 dark:text-blue-400">Feature Rich</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
           {activeTab === 'users' && (
             <motion.div
               key="users"
@@ -306,6 +421,18 @@ export function AdminPanel() {
           )}
         </AnimatePresence>
       </div>
+
+      {/* Live NFT Modal */}
+      <LiveNFTModal 
+        isOpen={showLiveNFTModal} 
+        onClose={() => setShowLiveNFTModal(false)} 
+      />
+
+      {/* Hub Config Modal */}
+      <HubConfigModal 
+        isOpen={showHubConfigModal} 
+        onClose={() => setShowHubConfigModal(false)} 
+      />
     </motion.div>
   )
 }

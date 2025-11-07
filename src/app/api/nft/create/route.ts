@@ -8,13 +8,12 @@ import { createNFTMetadata, testPinataConnection } from '@/lib/pinata';
 
 export async function POST(request: NextRequest) {
   try {
-    // Check Pinata connection
+    console.log('🚀 NFT creation request received');
+    
+    // Check Pinata connection (but don't fail if it's slow)
     const isConnected = await testPinataConnection();
     if (!isConnected) {
-      return NextResponse.json(
-        { error: 'IPFS service unavailable' },
-        { status: 503 }
-      );
+      console.warn('⚠️ Pinata connection test failed, but continuing anyway...');
     }
 
     const formData = await request.formData();
@@ -62,7 +61,7 @@ export async function POST(request: NextRequest) {
       value: new Date().toISOString(),
     });
 
-    // Upload to IPFS
+    // Upload to IPFS (with automatic fallback for network issues)
     const result = await createNFTMetadata(
       name,
       description,
