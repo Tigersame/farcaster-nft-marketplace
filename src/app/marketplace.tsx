@@ -35,6 +35,7 @@ import { SocialProofFeed, SocialProofWidget } from '@/components/SocialProof'
 import { ChatLauncher } from '@/components/XMTPChat'
 import { FrameDiscovery } from '@/components/FrameShare'
 import NFTCreator from '@/components/NFTCreator'
+import { AdminPanel } from '@/components/AdminPanel'
 
 interface NFTItem {
   tokenId: string
@@ -213,6 +214,9 @@ export default function MarketplaceContent() {
     <UserProgressTracker onActionTracked={trackAction}>
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-slate-900 transition-colors duration-300">
         <Header />
+        
+        {/* Admin Panel - only visible to admin wallet */}
+        <AdminPanel />
         
         {/* Chain validation warning */}
         {isConnected && !isOnBase && (
