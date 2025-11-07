@@ -4,7 +4,7 @@ import { http } from 'viem'
 
 export const config = getDefaultConfig({
   appName: 'Farcaster NFT Marketplace',
-  projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID || 'farcaster-nft-demo',
+  projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || 'e3877a06886f08ffd144013611c152d1',
   chains: [base, baseSepolia, mainnet],
   transports: {
     [base.id]: http(),
@@ -12,6 +12,7 @@ export const config = getDefaultConfig({
     [mainnet.id]: http(),
   },
   ssr: true,
+  multiInjectedProviderDiscovery: false, // Disable to prevent conflicts
 })
 
 // Base chain configuration
