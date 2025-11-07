@@ -48,6 +48,17 @@ Thumbs.db
 
 # Logs
 logs
+
+# Hardhat
+/cache
+/artifacts
+/typechain-types
+coverage.json
+coverage/
+
+# Smart Contract
+*.env.hardhat
+deployments/
 *.log
 
 # Package managers
