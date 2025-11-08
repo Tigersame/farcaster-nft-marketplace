@@ -57,6 +57,96 @@ const mockNFTs: Record<string, NFT> = {
     ethPrice: '0.75',
     seller: '0x123f109551bD432803012645Hac136c22C789a',
     owner: '0x123f109551bD432803012645Hac136c22C789a'
+  },
+  '4': {
+    tokenId: '4',
+    name: 'Crypto Punk Revival #2847',
+    description: 'A modern tribute to the original CryptoPunks with enhanced attributes.',
+    image: 'https://picsum.photos/400/400?random=4',
+    price: '5000000000000000000',
+    ethPrice: '5.0',
+    seller: '0x456d35Cc6635Cc532A3Fdb1b4858b4c115D29E78',
+    owner: '0x456d35Cc6635Cc532A3Fdb1b4858b4c115D29E78'
+  },
+  '5': {
+    tokenId: '5',
+    name: 'Neural Art Genesis',
+    description: 'AI-generated masterpiece created through neural networks.',
+    image: 'https://picsum.photos/400/400?random=5',
+    price: '1250000000000000000',
+    ethPrice: '1.25',
+    seller: '0x789e109551bD432803012645Hac136c22C501f',
+    owner: '0x789e109551bD432803012645Hac136c22C501f'
+  },
+  '6': {
+    tokenId: '6',
+    name: 'Base Ecosystem Explorer',
+    description: 'Interactive NFT showcasing the growing Base ecosystem.',
+    image: 'https://picsum.photos/400/400?random=6',
+    price: '800000000000000000',
+    ethPrice: '0.8',
+    seller: '0x321a109551bD432803012645Hac136c22C901b',
+    owner: '0x321a109551bD432803012645Hac136c22C901b'
+  },
+  '7': {
+    tokenId: '7',
+    name: 'Farcaster Frame Art #42',
+    description: 'First interactive frame art that responds to social interactions.',
+    image: 'https://picsum.photos/400/400?random=7',
+    price: '1800000000000000000',
+    ethPrice: '1.8',
+    seller: '0x654b109551bD432803012645Hac136c22C702c',
+    owner: '0x654b109551bD432803012645Hac136c22C702c'
+  },
+  '8': {
+    tokenId: '8',
+    name: 'Onchain Music Genesis',
+    description: 'Revolutionary music NFT with embedded audio.',
+    image: 'https://picsum.photos/400/400?random=8',
+    price: '3200000000000000000',
+    ethPrice: '3.2',
+    seller: '0x987c109551bD432803012645Hac136c22C203d',
+    owner: '0x987c109551bD432803012645Hac136c22C203d'
+  },
+  '9': {
+    tokenId: '9',
+    name: 'Pixel Warriors #156',
+    description: 'Retro-style pixel art warriors with unique battle stats.',
+    image: 'https://picsum.photos/400/400?random=9',
+    price: '650000000000000000',
+    ethPrice: '0.65',
+    seller: '0x147d109551bD432803012645Hac136c22C504e',
+    owner: '0x147d109551bD432803012645Hac136c22C504e'
+  },
+  '10': {
+    tokenId: '10',
+    name: 'Base Degen Collection #001',
+    description: 'Exclusive degen-themed art celebrating Base community culture.',
+    image: 'https://picsum.photos/400/400?random=10',
+    price: '420000000000000000',
+    ethPrice: '0.42',
+    seller: '0x369e109551bD432803012645Hac136c22C805f',
+    owner: '0x369e109551bD432803012645Hac136c22C805f'
+  },
+  '11': {
+    tokenId: '11',
+    name: 'MetaVerse Land Plot #777',
+    description: 'Premium virtual real estate in the emerging Base metaverse.',
+    image: 'https://picsum.photos/400/400?random=11',
+    price: '7500000000000000000',
+    ethPrice: '7.5',
+    seller: '0x258f109551bD432803012645Hac136c22C106g',
+    owner: '0x258f109551bD432803012645Hac136c22C106g'
+  },
+  '12': {
+    tokenId: '12',
+    name: 'Animated Cosmos #99',
+    description: 'Mesmerizing animated space art with particle effects.',
+    image: 'https://picsum.photos/400/400?random=12',
+    price: '2100000000000000000',
+    ethPrice: '2.1',
+    seller: '0x741g109551bD432803012645Hac136c22C407h',
+    owner: '0x741g109551bD432803012645Hac136c22C407h'
   }
 }
 

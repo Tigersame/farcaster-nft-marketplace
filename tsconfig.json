@@ -22,6 +22,19 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": ["next-env.d.ts", "src/**/*.ts", "src/**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": [
+    "node_modules", 
+    "vitest.setup.ts", 
+    "jest.setup.ts", 
+    "**/*.test.ts", 
+    "**/*.test.tsx", 
+    "scripts/**/*", 
+    "scripts/**/*.ts",
+    "vitest.config.ts", 
+    "hardhat.config.ts",
+    "test/**/*",
+    "*.config.ts",
+    "*.config.js"
+  ]
 }

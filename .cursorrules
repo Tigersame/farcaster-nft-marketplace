@@ -1,0 +1,158 @@
+# Farcaster NFT Marketplace - Cursor AI Rules
+
+## Project Overview
+This is a **Farcaster-native NFT marketplace** built with Next.js 14, TypeScript, OnchainKit, and deployed on Base network. The app features interactive Farcaster Frames, XMTP chat, Basename resolution, and social engagement.
+
+## Tech Stack & Key Dependencies
+- **Framework**: Next.js 14 (App Router) + TypeScript
+- **Styling**: TailwindCSS + Framer Motion animations
+- **Web3**: Wagmi + RainbowKit + OnchainKit (Base chain)
+- **Identity**: Basename resolution via OnchainKit
+- **UI Components**: Custom components + react-icons
+- **State**: React hooks + React Query
+- **Notifications**: react-hot-toast + custom celebration effects
+
+## Architecture Patterns
+
+### Provider Stack (Critical Order)
+```tsx
+<ThemeProvider>
+  <AdminProvider>
+    <NotificationProvider>
+      <WagmiProvider>
+        <QueryClientProvider>
+          <OnchainKitProvider chain={base}>
+            <RainbowKitProvider>
+              {children}
+            </RainbowKitProvider>
+          </OnchainKitProvider>
+        </QueryClientProvider>
+      </WagmiProvider>
+    </NotificationProvider>
+  </AdminProvider>
+</ThemeProvider>
+```
+
+### Component Conventions
+- **'use client'** directive for interactive components
+- **Default exports** for page components, named exports for utilities
+- **Props interfaces** defined inline or nearby (no central types folder)
+- **Framer Motion** for all animations (duration: 0.3s standard)
+- **Dark mode**: Every component supports `dark:` classes
+
+### Farcaster Frame Pattern
+All frame routes return HTML with OpenGraph meta tags:
+```tsx
+return new NextResponse(html, { 
+  headers: { 'Content-Type': 'text/html' } 
+})
+```
+
+## Key Files & Components
+
+### Core Architecture
+- `src/app/providers.tsx` - Provider setup with OnchainKit
+- `src/lib/wagmi.ts` - Base chain configuration
+- `src/contexts/ThemeContext.tsx` - Dark mode state
+- `src/app/globals.css` - OnchainKit custom themes
+
+### Main Components
+- `src/app/marketplace.tsx` - Main marketplace (892 lines)
+- `src/components/OnchainKitDemo.tsx` - Basename integration showcase
+- `src/components/EnhancedWalletButton.tsx` - RainbowKit + OnchainKit combo
+- `src/components/BasenameAddress.tsx` - Basename-aware address display
+- `src/components/NFTCard.tsx` - NFT display with Basename support
+
+### Farcaster Integration
+- `src/lib/farcaster.ts` - Frame metadata utilities
+- `src/app/api/frames/nft/[tokenId]/route.ts` - Interactive NFT frames
+
+## Coding Guidelines
+
+### OnchainKit Integration
+Always use Base chain for Basename resolution:
+```tsx
+import { Name, Avatar } from '@coinbase/onchainkit/identity'
+import { base } from 'viem/chains'
+
+<Name address={address} chain={base} />
+<Avatar address={address} chain={base} />
+```
+
+### Component Patterns
+1. **Dark Mode**: Include `dark:` classes for all elements
+2. **Animation**: Use Framer Motion with consistent durations
+3. **TypeScript**: Proper typing for addresses as `0x${string}`
+4. **Error Handling**: Graceful fallbacks for all Web3 interactions
+
+### Styling Standards
+- **Colors**: Blue primary (#2563eb), use gray scale for neutrals
+- **Borders**: `rounded-2xl` for cards, `rounded-lg` for buttons
+- **Spacing**: Consistent `p-6` for cards, `space-x-3` for inline elements
+- **Transitions**: `transition-colors duration-300` for theme switching
+
+### Mock Data Pattern
+No backend - all NFT data is hardcoded in components:
+```tsx
+const mockNFTs: Record<string, NFT> = {
+  '1': { tokenId: '1', name: 'Farcaster Genesis #001', ethPrice: '2.5', ... }
+}
+```
+
+## Common Tasks
+
+### Adding New Components
+1. Create in `src/components/` with 'use client' if interactive
+2. Support dark mode with `dark:` classes
+3. Include TypeScript props interface
+4. Add Framer Motion animations if appropriate
+5. Import and use in marketplace.tsx
+
+### Frame Development
+1. Create route in `src/app/api/frames/`
+2. Return HTML with fc:frame meta tags
+3. Handle POST for button interactions
+4. Use `generateFrameMetadata` from lib/farcaster.ts
+
+### Basename Integration
+1. Import OnchainKit identity components
+2. Use `chain={base}` prop for Base network
+3. Include fallback for addresses without Basenames
+4. Test with known Basename addresses
+
+## Environment Setup
+```env
+NEXT_PUBLIC_ONCHAINKIT_API_KEY=optional-but-recommended
+NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=configured
+NEXT_PUBLIC_BASE_RPC_URL=https://mainnet.base.org
+```
+
+## File Structure Conventions
+- **Pages**: `src/app/[page]/page.tsx`
+- **Components**: `src/components/ComponentName.tsx`
+- **API Routes**: `src/app/api/[endpoint]/route.ts`
+- **Utilities**: `src/lib/utilityName.ts`
+- **Contexts**: `src/contexts/ContextName.tsx`
+
+## Development Notes
+- **Pinata IPFS**: Has fallback mode for network issues
+- **WalletConnect**: Multiple initialization warnings are suppressed
+- **Error Handling**: Comprehensive error suppression in WalletErrorHandler.tsx
+- **Performance**: React Query caching for async operations
+
+## AI Assistant Guidelines
+1. **Always maintain** the existing provider order and component patterns
+2. **Use TypeScript** with proper Web3 address typing
+3. **Include dark mode** support in all new components
+4. **Follow OnchainKit** patterns for Base chain integration
+5. **Test locally** at http://localhost:3000 before suggesting deployment
+6. **Reference existing** components for consistency patterns
+7. **Consider mobile** responsiveness in all designs
+8. **Maintain** the Farcaster-native focus of the application
+
+When generating code, prioritize:
+- Type safety and proper error handling
+- Consistent styling and dark mode support
+- OnchainKit and Basename integration
+- Farcaster ecosystem compatibility
+- Performance and user experience

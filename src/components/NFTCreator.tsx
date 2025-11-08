@@ -7,6 +7,9 @@
 
 import React, { useState } from 'react';
 import { useAccount } from 'wagmi';
+import TransactionWrapper from './TransactionWrapper';
+import { NFTMintCardEnhanced } from './NFTMintCardEnhanced';
+import { ArrowSvg, OnchainkitSvg } from './svg';
 
 interface Attribute {
   trait_type: string;
@@ -29,6 +32,7 @@ interface CreateNFTResponse {
 
 const NFTCreator: React.FC = () => {
   const { address, isConnected } = useAccount();
+  const [viewMode, setViewMode] = useState<'create' | 'mint'>('create');
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -130,12 +134,51 @@ const NFTCreator: React.FC = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
-      <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-        🎨 Create NFT
-      </h2>
+    <div className="max-w-4xl mx-auto p-6">
+      {/* Header with Mode Toggle */}
+      <div className="text-center mb-8">
+        <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4 flex items-center justify-center gap-3">
+          🎨 NFT Creator
+          <OnchainkitSvg className="w-8 h-8" />
+        </h2>
+        
+        {/* Mode Toggle */}
+        <div className="flex items-center justify-center gap-4 mb-6">
+          <button
+            onClick={() => setViewMode('create')}
+            className={`px-6 py-3 rounded-xl font-medium transition-all ${
+              viewMode === 'create'
+                ? 'bg-blue-600 text-white shadow-lg'
+                : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+            }`}
+          >
+            📝 Create & Upload
+          </button>
+          <button
+            onClick={() => setViewMode('mint')}
+            className={`px-6 py-3 rounded-xl font-medium transition-all flex items-center gap-2 ${
+              viewMode === 'mint'
+                ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
+                : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+            }`}
+          >
+            🚀 Mint Existing
+            <OnchainkitSvg className="w-4 h-4" />
+          </button>
+        </div>
+        
+        <p className="text-gray-600 dark:text-gray-300">
+          {viewMode === 'create' 
+            ? 'Upload and create new NFT metadata with IPFS storage'
+            : 'Mint from existing NFT collections using OnchainKit patterns'
+          }
+        </p>
+      </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      {/* Content based on mode */}
+      {viewMode === 'create' ? (
+        <div className="max-w-2xl mx-auto bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
         {/* Image Upload */}
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -292,13 +335,37 @@ const NFTCreator: React.FC = () => {
           {uploadResult.success ? (
             <div>
               <h3 className="text-lg font-medium text-green-800 dark:text-green-200 mb-2">
-                ✅ NFT Created Successfully!
+                ✅ NFT Metadata Created Successfully!
               </h3>
-              <div className="space-y-2 text-sm text-green-700 dark:text-green-300">
+              <div className="space-y-2 text-sm text-green-700 dark:text-green-300 mb-4">
                 <p><strong>Metadata URL:</strong> <a href={uploadResult.data?.metadataUrl} target="_blank" rel="noopener noreferrer" className="underline">{uploadResult.data?.metadataUrl}</a></p>
                 <p><strong>Image URL:</strong> <a href={uploadResult.data?.imageUrl} target="_blank" rel="noopener noreferrer" className="underline">{uploadResult.data?.imageUrl}</a></p>
                 <p><strong>IPFS Hash:</strong> {uploadResult.data?.metadataHash}</p>
               </div>
+              
+              {/* Onchain Minting Section */}
+              {isConnected && address && (
+                <div className="border-t border-green-200 dark:border-green-700 pt-4">
+                  <h4 className="text-md font-medium text-green-800 dark:text-green-200 mb-3 flex items-center">
+                    <ArrowSvg direction="right" className="mr-2" />
+                    Now mint your NFT onchain
+                  </h4>
+                  <TransactionWrapper
+                    address={address}
+                    contractAddress="0x1234567890123456789012345678901234567890" // Demo contract
+                    functionName="mint"
+                    args={[address, uploadResult.data?.metadataUrl]}
+                    onSuccess={() => {
+                      alert('🎉 NFT minted successfully on Base!')
+                    }}
+                    onError={(error) => {
+                      console.error('Minting failed:', error)
+                      alert('❌ NFT minting failed. Please try again.')
+                    }}
+                    className="bg-green-600 hover:bg-green-700"
+                  />
+                </div>
+              )}
             </div>
           ) : (
             <div>
@@ -318,6 +385,47 @@ const NFTCreator: React.FC = () => {
           <p className="text-sm text-yellow-700 dark:text-yellow-300">
             ⚠️ Please connect your wallet to create NFTs
           </p>
+        </div>
+      )}
+        </div>
+      ) : (
+        // Mint Mode - Enhanced NFT Mint Cards
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+          <NFTMintCardEnhanced
+            contractAddress="0xb4703a3a73aec16e764cbd210b0fde9efdab8941"
+            title="Farcaster Genesis Collection"
+            description="Exclusive NFTs celebrating the Farcaster ecosystem on Base"
+            mintPrice="25.00"
+            mintPriceETH="0.025"
+            maxSupply={1000}
+            totalSupply={347}
+            onMintSuccess={(tokenId) => alert(`🎉 Successfully minted NFT #${tokenId}!`)}
+            onMintError={(error) => alert('❌ Minting failed. Please try again.')}
+          />
+          
+          <NFTMintCardEnhanced
+            contractAddress="0xed2f34043387783b2727ff2799a46ce3ae1a34d2"
+            title="Base Builder Badges"
+            description="Commemorative badges for Base ecosystem builders"
+            mintPrice="15.00"
+            mintPriceETH="0.015"
+            maxSupply={500}
+            totalSupply={128}
+            onMintSuccess={(tokenId) => alert(`🎉 Successfully minted Badge #${tokenId}!`)}
+            onMintError={(error) => alert('❌ Minting failed. Please try again.')}
+          />
+          
+          <NFTMintCardEnhanced
+            contractAddress="0x877f0f3fef81c28a8c40fe060b17d254003377ad"
+            title="OnchainKit Pioneers"
+            description="Limited edition NFTs for OnchainKit early adopters"
+            mintPrice="75.00"
+            mintPriceETH="0.075"
+            maxSupply={250}
+            totalSupply={89}
+            onMintSuccess={(tokenId) => alert(`🎉 Successfully minted Pioneer NFT #${tokenId}!`)}
+            onMintError={(error) => alert('❌ Minting failed. Please try again.')}
+          />
         </div>
       )}
     </div>

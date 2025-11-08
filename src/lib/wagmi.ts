@@ -3,7 +3,7 @@ import { base, baseSepolia, mainnet } from 'wagmi/chains'
 import { http } from 'viem'
 
 export const config = getDefaultConfig({
-  appName: 'Farcaster NFT Marketplace',
+  appName: 'FarcasterSea NFT Marketplace',
   projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || 'e3877a06886f08ffd144013611c152d1',
   chains: [base, baseSepolia, mainnet],
   transports: {
@@ -12,7 +12,7 @@ export const config = getDefaultConfig({
     [mainnet.id]: http(),
   },
   ssr: true,
-  multiInjectedProviderDiscovery: false, // Disable to prevent conflicts
+  multiInjectedProviderDiscovery: true, // Enable for better wallet detection
 })
 
 // Base chain configuration

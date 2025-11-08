@@ -8,7 +8,16 @@ export async function GET(request: NextRequest) {
   const nftFrames = [
     { tokenId: '1', name: 'Farcaster Genesis #001' },
     { tokenId: '2', name: 'Base Builder Badge' },
-    { tokenId: '3', name: 'Onchain Summer Vibes' }
+    { tokenId: '3', name: 'Onchain Summer Vibes' },
+    { tokenId: '4', name: 'Crypto Punk Revival #2847' },
+    { tokenId: '5', name: 'Neural Art Genesis' },
+    { tokenId: '6', name: 'Base Ecosystem Explorer' },
+    { tokenId: '7', name: 'Farcaster Frame Art #42' },
+    { tokenId: '8', name: 'Onchain Music Genesis' },
+    { tokenId: '9', name: 'Pixel Warriors #156' },
+    { tokenId: '10', name: 'Base Degen Collection #001' },
+    { tokenId: '11', name: 'MetaVerse Land Plot #777' },
+    { tokenId: '12', name: 'Animated Cosmos #99' }
   ]
 
   const frameLinks = nftFrames.map(nft => 

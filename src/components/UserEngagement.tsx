@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 interface EngagementPrompt {
@@ -288,21 +288,30 @@ export function UserProgressTracker({
   children: React.ReactNode
   onActionTracked: (action: string) => void
 }) {
+  const pageViewTracked = useRef(false)
+  const deepScrollTracked = useRef(false)
+
   useEffect(() => {
-    // Track page views
-    onActionTracked('page_view')
+    // Track page views only once
+    if (!pageViewTracked.current) {
+      onActionTracked('page_view')
+      pageViewTracked.current = true
+    }
 
     // Track scroll depth
     const handleScroll = () => {
-      const scrolled = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100
-      if (scrolled > 50) {
-        onActionTracked('deep_scroll')
+      if (!deepScrollTracked.current) {
+        const scrolled = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100
+        if (scrolled > 50) {
+          onActionTracked('deep_scroll')
+          deepScrollTracked.current = true
+        }
       }
     }
 
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [onActionTracked])
+  }, []) // Remove onActionTracked from dependencies
 
   return <>{children}</>
 }
