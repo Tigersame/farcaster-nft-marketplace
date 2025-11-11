@@ -59,9 +59,9 @@ export default function MarketplaceContent() {
   const [selectedCollection, setSelectedCollection] = useState<'all' | string>('all')
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
   
-  // Fetch NFTs based on selection
-  const { nfts: verifiedNFTs, loading: verifiedLoading } = useVerifiedNFTs(100)
-  const { nfts: categoryNFTs, loading: categoryLoading } = useNFTsByCategory(selectedCategory || 'Gaming', 50)
+  // Fetch NFTs based on selection (reduced limits to avoid rate limiting)
+  const { nfts: verifiedNFTs, loading: verifiedLoading } = useVerifiedNFTs(60)
+  const { nfts: categoryNFTs, loading: categoryLoading } = useNFTsByCategory(selectedCategory || 'Gaming', 30)
   const { nfts: singleCollectionNFTs, loading: singleLoading, hasMore, loadMore } = useBaseNFTs(
     selectedCollection !== 'all' ? selectedCollection : ''
   )

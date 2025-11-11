@@ -8,6 +8,9 @@ import { BASE_NFT_CONTRACTS } from '@/lib/nftContracts'
 const ALCHEMY_API_KEY = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY || 'skI70Usmhsnf0GDuGdYqj'
 const BASE_URL = `https://base-mainnet.g.alchemy.com/nft/v3/${ALCHEMY_API_KEY}`
 
+// Helper to delay execution
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
+
 export interface MultiContractNFT {
   tokenId: string
   name: string
@@ -37,21 +40,36 @@ export function useMultiContractNFTs(contractAddresses: string[], limit: number 
         setLoading(true)
         setError(null)
 
-        // Fetch NFTs from all contracts in parallel
-        const promises = contractAddresses.map(async (address) => {
+        // Fetch NFTs sequentially with delays to avoid rate limiting
+        const allNfts: MultiContractNFT[] = []
+        const perContractLimit = Math.ceil(limit / contractAddresses.length)
+
+        for (let i = 0; i < contractAddresses.length; i++) {
+          const address = contractAddresses[i]
+          
           try {
             const url = new URL(`${BASE_URL}/getNFTsForContract`)
             url.searchParams.append('contractAddress', address)
             url.searchParams.append('withMetadata', 'true')
-            url.searchParams.append('limit', String(Math.ceil(limit / contractAddresses.length)))
+            url.searchParams.append('limit', String(perContractLimit))
 
             const response = await fetch(url.toString())
-            if (!response.ok) return []
+            
+            // Skip if rate limited
+            if (response.status === 429) {
+              console.warn(`Rate limited for ${address}, skipping...`)
+              continue
+            }
+            
+            if (!response.ok) {
+              console.warn(`Failed to fetch ${address}: ${response.status}`)
+              continue
+            }
 
             const data = await response.json()
             const contract = BASE_NFT_CONTRACTS.find(c => c.address.toLowerCase() === address.toLowerCase())
 
-            return (data.nfts || []).map((nft: any) => ({
+            const contractNfts = (data.nfts || []).map((nft: any) => ({
               tokenId: nft.tokenId || nft.id?.tokenId || '0',
               name: nft.name || nft.title || `${contract?.name} #${nft.tokenId}`,
               description: nft.description || contract?.description || '',
@@ -66,17 +84,20 @@ export function useMultiContractNFTs(contractAddresses: string[], limit: number 
               price: contract?.floorPrice || '0',
               ethPrice: contract?.floorPrice || '0.0',
             }))
+            
+            allNfts.push(...contractNfts)
+            
+            // Add delay between requests (300ms) to avoid rate limiting
+            if (i < contractAddresses.length - 1) {
+              await delay(300)
+            }
           } catch (err) {
             console.error(`Error fetching NFTs from ${address}:`, err)
-            return []
           }
-        })
-
-        const results = await Promise.all(promises)
-        const allNFTs = results.flat()
+        }
         
         // Shuffle for variety
-        const shuffled = allNFTs.sort(() => Math.random() - 0.5)
+        const shuffled = allNfts.sort(() => Math.random() - 0.5)
         setNfts(shuffled.slice(0, limit))
         setLoading(false)
       } catch (err) {
@@ -105,9 +126,11 @@ export function useNFTsByCategory(category: string, limit: number = 50) {
 
 /**
  * Hook to fetch all verified NFTs
+ * Reduced to first 3 collections to avoid rate limiting
  */
-export function useVerifiedNFTs(limit: number = 100) {
+export function useVerifiedNFTs(limit: number = 60) {
   const contracts = BASE_NFT_CONTRACTS
+    .slice(0, 3) // Only fetch from first 3 collections to avoid rate limits
     .filter(c => c.verified)
     .map(c => c.address)
 
