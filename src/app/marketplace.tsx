@@ -143,69 +143,91 @@ export default function MarketplaceContent() {
     const myNFTCollection: NFTItem[] = [
       {
         tokenId: '1',
-        name: 'DX Terminal #0001',
-        description: 'Premium terminal from the DX Terminal gaming collection on Base',
+        name: 'DX Terminal #1523',
+        description: 'Floor: 0.0038 ETH | 1D Vol: 1.89 ETH | Owners: 7,673 | Supply: 36,647',
         image: '/api/placeholder/400/400',
-        price: '50000000000000000',
+        price: '3800000000000000',
         seller: '0x41Dc69132ccE31FCbF6755c84538CA268520246f',
         owner: '0x41Dc69132ccE31FCbF6755c84538CA268520246f',
-        ethPrice: '0.05',
+        ethPrice: '0.0038',
         listedAt: new Date().toISOString(),
       },
       {
         tokenId: '2',
-        name: 'DX Terminal #0042',
-        description: 'Gaming terminal NFT from DX Terminal verified collection',
+        name: 'DX Terminal #3891',
+        description: 'Top Offer: 0.0036 WETH | 1D Sales: 472 | Gaming Category',
         image: '/api/placeholder/400/400',
-        price: '45000000000000000',
+        price: '4000000000000000',
         seller: '0x41Dc69132ccE31FCbF6755c84538CA268520246f',
         owner: '0x41Dc69132ccE31FCbF6755c84538CA268520246f',
-        ethPrice: '0.045',
+        ethPrice: '0.004',
         listedAt: new Date(Date.now() - 3600000).toISOString(),
       },
       {
         tokenId: '3',
-        name: 'DX Terminal #0099',
-        description: 'Rare DX Terminal gaming NFT on Base network',
+        name: 'DX Terminal #7234',
+        description: 'Verified Collection | Base Network | DXTerminal by DXRG.ai',
         image: '/api/placeholder/400/400',
-        price: '75000000000000000',
+        price: '3900000000000000',
         seller: '0x41Dc69132ccE31FCbF6755c84538CA268520246f',
         owner: '0x41Dc69132ccE31FCbF6755c84538CA268520246f',
-        ethPrice: '0.075',
+        ethPrice: '0.0039',
         listedAt: new Date(Date.now() - 7200000).toISOString(),
       },
       {
         tokenId: '4',
-        name: 'DX Terminal #0156',
-        description: 'Epic DX Terminal from verified gaming collection',
+        name: 'DX Terminal #12456',
+        description: 'Premium Terminal | May 2025 Release | 36K+ Supply',
         image: '/api/placeholder/400/400',
-        price: '60000000000000000',
+        price: '4200000000000000',
         seller: '0x41Dc69132ccE31FCbF6755c84538CA268520246f',
         owner: '0x41Dc69132ccE31FCbF6755c84538CA268520246f',
-        ethPrice: '0.06',
+        ethPrice: '0.0042',
         listedAt: new Date(Date.now() - 10800000).toISOString(),
       },
       {
         tokenId: '5',
-        name: 'DX Terminal #0203',
-        description: 'Special edition DX Terminal gaming NFT',
+        name: 'DX Terminal #18903',
+        description: 'Gaming NFT | Base Chain | Active Trading Volume: 1.89 ETH',
         image: '/api/placeholder/400/400',
-        price: '55000000000000000',
+        price: '3800000000000000',
         seller: '0x41Dc69132ccE31FCbF6755c84538CA268520246f',
         owner: '0x41Dc69132ccE31FCbF6755c84538CA268520246f',
-        ethPrice: '0.055',
+        ethPrice: '0.0038',
         listedAt: new Date(Date.now() - 14400000).toISOString(),
       },
       {
         tokenId: '6',
-        name: 'DX Terminal #0377',
-        description: 'Limited DX Terminal from 36K+ collection',
+        name: 'DX Terminal #25671',
+        description: 'Listed on OpenSea | 7.6K Unique Owners | Trending Gaming NFT',
         image: '/api/placeholder/400/400',
-        price: '48000000000000000',
+        price: '4100000000000000',
         seller: '0x41Dc69132ccE31FCbF6755c84538CA268520246f',
         owner: '0x41Dc69132ccE31FCbF6755c84538CA268520246f',
-        ethPrice: '0.048',
+        ethPrice: '0.0041',
         listedAt: new Date(Date.now() - 18000000).toISOString(),
+      },
+      {
+        tokenId: '7',
+        name: 'DX Terminal #30192',
+        description: 'Floor Price: 0.0038 ETH | Recent Sales: 472 | Top Gaming Collection',
+        image: '/api/placeholder/400/400',
+        price: '3900000000000000',
+        seller: '0x41Dc69132ccE31FCbF6755c84538CA268520246f',
+        owner: '0x41Dc69132ccE31FCbF6755c84538CA268520246f',
+        ethPrice: '0.0039',
+        listedAt: new Date(Date.now() - 21600000).toISOString(),
+      },
+      {
+        tokenId: '8',
+        name: 'DX Terminal #34528',
+        description: 'Verified by OpenSea | DXRG.ai Official | Base Network Gaming',
+        image: '/api/placeholder/400/400',
+        price: '4000000000000000',
+        seller: '0x41Dc69132ccE31FCbF6755c84538CA268520246f',
+        owner: '0x41Dc69132ccE31FCbF6755c84538CA268520246f',
+        ethPrice: '0.004',
+        listedAt: new Date(Date.now() - 25200000).toISOString(),
       },
     ]
     
@@ -505,7 +527,10 @@ export default function MarketplaceContent() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+            className="grid gap-4 sm:gap-5 justify-items-center"
+            style={{ 
+              gridTemplateColumns: 'repeat(auto-fill, minmax(min(160px, 100%), 1fr))',
+            }}
           >
             {marketItems.map((item, index) => (
               <motion.div
@@ -513,6 +538,7 @@ export default function MarketplaceContent() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: index * 0.05 }}
+                className="w-full max-w-[180px] sm:max-w-[270px]"
               >
                 <NFTCard {...item} onBuy={() => console.log('Buy clicked')} />
               </motion.div>

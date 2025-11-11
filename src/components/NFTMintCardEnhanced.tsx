@@ -63,7 +63,7 @@ export function NFTMintCardEnhanced({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden max-w-xs mx-auto ${className}`}
+      className={`bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden w-full max-w-[270px] ${className}`}
     >
       {/* Header */}
       <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-2">
@@ -85,8 +85,8 @@ export function NFTMintCardEnhanced({
         )}
       </div>
 
-      {/* NFT Media */}
-      <div className="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-600 relative">
+      {/* NFT Media - Fixed 250x250px */}
+      <div className="w-full h-[250px] bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-600 relative flex-shrink-0">
         {imageUrl ? (
           <img src={imageUrl} alt={title} className="w-full h-full object-cover" />
         ) : (

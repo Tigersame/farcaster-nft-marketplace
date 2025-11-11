@@ -246,9 +246,58 @@ body {
   }
 }
 
+/* NFT Card Grid - OpenSea Style */
+.nft-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+}
+
+@media (min-width: 640px) {
+  .nft-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+  }
+}
+
+.nft-card {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.dark .nft-card {
+  background: #1f2937;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+}
+
+.nft-card:hover {
+  transform: scale(1.03);
+}
+
+.nft-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+
+@media (min-width: 640px) {
+  .nft-card img {
+    height: 250px;
+  }
+}
+
+.nft-card .info {
+  padding: 12px;
+  font-size: 14px;
+}
+
 /* Prevent zoom on input focus (important for Mini Apps) */
 @media (max-width: 768px) {
   input, select, textarea {
     font-size: 16px !important;
   }
 }
+
