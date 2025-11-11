@@ -165,8 +165,15 @@ export function NFTCard({
           </button>
         </div>
 
-        <div className="mb-3">
-          <FrameShare tokenId={tokenId} nftName={name} />
+        {/* Share and Sell NFT Buttons */}
+        <div className="mb-3 flex space-x-2">
+          <div className="flex-1">
+            <FrameShare tokenId={tokenId} nftName={name} />
+          </div>
+          <button className="flex-1 border border-green-500 dark:border-green-600 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900/30 px-4 py-2 rounded-lg font-medium transition-colors flex items-center justify-center">
+            <FiTag className="w-4 h-4 mr-2" />
+            Sell NFT
+          </button>
         </div>
         
         {/* Owner Info */}

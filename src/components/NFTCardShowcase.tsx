@@ -22,7 +22,7 @@ export function NFTCardShowcase() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <div className="max-w-3xl mx-auto p-4">
       <div className="text-center mb-8">
         <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4 flex items-center justify-center gap-3">
           <OnchainkitSvg className="w-8 h-8" />

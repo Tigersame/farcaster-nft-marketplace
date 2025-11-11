@@ -54,6 +54,14 @@ export default function MarketplaceContent() {
   const [activeView, setActiveView] = useState('all')
   const [copied, setCopied] = useState(false)
 
+  // Mint form state
+  const [selectedImage, setSelectedImage] = useState<File | null>(null)
+  const [imagePreview, setImagePreview] = useState<string | null>(null)
+  const [nftName, setNftName] = useState('')
+  const [nftDescription, setNftDescription] = useState('')
+  const [nftPrice, setNftPrice] = useState('')
+  const [nftSupply, setNftSupply] = useState('1')
+
   // AI Agent State
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [authAddress, setAuthAddress] = useState<string | null>(null)
@@ -63,6 +71,37 @@ export default function MarketplaceContent() {
   // Wallet integration
   const { address, isConnected, chain } = useAccount()
   const { data: balance } = useBalance({ address, chainId: base.id })
+
+  // Handle image upload
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      setSelectedImage(file)
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string)
+      }
+      reader.readAsDataURL(file)
+    }
+  }
+
+  // Handle drag and drop
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    const file = e.dataTransfer.files?.[0]
+    if (file && file.type.startsWith('image/')) {
+      setSelectedImage(file)
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string)
+      }
+      reader.readAsDataURL(file)
+    }
+  }
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+  }
   
   // Check for existing session on mount
   useEffect(() => {
@@ -208,47 +247,9 @@ export default function MarketplaceContent() {
 
   return (
     <div className="min-h-screen bg-gray-900 transition-colors duration-300">
-      {/* Vertical Sidebar - Scrollable */}
+      {/* Vertical Sidebar - Scrollable (Wallet button moved to header) */}
       <aside className="fixed left-0 top-0 h-screen w-20 bg-gray-950 border-r border-gray-800 flex flex-col items-center py-6 z-40 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900">
-        {/* Wallet Connect Button at Top */}
-        <div className="mb-6 w-full px-2">
-          <ConnectButton.Custom>
-            {({ account, chain, openConnectModal, mounted }) => {
-              const connected = mounted && account && chain
-
-              return (
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={openConnectModal}
-                  className={`w-full p-3 rounded-xl transition-all ${
-                    connected
-                      ? 'bg-green-600 text-white shadow-lg shadow-green-500/50'
-                      : 'bg-blue-600 text-white shadow-lg shadow-blue-500/50 animate-pulse'
-                  }`}
-                  title={connected ? 'Connected' : 'Connect Wallet'}
-                >
-                  {connected ? (
-                    <div className="flex flex-col items-center gap-1">
-                      <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
-                        <span className="text-lg">✓</span>
-                      </div>
-                      <span className="text-[10px] font-medium">Connected</span>
-                    </div>
-                  ) : (
-                    <div className="flex flex-col items-center gap-1">
-                      <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
-                        <span className="text-lg">👛</span>
-                      </div>
-                      <span className="text-[10px] font-medium">Connect</span>
-                    </div>
-                  )}
-                </motion.button>
-              )
-            }}
-          </ConnectButton.Custom>
-        </div>
-
+        
         <div className="space-y-4">
           {/* All NFTs */}
           <motion.button
@@ -355,21 +356,6 @@ export default function MarketplaceContent() {
             <FiShoppingBag className="w-6 h-6" />
           </motion.button>
 
-          {/* Create */}
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setActiveView('create')}
-            className={`p-3 rounded-xl transition-all ${
-              activeView === 'create'
-                ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/50'
-                : 'text-gray-400 hover:text-white hover:bg-gray-800'
-            }`}
-            title="Create NFT"
-          >
-            <FiPlusCircle className="w-6 h-6" />
-          </motion.button>
-
           {/* Portfolio */}
           <motion.button
             whileHover={{ scale: 1.1 }}
@@ -474,26 +460,11 @@ export default function MarketplaceContent() {
           >
             <FiClock className="w-6 h-6" />
           </motion.button>
-
-          {/* Profile */}
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setActiveView('profile')}
-            className={`p-3 rounded-xl transition-all ${
-              activeView === 'profile'
-                ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/50'
-                : 'text-gray-400 hover:text-white hover:bg-gray-800'
-            }`}
-            title="Profile"
-          >
-            <FiUser className="w-6 h-6" />
-          </motion.button>
         </div>
       </aside>
 
-      {/* Main Content with left margin for sidebar */}
-      <div className="ml-20">
+      {/* Main Content with left margin for wider sidebar (240px) */}
+      <div className="ml-60">
         <Header />
         
         {/* Hero Banner - Collection Info */}
@@ -766,20 +737,55 @@ export default function MarketplaceContent() {
               <div className="grid md:grid-cols-2 gap-8">
                 {/* Upload Area */}
                 <div>
-                  <div className="bg-gray-900 rounded-xl p-8 border-2 border-dashed border-gray-700 hover:border-blue-500 transition-colors cursor-pointer mb-4">
-                    <div className="text-center">
-                      <FiZap className="w-16 h-16 text-yellow-500 mx-auto mb-4" />
-                      <p className="text-white font-medium mb-2">Drop your file here</p>
-                      <p className="text-gray-500 text-sm mb-4">or click to browse</p>
-                      <p className="text-gray-600 text-xs">PNG, JPG, GIF, SVG up to 10MB</p>
-                    </div>
+                  <input
+                    type="file"
+                    id="nft-image-upload"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    className="hidden"
+                  />
+                  <div
+                    onDrop={handleDrop}
+                    onDragOver={handleDragOver}
+                    className="bg-gray-900 rounded-xl p-8 border-2 border-dashed border-gray-700 hover:border-blue-500 transition-colors cursor-pointer mb-4"
+                  >
+                    <label htmlFor="nft-image-upload" className="cursor-pointer block">
+                      <div className="text-center">
+                        {!imagePreview ? (
+                          <>
+                            <FiZap className="w-16 h-16 text-yellow-500 mx-auto mb-4" />
+                            <p className="text-white font-medium mb-2">Drop your file here</p>
+                            <p className="text-gray-500 text-sm mb-4">or click to browse</p>
+                            <p className="text-gray-600 text-xs">PNG, JPG, GIF, SVG up to 10MB</p>
+                          </>
+                        ) : (
+                          <>
+                            <img 
+                              src={imagePreview} 
+                              alt="Preview" 
+                              className="max-h-48 mx-auto rounded-lg mb-4"
+                            />
+                            <p className="text-green-500 text-sm">✓ Image uploaded</p>
+                            <p className="text-gray-500 text-xs mt-2">Click to change</p>
+                          </>
+                        )}
+                      </div>
+                    </label>
                   </div>
                   
                   {/* Preview */}
                   <div className="bg-gray-900 rounded-xl p-4">
                     <p className="text-gray-400 text-sm mb-2">Preview</p>
-                    <div className="aspect-square bg-gray-800 rounded-lg flex items-center justify-center">
-                      <span className="text-gray-600 text-4xl">🖼️</span>
+                    <div className="aspect-square bg-gray-800 rounded-lg flex items-center justify-center overflow-hidden">
+                      {imagePreview ? (
+                        <img 
+                          src={imagePreview} 
+                          alt="NFT Preview" 
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <span className="text-gray-600 text-4xl">🖼️</span>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -791,7 +797,9 @@ export default function MarketplaceContent() {
                       Name <span className="text-red-500">*</span>
                     </label>
                     <input 
-                      type="text" 
+                      type="text"
+                      value={nftName}
+                      onChange={(e) => setNftName(e.target.value)}
                       className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-blue-500" 
                       placeholder="e.g. Cosmic Explorer #001" 
                     />
@@ -801,7 +809,9 @@ export default function MarketplaceContent() {
                     <label className="block text-sm font-medium text-gray-300 mb-2">
                       Description
                     </label>
-                    <textarea 
+                    <textarea
+                      value={nftDescription}
+                      onChange={(e) => setNftDescription(e.target.value)}
                       className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white h-32 focus:outline-none focus:border-blue-500 resize-none" 
                       placeholder="Tell the story behind your NFT..."
                     />
@@ -815,6 +825,8 @@ export default function MarketplaceContent() {
                       <input 
                         type="number" 
                         step="0.01"
+                        value={nftPrice}
+                        onChange={(e) => setNftPrice(e.target.value)}
                         className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-blue-500" 
                         placeholder="0.00" 
                       />
@@ -825,7 +837,9 @@ export default function MarketplaceContent() {
                         Supply
                       </label>
                       <input 
-                        type="number" 
+                        type="number"
+                        value={nftSupply}
+                        onChange={(e) => setNftSupply(e.target.value)}
                         className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-blue-500" 
                         placeholder="1" 
                       />
@@ -983,37 +997,6 @@ export default function MarketplaceContent() {
                 <div className="text-4xl mb-4">💎</div>
                 <h3 className="text-xl font-bold text-white mb-2">Premium</h3>
                 <p className="text-gray-400 text-sm">5 items</p>
-              </div>
-            </div>
-          </motion.div>
-        )}
-
-        {/* Create View */}
-        {activeView === 'create' && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="max-w-2xl mx-auto"
-          >
-            <div className="bg-gray-800 rounded-2xl p-8 border border-gray-700">
-              <h2 className="text-3xl font-bold text-white mb-6">Create NFT</h2>
-              <p className="text-gray-400 mb-6">Upload your artwork and create NFT</p>
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">Name</label>
-                  <input type="text" className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-2 text-white" placeholder="NFT Name" />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">Description</label>
-                  <textarea className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-2 text-white h-24" placeholder="Describe your NFT"></textarea>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">Price (ETH)</label>
-                  <input type="number" className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-2 text-white" placeholder="0.00" />
-                </div>
-                <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition-colors">
-                  Create NFT
-                </button>
               </div>
             </div>
           </motion.div>
@@ -1201,253 +1184,6 @@ export default function MarketplaceContent() {
                     </div>
                   </div>
                 ))}
-              </div>
-            </div>
-          </motion.div>
-        )}
-
-        {/* Profile View */}
-        {activeView === 'profile' && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <div className="max-w-5xl mx-auto">
-              {/* Profile Header with Basename Integration */}
-              <div className="bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 rounded-2xl p-1 mb-8">
-                <div className="bg-gray-800 rounded-xl p-8">
-                  <div className="flex flex-col md:flex-row items-start md:items-center gap-6 mb-8">
-                    {/* Avatar with Basename */}
-                    <div className="relative">
-                      {isConnected && address ? (
-                        <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-blue-500 shadow-lg shadow-blue-500/50">
-                          <Avatar address={address as `0x${string}`} chain={base} className="w-full h-full" />
-                        </div>
-                      ) : (
-                        <div className="w-32 h-32 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-5xl border-4 border-blue-400">
-                          👤
-                        </div>
-                      )}
-                      {isConnected && (
-                        <div className="absolute -bottom-2 -right-2 bg-green-500 w-8 h-8 rounded-full border-4 border-gray-800 flex items-center justify-center">
-                          <div className="w-3 h-3 bg-white rounded-full"></div>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Profile Info */}
-                    <div className="flex-1">
-                      <div className="mb-4">
-                        {isConnected && address ? (
-                          <>
-                            <div className="mb-3">
-                              <Name 
-                                address={address as `0x${string}`} 
-                                chain={base}
-                                className="text-3xl font-bold text-white"
-                              />
-                            </div>
-                            <div className="flex items-center gap-3 mb-3">
-                              <Address 
-                                address={address as `0x${string}`}
-                                className="text-gray-400 font-mono text-sm"
-                              />
-                              <button
-                                onClick={() => address && copyToClipboard(address)}
-                                className="p-2 hover:bg-gray-700 rounded-lg transition-colors"
-                                title="Copy address"
-                              >
-                                <FiCopy className={`w-4 h-4 ${copied ? 'text-green-500' : 'text-gray-400'}`} />
-                              </button>
-                              <a
-                                href={`https://basescan.org/address/${address}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="p-2 hover:bg-gray-700 rounded-lg transition-colors"
-                                title="View on BaseScan"
-                              >
-                                <FiExternalLink className="w-4 h-4 text-gray-400" />
-                              </a>
-                            </div>
-                          </>
-                        ) : (
-                          <>
-                            <h2 className="text-3xl font-bold text-white mb-2">Your Profile</h2>
-                            <p className="text-gray-400">Connect wallet to view your profile</p>
-                          </>
-                        )}
-                      </div>
-
-                      {/* Network & Chain Info */}
-                      {isConnected && (
-                        <div className="flex flex-wrap gap-3">
-                          <div className="bg-gray-900 px-4 py-2 rounded-lg border border-gray-700">
-                            <span className="text-gray-400 text-xs">Network</span>
-                            <p className="text-white font-semibold">{chain?.name || 'Unknown'}</p>
-                          </div>
-                          <div className="bg-gray-900 px-4 py-2 rounded-lg border border-gray-700">
-                            <span className="text-gray-400 text-xs">Chain ID</span>
-                            <p className="text-white font-semibold">{chain?.id || 'N/A'}</p>
-                          </div>
-                          <div className="bg-gray-900 px-4 py-2 rounded-lg border border-gray-700">
-                            <span className="text-gray-400 text-xs">Status</span>
-                            <p className="text-green-500 font-semibold flex items-center gap-2">
-                              <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                              Connected
-                            </p>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Wallet Balance & Stats */}
-                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    <div className="bg-gray-900 rounded-xl p-5 border border-gray-700">
-                      <div className="flex items-center gap-3 mb-2">
-                        <div className="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center">
-                          <FiDollarSign className="w-5 h-5 text-blue-500" />
-                        </div>
-                        <span className="text-gray-400 text-sm">Balance</span>
-                      </div>
-                      <p className="text-2xl font-bold text-white">
-                        {balance ? parseFloat(balance.formatted).toFixed(4) : '0.00'} {balance?.symbol || 'ETH'}
-                      </p>
-                    </div>
-                    
-                    <div className="bg-gray-900 rounded-xl p-5 border border-gray-700">
-                      <div className="flex items-center gap-3 mb-2">
-                        <div className="w-10 h-10 bg-purple-500/20 rounded-lg flex items-center justify-center">
-                          <FiPackage className="w-5 h-5 text-purple-500" />
-                        </div>
-                        <span className="text-gray-400 text-sm">NFTs Owned</span>
-                      </div>
-                      <p className="text-2xl font-bold text-white">{marketItems.length}</p>
-                    </div>
-                    
-                    <div className="bg-gray-900 rounded-xl p-5 border border-gray-700">
-                      <div className="flex items-center gap-3 mb-2">
-                        <div className="w-10 h-10 bg-green-500/20 rounded-lg flex items-center justify-center">
-                          <FiTrendingUp className="w-5 h-5 text-green-500" />
-                        </div>
-                        <span className="text-gray-400 text-sm">Total Value</span>
-                      </div>
-                      <p className="text-2xl font-bold text-white">
-                        {marketItems.reduce((sum, item) => sum + parseFloat(item.ethPrice), 0).toFixed(2)} ETH
-                      </p>
-                    </div>
-                    
-                    <div className="bg-gray-900 rounded-xl p-5 border border-gray-700">
-                      <div className="flex items-center gap-3 mb-2">
-                        <div className="w-10 h-10 bg-pink-500/20 rounded-lg flex items-center justify-center">
-                          <FiShoppingBag className="w-5 h-5 text-pink-500" />
-                        </div>
-                        <span className="text-gray-400 text-sm">Collections</span>
-                      </div>
-                      <p className="text-2xl font-bold text-white">3</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Account Details Section */}
-              {isConnected && address && (
-                <div className="bg-gray-800 rounded-2xl p-8 border border-gray-700 mb-8">
-                  <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-                    <FiUser className="w-6 h-6" />
-                    Account Details
-                  </h3>
-                  
-                  <div className="space-y-4">
-                    {/* Full Address */}
-                    <div className="bg-gray-900 rounded-xl p-4 border border-gray-700">
-                      <label className="text-gray-400 text-sm mb-2 block">Wallet Address</label>
-                      <div className="flex items-center justify-between gap-4">
-                        <code className="text-white font-mono text-sm flex-1 break-all">{address}</code>
-                        <button
-                          onClick={() => copyToClipboard(address)}
-                          className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-white text-sm font-medium transition-colors flex items-center gap-2"
-                        >
-                          <FiCopy className="w-4 h-4" />
-                          {copied ? 'Copied!' : 'Copy'}
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* Basename */}
-                    <div className="bg-gray-900 rounded-xl p-4 border border-gray-700">
-                      <label className="text-gray-400 text-sm mb-2 block">Basename</label>
-                      <Identity
-                        address={address as `0x${string}`}
-                        chain={base}
-                        schemaId="0xf8b05c79f090979bf4a80270aba232dff11a10d9ca55c4f88de95317970f0de9"
-                      >
-                        <Name className="text-white text-lg font-semibold" />
-                      </Identity>
-                    </div>
-
-                    {/* Chain Info */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="bg-gray-900 rounded-xl p-4 border border-gray-700">
-                        <label className="text-gray-400 text-sm mb-2 block">Network</label>
-                        <p className="text-white font-semibold">{chain?.name || 'Not Connected'}</p>
-                      </div>
-                      <div className="bg-gray-900 rounded-xl p-4 border border-gray-700">
-                        <label className="text-gray-400 text-sm mb-2 block">Chain ID</label>
-                        <p className="text-white font-semibold">{chain?.id || 'N/A'}</p>
-                      </div>
-                    </div>
-
-                    {/* External Links */}
-                    <div className="flex flex-wrap gap-3 pt-4">
-                      <a
-                        href={`https://basescan.org/address/${address}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-2 px-4 py-2 bg-gray-900 hover:bg-gray-700 rounded-lg text-white transition-colors border border-gray-700"
-                      >
-                        <FiExternalLink className="w-4 h-4" />
-                        View on BaseScan
-                      </a>
-                      <a
-                        href={`https://opensea.io/${address}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-2 px-4 py-2 bg-gray-900 hover:bg-gray-700 rounded-lg text-white transition-colors border border-gray-700"
-                      >
-                        <FiGlobe className="w-4 h-4" />
-                        View on OpenSea
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* NFT Portfolio */}
-              <div className="bg-gray-800 rounded-2xl p-8 border border-gray-700">
-                <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-                  <FiPackage className="w-6 h-6" />
-                  Your NFTs
-                </h3>
-                
-                {marketItems.length > 0 ? (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {marketItems.map((item) => (
-                      <NFTCard key={item.tokenId} {...item} onBuy={() => console.log('View clicked')} />
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-center py-12">
-                    <div className="text-6xl mb-4">📦</div>
-                    <p className="text-gray-400 text-lg">No NFTs found in your collection</p>
-                    <button 
-                      onClick={() => setActiveView('buy')}
-                      className="mt-6 px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-semibold transition-colors"
-                    >
-                      Browse Marketplace
-                    </button>
-                  </div>
-                )}
               </div>
             </div>
           </motion.div>

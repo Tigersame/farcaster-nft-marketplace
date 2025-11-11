@@ -2,13 +2,15 @@
 
 import NFTCreator from '@/components/NFTCreator'
 import { Header } from '@/components/Header'
+import { BackToMainButton } from '@/components/BackToMainButton'
 
 export default function CreatePage() {
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
+    <div className="min-h-screen bg-blue-50 dark:bg-blue-900 transition-colors">
       <Header />
       <main className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
+          <BackToMainButton />
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
               Create Your NFT

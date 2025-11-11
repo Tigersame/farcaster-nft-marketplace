@@ -20,6 +20,7 @@ interface NFTMintCardEnhancedProps {
   onMintSuccess?: (tokenId: string) => void
   onMintError?: (error: any) => void
   className?: string
+  isSponsored?: boolean
 }
 
 export function NFTMintCardEnhanced({
@@ -36,6 +37,7 @@ export function NFTMintCardEnhanced({
   onMintSuccess,
   onMintError,
   className = '',
+  isSponsored = true,
 }: NFTMintCardEnhancedProps) {
   const { address, isConnected } = useAccount()
   const [quantity, setQuantity] = useState(1)
@@ -61,20 +63,26 @@ export function NFTMintCardEnhanced({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden max-w-md mx-auto ${className}`}
+      className={`bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden max-w-xs mx-auto ${className}`}
     >
       {/* Header */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-4">
+      <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-2">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <BaseSvg className="w-6 h-6 text-white" />
-            <span className="text-white font-semibold">Mint on Base</span>
+          <div className="flex items-center gap-1.5">
+            <BaseSvg className="w-4 h-4 text-white" />
+            <span className="text-white font-semibold text-xs">Mint on Base</span>
           </div>
-          <div className="flex items-center gap-1 px-2 py-1 bg-white bg-opacity-20 rounded-full">
-            <OnchainkitSvg className="w-4 h-4 text-white" />
-            <span className="text-white text-xs">OnchainKit</span>
+          <div className="flex items-center gap-0.5 px-1.5 py-0.5 bg-white bg-opacity-20 rounded-full">
+            <OnchainkitSvg className="w-3 h-3 text-white" />
+            <span className="text-white text-[10px]">OnchainKit</span>
           </div>
         </div>
+        {isSponsored && (
+          <div className="mt-1 flex items-center gap-1">
+            <span className="text-yellow-300 text-xs">⚡</span>
+            <span className="text-white text-[10px]">Gas-free minting</span>
+          </div>
+        )}
       </div>
 
       {/* NFT Media */}
@@ -84,26 +92,26 @@ export function NFTMintCardEnhanced({
         ) : (
           <div className="w-full h-full flex items-center justify-center">
             <div className="text-center">
-              <div className="text-6xl mb-4">🎨</div>
-              <p className="text-gray-500 dark:text-gray-400 text-sm">Preview Image</p>
+              <div className="text-4xl mb-2">🎨</div>
+              <p className="text-gray-500 dark:text-gray-400 text-[10px]">Preview Image</p>
             </div>
           </div>
         )}
         
         {/* Collection Badge */}
-        <div className="absolute top-3 right-3 px-2 py-1 bg-black bg-opacity-60 text-white text-xs rounded-full">
+        <div className="absolute top-2 right-2 px-1.5 py-0.5 bg-black bg-opacity-60 text-white text-[10px] rounded-full">
           #{tokenId}
         </div>
       </div>
 
       {/* Content */}
-      <div className="p-6 space-y-4">
+      <div className="p-3 space-y-2">
         {/* Creator Info */}
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full"></div>
+        <div className="flex items-center gap-2">
+          <div className="w-6 h-6 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full"></div>
           <div>
-            <p className="text-xs text-gray-500 dark:text-gray-400">Created by</p>
-            <p className="text-sm font-medium text-gray-900 dark:text-white">
+            <p className="text-[8px] text-gray-500 dark:text-gray-400">Created by</p>
+            <p className="text-[10px] font-medium text-gray-900 dark:text-white">
               {creator.slice(0, 6)}...{creator.slice(-4)}
             </p>
           </div>
@@ -111,8 +119,8 @@ export function NFTMintCardEnhanced({
 
         {/* Collection Title */}
         <div>
-          <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{title}</h3>
-          <p className="text-gray-600 dark:text-gray-300 text-sm">{description}</p>
+          <h3 className="text-sm font-bold text-gray-900 dark:text-white mb-1">{title}</h3>
+          <p className="text-gray-600 dark:text-gray-300 text-[10px]">{description}</p>
         </div>
 
         {/* Supply Progress */}
@@ -155,20 +163,20 @@ export function NFTMintCardEnhanced({
         </div>
 
         {/* Asset Cost */}
-        <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-4">
-          <div className="flex justify-between items-center mb-2">
-            <span className="text-sm text-gray-600 dark:text-gray-300">Unit Price</span>
+        <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-2">
+          <div className="flex justify-between items-center mb-1">
+            <span className="text-[10px] text-gray-600 dark:text-gray-300">Unit Price</span>
             <div className="text-right">
-              <div className="text-sm font-medium text-gray-900 dark:text-white">{mintPriceETH} ETH</div>
-              <div className="text-xs text-gray-500 dark:text-gray-400">${mintPrice}</div>
+              <div className="text-[10px] font-medium text-gray-900 dark:text-white">{mintPriceETH} ETH</div>
+              <div className="text-[8px] text-gray-500 dark:text-gray-400">${mintPrice}</div>
             </div>
           </div>
-          <div className="border-t border-gray-200 dark:border-gray-600 pt-2">
+          <div className="border-t border-gray-200 dark:border-gray-600 pt-1">
             <div className="flex justify-between items-center">
-              <span className="font-medium text-gray-900 dark:text-white">Total Cost</span>
+              <span className="font-medium text-gray-900 dark:text-white text-[10px]">Total Cost</span>
               <div className="text-right">
-                <div className="text-lg font-bold text-gray-900 dark:text-white">{totalCost} ETH</div>
-                <div className="text-sm text-gray-500 dark:text-gray-400">${totalCostUSD}</div>
+                <div className="text-xs font-bold text-gray-900 dark:text-white">{totalCost} ETH</div>
+                <div className="text-[8px] text-gray-500 dark:text-gray-400">${totalCostUSD}</div>
               </div>
             </div>
           </div>
@@ -184,20 +192,9 @@ export function NFTMintCardEnhanced({
             onSuccess={handleMintSuccess}
             onError={handleMintError}
             className="w-full"
+            isSponsored={isSponsored}
           >
-            <div className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-4 rounded-xl font-semibold transition-all duration-200 hover:scale-105 flex items-center justify-center gap-2">
-              {isLoading ? (
-                <>
-                  <div className="animate-spin w-5 h-5 border-2 border-white border-t-transparent rounded-full"></div>
-                  Minting...
-                </>
-              ) : (
-                <>
-                  🚀 Mint {quantity > 1 ? `${quantity} NFTs` : 'NFT'}
-                  <ArrowSvg direction="right" className="w-4 h-4" />
-                </>
-              )}
-            </div>
+            {`🚀 Mint ${quantity > 1 ? `${quantity} NFTs` : 'NFT'}`}
           </TransactionWrapper>
         ) : (
           <div className="w-full border-2 border-dashed border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400 px-6 py-4 rounded-xl text-center">

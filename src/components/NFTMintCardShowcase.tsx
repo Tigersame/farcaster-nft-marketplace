@@ -57,22 +57,22 @@ export function NFTMintCardShowcase() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
+    <div className="w-full">
       <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4 flex items-center justify-center gap-3">
-          <OnchainkitSvg className="w-8 h-8" />
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4 flex items-center justify-center gap-3">
+          <OnchainkitSvg className="w-6 h-6 md:w-8 md:h-8" />
           NFT Mint Cards
-          <BaseSvg className="w-8 h-8" />
+          <BaseSvg className="w-6 h-6 md:w-8 md:h-8" />
         </h2>
-        <p className="text-gray-600 dark:text-gray-300 mb-6">
+        <p className="text-sm md:text-base text-gray-600 dark:text-gray-300 mb-6">
           Enhanced NFT minting experience with OnchainKit patterns and Base chain integration
         </p>
       </div>
 
       {/* Contract Selector */}
       <div className="mb-8">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Select Collection to Mint</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <h3 className="text-base md:text-lg font-semibold text-gray-900 dark:text-white mb-4">Select Collection to Mint</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
           {mintContracts.map((contract, index) => (
             <button
               key={contract.contractAddress}
@@ -144,34 +144,6 @@ export function NFTMintCardShowcase() {
         </div>
       </div>
 
-      {/* Implementation Details */}
-      <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-6">
-        <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Implementation Features</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <h4 className="font-medium text-gray-900 dark:text-white mb-2">Enhanced Components</h4>
-            <ul className="space-y-1 text-sm text-gray-600 dark:text-gray-300">
-              <li>• NFTCreator information display</li>
-              <li>• NFTMedia with square aspect ratio support</li>
-              <li>• NFTCollectionTitle with custom styling</li>
-              <li>• NFTQuantitySelector for batch minting</li>
-              <li>• NFTAssetCost with ETH and USD pricing</li>
-              <li>• NFTMintButton with transaction handling</li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-medium text-gray-900 dark:text-white mb-2">Transaction Features</h4>
-            <ul className="space-y-1 text-sm text-gray-600 dark:text-gray-300">
-              <li>• TransactionWrapper integration</li>
-              <li>• Real-time minting progress</li>
-              <li>• Success/error callbacks</li>
-              <li>• Supply tracking and progress bars</li>
-              <li>• Gas estimation and cost display</li>
-              <li>• Contract address verification</li>
-            </ul>
-          </div>
-        </div>
-      </div>
     </div>
   )
 }

@@ -17,7 +17,7 @@ export const config = {
   // OnchainKit configuration
   onchainKit: {
     apiKey: process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY || '',
-    projectId: process.env.NEXT_PUBLIC_ONCHAINKIT_PROJECT_ID || 'farcaster-nft-marketplace',
+    projectId: process.env.NEXT_PUBLIC_ONCHAINKIT_PROJECT_ID || 'farcastsea',
     schemaId: process.env.NEXT_PUBLIC_ONCHAINKIT_SCHEMA_ID,
   },
   

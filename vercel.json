@@ -5,10 +5,13 @@
   "framework": "nextjs",
   "outputDirectory": ".next",
   "regions": ["iad1"],
+  "functions": {
+    "app/api/**/*.ts": {
+      "maxDuration": 30
+    }
+  },
   "env": {
-    "NEXT_PUBLIC_BASE_RPC_URL": "@base_rpc_url",
-    "NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID": "@walletconnect_project_id",
-    "NEXT_PUBLIC_APP_URL": "@app_url"
+    "NODE_ENV": "production"
   },
   "build": {
     "env": {
@@ -34,8 +37,79 @@
         {
           "key": "Referrer-Policy",
           "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=31536000; includeSubDomains"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' *.vercel.app *.coinbase.com *.walletconnect.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: *.vercel.app *.coinbase.com; connect-src 'self' *.vercel.app *.coinbase.com *.walletconnect.com wss: https:; frame-ancestors 'none';"
         }
       ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, PUT, DELETE, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type, Authorization"
+        },
+        {
+          "key": "X-API-Rate-Limit",
+          "value": "true"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/api/frames/:path*",
+      "destination": "/api/frames/:path*"
+    },
+    {
+      "source": "/icon.png",
+      "destination": "/api/images?type=icon&size=512"
+    },
+    {
+      "source": "/icon-192.png", 
+      "destination": "/api/images?type=icon&size=192"
+    },
+    {
+      "source": "/icon-512.png",
+      "destination": "/api/images?type=icon&size=512"
+    },
+    {
+      "source": "/splash.png",
+      "destination": "/api/images?type=splash"
+    },
+    {
+      "source": "/hero.png",
+      "destination": "/api/images?type=hero"
+    },
+    {
+      "source": "/og-image.png",
+      "destination": "/api/images?type=og"
+    },
+    {
+      "source": "/screenshots/marketplace.png",
+      "destination": "/api/screenshots?name=marketplace"
+    },
+    {
+      "source": "/screenshots/frames.png",
+      "destination": "/api/screenshots?name=frames"
+    },
+    {
+      "source": "/screenshots/social.png",
+      "destination": "/api/screenshots?name=social"
     }
   ]
 }

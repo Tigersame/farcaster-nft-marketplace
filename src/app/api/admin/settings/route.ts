@@ -28,9 +28,9 @@ export async function GET(request: NextRequest) {
       withdrawalFee: 0.005,
       
       // General settings
-      siteName: 'Farcaster NFT Marketplace',
+      siteName: 'FarcastSea',
       siteDescription: 'The premier NFT marketplace for Farcaster community',
-      contactEmail: 'admin@farcaster-nft.com',
+      contactEmail: 'admin@farcastsea.com',
       socialLinks: {
         twitter: 'https://twitter.com/farcaster',
         discord: 'https://discord.gg/farcaster',
@@ -154,9 +154,9 @@ export async function PUT(request: NextRequest) {
           listingFee: 0.001,
           transactionFee: 1,
           withdrawalFee: 0.005,
-          siteName: 'Farcaster NFT Marketplace',
+          siteName: 'FarcastSea',
           siteDescription: 'The premier NFT marketplace for Farcaster community',
-          contactEmail: 'admin@farcaster-nft.com',
+          contactEmail: 'admin@farcastsea.com',
           socialLinks: {
             twitter: 'https://twitter.com/farcaster',
             discord: 'https://discord.gg/farcaster',

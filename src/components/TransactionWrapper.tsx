@@ -7,6 +7,7 @@ import {
   TransactionStatus,
   TransactionStatusAction,
   TransactionStatusLabel,
+  TransactionSponsor,
 } from '@coinbase/onchainkit/transaction';
 import type { TransactionError } from '@coinbase/onchainkit/transaction';
 import { base } from 'wagmi/chains';
@@ -20,6 +21,7 @@ interface TransactionWrapperProps {
   contractAddress?: `0x${string}`;
   functionName?: string;
   args?: any[];
+  isSponsored?: boolean;
 }
 
 export default function TransactionWrapper({
@@ -31,6 +33,7 @@ export default function TransactionWrapper({
   contractAddress = '0x1234567890123456789012345678901234567890', // Demo contract
   functionName = 'mint',
   args = [],
+  isSponsored = false,
 }: TransactionWrapperProps) {
   const handleOnSuccess = () => {
     console.log('Transaction successful!');
@@ -61,19 +64,26 @@ export default function TransactionWrapper({
   ];
 
   return (
-    <div className={`w-full max-w-md mx-auto ${className}`}>
+    <div className={`w-full ${className}`}>
       <Transaction
         address={address}
         contracts={contracts}
         chainId={base.id}
         onSuccess={handleOnSuccess}
         onError={handleOnError}
+        capabilities={isSponsored ? {
+          paymasterService: {
+            url: 'https://api.developer.coinbase.com/rpc/v1/base/paymaster'
+          }
+        } : undefined}
       >
-        {children}
+        {isSponsored && (
+          <TransactionSponsor className="mb-2" />
+        )}
         
         <TransactionButton
-          className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-medium py-3 px-6 rounded-xl transition-colors"
-          text="Mint NFT"
+          className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-4 px-6 rounded-xl transition-all"
+          text={children as string || "🚀 Mint NFT"}
         />
         
         <TransactionStatus className="mt-4">

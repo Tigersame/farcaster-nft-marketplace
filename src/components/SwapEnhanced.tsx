@@ -1,9 +1,18 @@
 'use client'
 
 import { useState } from 'react'
-import { useAccount } from 'wagmi'
+import { useAccount, useChainId, useSwitchChain } from 'wagmi'
+import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { motion } from 'framer-motion'
-import TransactionWrapper from './TransactionWrapper'
+import { 
+  Swap,
+  SwapAmountInput,
+  SwapToggleButton,
+  SwapButton,
+  SwapMessage,
+} from '@coinbase/onchainkit/swap'
+import type { Token as OnchainToken } from '@coinbase/onchainkit/token'
+import { base } from 'wagmi/chains'
 import { ArrowSvg, BaseSvg, OnchainkitSvg } from './svg'
 
 // Custom SwapSettings implementation for our version of OnchainKit
@@ -176,14 +185,14 @@ export function SwapEnhanced({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden max-w-md mx-auto ${className}`}
+      className={`bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden w-full max-w-md mx-auto ${className}`}
     >
       {/* Header */}
       <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <BaseSvg className="w-6 h-6 text-white" />
-            <span className="text-white font-semibold">Swap on Base</span>
+            <BaseSvg className="w-5 h-5 text-white" />
+            <span className="text-white font-semibold text-sm">Swap on Base</span>
           </div>
           <div className="flex items-center gap-1 px-2 py-1 bg-white bg-opacity-20 rounded-full">
             <OnchainkitSvg className="w-4 h-4 text-white" />
@@ -191,24 +200,24 @@ export function SwapEnhanced({
           </div>
         </div>
         {isSponsored && (
-          <div className="mt-2 text-xs text-blue-100">⚡ Gas sponsored by Paymaster</div>
+          <div className="mt-1 text-xs text-blue-100">⚡ Gas sponsored</div>
         )}
       </div>
 
       {/* Swap Interface */}
-      <div className="p-6 space-y-4">
+      <div className="p-4 space-y-3">
         {/* From Token Input */}
         <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-600 dark:text-gray-300">Sell</label>
-          <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-4">
-            <div className="flex items-center justify-between mb-3">
+          <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Sell</label>
+          <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
+            <div className="flex items-center justify-between mb-2">
               <select
                 value={fromToken.symbol}
                 onChange={(e) => {
                   const token = allTokens.find(t => t.symbol === e.target.value)
                   if (token) setFromToken(token)
                 }}
-                className="bg-transparent text-lg font-semibold text-gray-900 dark:text-white focus:outline-none"
+                className="bg-transparent text-base font-semibold text-gray-900 dark:text-white focus:outline-none"
               >
                 {allTokens.map((token) => (
                   <option key={token.symbol} value={token.symbol}>
@@ -217,7 +226,7 @@ export function SwapEnhanced({
                 ))}
               </select>
               <div className="flex items-center gap-2">
-                <img src={fromToken.image} alt={fromToken.symbol} className="w-6 h-6 rounded-full" />
+                <img src={fromToken.image} alt={fromToken.symbol} className="w-5 h-5 rounded-full" />
                 <span className="text-sm text-gray-600 dark:text-gray-300">{fromToken.name}</span>
               </div>
             </div>
@@ -229,7 +238,7 @@ export function SwapEnhanced({
               className="w-full bg-transparent text-2xl font-bold text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none"
             />
             <div className="flex justify-between items-center mt-2 text-sm text-gray-500 dark:text-gray-400">
-              <span>Balance: 1.234 {fromToken.symbol}</span>
+              <span>Balance: 1.234</span>
               <button className="text-blue-600 dark:text-blue-400 hover:underline">Max</button>
             </div>
           </div>
@@ -239,24 +248,24 @@ export function SwapEnhanced({
         <div className="flex justify-center">
           <button
             onClick={handleToggle}
-            className="p-2 bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-600 rounded-xl hover:border-blue-500 dark:hover:border-blue-400 transition-colors shadow-sm"
+            className="p-2 bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-600 rounded-lg hover:border-blue-500 dark:hover:border-blue-400 transition-colors shadow-sm"
           >
-            <ArrowSvg direction="down" className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+            <ArrowSvg direction="down" className="w-4 h-4 text-gray-600 dark:text-gray-300" />
           </button>
         </div>
 
         {/* To Token Input */}
         <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-600 dark:text-gray-300">Buy</label>
-          <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-4">
-            <div className="flex items-center justify-between mb-3">
+          <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Buy</label>
+          <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
+            <div className="flex items-center justify-between mb-2">
               <select
                 value={toToken.symbol}
                 onChange={(e) => {
                   const token = toTokens.find(t => t.symbol === e.target.value)
                   if (token) setToToken(token)
                 }}
-                className="bg-transparent text-lg font-semibold text-gray-900 dark:text-white focus:outline-none"
+                className="bg-transparent text-base font-semibold text-gray-900 dark:text-white focus:outline-none"
               >
                 {toTokens.map((token) => (
                   <option key={token.symbol} value={token.symbol}>
@@ -265,7 +274,7 @@ export function SwapEnhanced({
                 ))}
               </select>
               <div className="flex items-center gap-2">
-                <img src={toToken.image} alt={toToken.symbol} className="w-6 h-6 rounded-full" />
+                <img src={toToken.image} alt={toToken.symbol} className="w-5 h-5 rounded-full" />
                 <span className="text-sm text-gray-600 dark:text-gray-300">{toToken.name}</span>
               </div>
             </div>
@@ -277,14 +286,14 @@ export function SwapEnhanced({
               className="w-full bg-transparent text-2xl font-bold text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none"
             />
             <div className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-              Balance: 456.78 {toToken.symbol}
+              Balance: 456.78
             </div>
           </div>
         </div>
 
         {/* Swap Message */}
         {swapMessage && (
-          <div className="p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl">
+          <div className="p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
             <p className="text-sm text-blue-800 dark:text-blue-200">{swapMessage}</p>
           </div>
         )}
@@ -295,7 +304,7 @@ export function SwapEnhanced({
             <button
               onClick={handleSwap}
               disabled={!fromAmount}
-              className="w-full bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 px-6 py-4 rounded-xl font-semibold cursor-not-allowed"
+              className="w-full bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 px-4 py-3 rounded-lg font-semibold text-sm cursor-not-allowed"
             >
               Enter amount
             </button>
@@ -303,12 +312,12 @@ export function SwapEnhanced({
             <button
               onClick={handleSwap}
               disabled={isLoading}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white px-6 py-4 rounded-xl font-semibold transition-colors flex items-center justify-center gap-2"
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-lg font-semibold text-sm transition-colors flex items-center justify-center gap-2"
             >
               {isLoading ? (
                 <>
-                  <div className="animate-spin w-5 h-5 border-2 border-white border-t-transparent rounded-full"></div>
-                  Finding best rate...
+                  <div className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full"></div>
+                  Finding...
                 </>
               ) : (
                 'Get quote'
@@ -318,29 +327,41 @@ export function SwapEnhanced({
             isConnected && address ? (
               <TransactionWrapper
                 address={address}
-                contractAddress="0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD" // Uniswap Universal Router
+                contractAddress="0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD"
                 functionName="swap"
                 args={[fromToken.address, toToken.address, fromAmount]}
                 onSuccess={handleSwapSuccess}
                 onError={handleSwapError}
                 className="w-full"
               >
-                <div className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white px-6 py-4 rounded-xl font-semibold transition-all duration-200 hover:scale-105 flex items-center justify-center gap-2">
-                  🔄 Swap {fromAmount} {fromToken.symbol}
+                <div className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white px-4 py-3 rounded-lg font-semibold text-sm transition-all duration-200 hover:scale-105 flex items-center justify-center gap-2">
+                  🔄 Swap
                   <ArrowSvg direction="right" className="w-4 h-4" />
                 </div>
               </TransactionWrapper>
             ) : (
-              <div className="w-full border-2 border-dashed border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400 px-6 py-4 rounded-xl text-center">
-                🔗 Connect wallet to swap
-              </div>
+              <ConnectButton.Custom>
+                {({ account, chain, openConnectModal, mounted }) => {
+                  const ready = mounted
+                  const connected = ready && account && chain
+
+                  return (
+                    <button
+                      onClick={openConnectModal}
+                      className="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-lg font-semibold text-sm transition-colors flex items-center justify-center gap-2"
+                    >
+                      🔗 Connect wallet
+                    </button>
+                  )
+                }}
+              </ConnectButton.Custom>
             )
           )}
         </div>
 
         {/* Swap Details */}
         {toAmount && (
-          <div className="space-y-2 pt-3 border-t border-gray-100 dark:border-gray-700">
+          <div className="space-y-2 pt-4 border-t border-gray-100 dark:border-gray-700">
             <div className="flex justify-between text-sm">
               <span className="text-gray-600 dark:text-gray-300">Rate</span>
               <span className="text-gray-900 dark:text-white">

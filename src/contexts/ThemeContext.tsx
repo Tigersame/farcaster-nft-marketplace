@@ -11,17 +11,20 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [isDarkMode, setIsDarkMode] = useState(false)
+  const [isDarkMode, setIsDarkMode] = useState(true) // Default to dark mode
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    // Check for saved theme preference or default to system preference
-    const savedTheme = localStorage.getItem('farcaster-marketplace-theme')
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+    setMounted(true)
+    // Check for saved theme preference or default to dark mode
+    const savedTheme = localStorage.getItem('farcastsea-theme')
 
     if (savedTheme) {
       setIsDarkMode(savedTheme === 'dark')
     } else {
-      setIsDarkMode(prefersDark)
+      // Default to dark mode and save it
+      setIsDarkMode(true)
+      localStorage.setItem('farcastsea-theme', 'dark')
     }
   }, [])
 
@@ -29,10 +32,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     // Update document class and save preference
     if (isDarkMode) {
       document.documentElement.classList.add('dark')
-      localStorage.setItem('farcaster-marketplace-theme', 'dark')
+      localStorage.setItem('farcastsea-theme', 'dark')
     } else {
       document.documentElement.classList.remove('dark')
-      localStorage.setItem('farcaster-marketplace-theme', 'light')
+      localStorage.setItem('farcastsea-theme', 'light')
     }
   }, [isDarkMode])
 

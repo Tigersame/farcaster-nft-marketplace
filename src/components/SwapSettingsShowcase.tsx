@@ -210,22 +210,22 @@ export function SwapSettingsShowcase() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <div className="w-full max-w-3xl mx-auto">
       <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4 flex items-center justify-center gap-3">
-          <OnchainkitSvg className="w-8 h-8" />
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4 flex items-center justify-center gap-3">
+          <OnchainkitSvg className="w-6 h-6 md:w-8 md:h-8" />
           SwapSettings Components
-          <BaseSvg className="w-8 h-8" />
+          <BaseSvg className="w-6 h-6 md:w-8 md:h-8" />
         </h2>
-        <p className="text-gray-600 dark:text-gray-300 mb-6">
+        <p className="text-sm md:text-base text-gray-600 dark:text-gray-300 mb-6">
           Customizable slippage configuration components for token swaps
         </p>
       </div>
 
       {/* Demo Mode Selector */}
       <div className="mb-8">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Configuration Examples</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <h3 className="text-base md:text-lg font-semibold text-gray-900 dark:text-white mb-4">Configuration Examples</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
           {demoModes.map((mode) => (
             <button
               key={mode.id}
@@ -240,119 +240,16 @@ export function SwapSettingsShowcase() {
       </div>
 
       {/* Settings Demo */}
-      <div className="flex justify-center mb-8">
+      <div className="flex justify-center mb-6">
         <motion.div
           key={selectedDemo}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
-          className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg p-6 w-full max-w-md"
+          className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg p-6 w-full max-w-xs"
         >
           {renderSwapSettings()}
         </motion.div>
-      </div>
-
-      {/* Code Examples */}
-      <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-6">
-        <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Implementation Examples</h3>
-        
-        <div className="space-y-6">
-          {/* Default Example */}
-          <div>
-            <h4 className="font-medium text-gray-900 dark:text-white mb-2">Default Configuration</h4>
-            <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-4 text-sm">
-              <pre className="text-gray-800 dark:text-gray-200">
-{`<SwapSettings>
-  <SwapSettingsSlippageTitle>
-    Max. slippage
-  </SwapSettingsSlippageTitle>
-  <SwapSettingsSlippageDescription>
-    Your swap will revert if the prices change by more than the selected percentage.
-  </SwapSettingsSlippageDescription>
-  <SwapSettingsSlippageInput />
-</SwapSettings>`}
-              </pre>
-            </div>
-          </div>
-
-          {/* Styled Example */}
-          <div>
-            <h4 className="font-medium text-gray-900 dark:text-white mb-2">Custom Styling</h4>
-            <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-4 text-sm">
-              <pre className="text-gray-800 dark:text-gray-200">
-{`<SwapSettings>
-  <SwapSettingsSlippageTitle className="text-[#EA580C]">
-    Max. slippage
-  </SwapSettingsSlippageTitle>
-  <SwapSettingsSlippageDescription className="text-[#EA580C]">
-    Your swap will revert if the prices change by more than the selected percentage.
-  </SwapSettingsSlippageDescription>
-  <SwapSettingsSlippageInput />
-</SwapSettings>`}
-              </pre>
-            </div>
-          </div>
-
-          {/* Icon Example */}
-          <div>
-            <h4 className="font-medium text-gray-900 dark:text-white mb-2">With Custom Icon</h4>
-            <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-4 text-sm">
-              <pre className="text-gray-800 dark:text-gray-200">
-{`<SwapSettings icon={baseIcon}>
-  <SwapSettingsSlippageTitle>
-    Max. slippage
-  </SwapSettingsSlippageTitle>
-  <SwapSettingsSlippageDescription>
-    Your swap will revert if the prices change by more than the selected percentage.
-  </SwapSettingsSlippageDescription>
-  <SwapSettingsSlippageInput />
-</SwapSettings>`}
-              </pre>
-            </div>
-          </div>
-
-          {/* Text Example */}
-          <div>
-            <h4 className="font-medium text-gray-900 dark:text-white mb-2">With Text Label</h4>
-            <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-4 text-sm">
-              <pre className="text-gray-800 dark:text-gray-200">
-{`<SwapSettings text="Settings">
-  <SwapSettingsSlippageTitle>
-    Max. slippage
-  </SwapSettingsSlippageTitle>
-  <SwapSettingsSlippageDescription>
-    Your swap will revert if the prices change by more than the selected percentage.
-  </SwapSettingsSlippageDescription>
-  <SwapSettingsSlippageInput />
-</SwapSettings>`}
-              </pre>
-            </div>
-          </div>
-        </div>
-
-        {/* Component Information */}
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <h4 className="font-medium text-gray-900 dark:text-white mb-2">Available Components</h4>
-            <ul className="space-y-1 text-sm text-gray-600 dark:text-gray-300">
-              <li>• <code className="bg-gray-200 dark:bg-gray-700 px-1 rounded">SwapSettings</code> - Container component for swap slippage settings</li>
-              <li>• <code className="bg-gray-200 dark:bg-gray-700 px-1 rounded">SwapSettingsSlippageTitle</code> - Title for the slippage settings section</li>
-              <li>• <code className="bg-gray-200 dark:bg-gray-700 px-1 rounded">SwapSettingsSlippageDescription</code> - Description text explaining slippage</li>
-              <li>• <code className="bg-gray-200 dark:bg-gray-700 px-1 rounded">SwapSettingsSlippageInput</code> - Input field for slippage percentage</li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-medium text-gray-900 dark:text-white mb-2">Key Features</h4>
-            <ul className="space-y-1 text-sm text-gray-600 dark:text-gray-300">
-              <li>• Customizable styling with className props</li>
-              <li>• Custom icon support via icon prop</li>
-              <li>• Text label configuration</li>
-              <li>• Override title and description content</li>
-              <li>• OnchainKit design system integration</li>
-              <li>• Dark mode support</li>
-            </ul>
-          </div>
-        </div>
       </div>
     </div>
   )

@@ -1,0 +1,29 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Splash background -->
+  <rect width="1200" height="630" fill="#1a1a2e"/>
+  
+  <!-- Animated gradient effect -->
+  <rect width="1200" height="630" fill="url(#splashGradient)" opacity="0.5"/>
+  <defs>
+    <radialGradient id="splashGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#2563eb" stop-opacity="0.8"/>
+      <stop offset="50%" stop-color="#7c3aed" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#1a1a2e" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  
+  <!-- Large centered logo -->
+  <circle cx="600" cy="250" r="100" fill="#2563eb"/>
+  <text x="600" y="305" font-size="120" text-anchor="middle" fill="white">🌊</text>
+  
+  <!-- App name -->
+  <text x="600" y="420" font-family="system-ui, -apple-system, sans-serif" font-size="64" font-weight="bold" text-anchor="middle" fill="white">FarcastSea</text>
+  
+  <!-- Tagline -->
+  <text x="600" y="480" font-family="system-ui, -apple-system, sans-serif" font-size="28" text-anchor="middle" fill="#cbd5e1">Trade NFTs securely on Base</text>
+  
+  <!-- Loading indicator -->
+  <circle cx="580" cy="550" r="6" fill="#2563eb" opacity="0.8"/>
+  <circle cx="600" cy="550" r="6" fill="#2563eb" opacity="0.6"/>
+  <circle cx="620" cy="550" r="6" fill="#2563eb" opacity="0.4"/>
+</svg>

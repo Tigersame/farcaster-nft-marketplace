@@ -4,7 +4,7 @@ import {
   ConnectWallet,
   Wallet,
   WalletDropdown,
-  WalletDropdownBaseName,
+  WalletDropdownBasename,
   WalletDropdownLink,
   WalletDropdownDisconnect,
 } from '@coinbase/onchainkit/wallet'
@@ -17,7 +17,6 @@ import {
   useAvatar,
   useName,
 } from '@coinbase/onchainkit/identity'
-import { color } from '@coinbase/onchainkit/theme'
 import { base } from 'viem/chains'
 import { useState } from 'react'
 import { useAccount } from 'wagmi'
@@ -32,7 +31,7 @@ export function OnchainKitDemo() {
     chain: base 
   })
   const { data: demoAvatar, isLoading: avatarLoading } = useAvatar({ 
-    ensName: demoName || undefined, 
+    ensName: demoName || '', 
     chain: base 
   })
 
@@ -62,10 +61,10 @@ export function OnchainKitDemo() {
               <Identity className="px-4 pt-3 pb-2" hasCopyAddressOnClick>
                 <Avatar address={address} chain={base} />
                 <Name address={address} chain={base} />
-                <Address className={color.foregroundMuted} />
+                <Address className="text-gray-500" />
                 <EthBalance />
               </Identity>
-              <WalletDropdownBaseName />
+              <WalletDropdownBasename />
               <WalletDropdownLink
                 icon="wallet"
                 href="https://keys.coinbase.com"

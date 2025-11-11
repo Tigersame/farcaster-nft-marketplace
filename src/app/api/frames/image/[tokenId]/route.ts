@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { SecurityUtils } from '../../../../../lib/security'
+import { addSecurityHeaders } from '../../../../../lib/middleware'
+import { validateInputSafe, tokenIdSchema } from '../../../../../lib/validation'
 
 interface NFT {
   tokenId: string
@@ -109,22 +112,69 @@ export async function GET(
   request: NextRequest,
   { params }: { params: { tokenId: string } }
 ) {
-  const tokenId = params.tokenId
-  const { searchParams } = new URL(request.url)
-  const action = searchParams.get('action') || 'view'
+  const ip = request.ip || 'unknown'
   
-  const nft = mockNFTs[tokenId]
-  
-  if (!nft) {
-    return new NextResponse('NFT not found', { status: 404 })
-  }
+  try {
+    // Rate limit image generation (more lenient than transactions but still limited)
+    SecurityUtils.checkRateLimit(ip, 30, 60000)
+    
+    // Validate tokenId parameter
+    const validatedTokenId = validateInputSafe(tokenIdSchema, params.tokenId)
+    if (!validatedTokenId) {
+      console.warn(`Invalid tokenId from ${ip}: ${params.tokenId}`)
+      const response = new NextResponse('Invalid token ID', { status: 400 })
+      addSecurityHeaders(response)
+      return response
+    }
+    
+    const tokenId = validatedTokenId
+    const { searchParams } = new URL(request.url)
+    const action = searchParams.get('action') || 'view'
+    
+    // Validate action parameter
+    const allowedActions = ['view', 'purchase', 'success', 'error']
+    if (!allowedActions.includes(action)) {
+      console.warn(`Invalid action from ${ip}: ${action}`)
+      const response = new NextResponse('Invalid action parameter', { status: 400 })
+      addSecurityHeaders(response)
+      return response
+    }
+    
+    const nft = mockNFTs[tokenId]
+    
+    if (!nft) {
+      const response = new NextResponse('NFT not found', { status: 404 })
+      addSecurityHeaders(response)
+      return response
+    }
 
-  const svg = generateFrameImageSVG(nft, action)
-  
-  return new NextResponse(svg, {
-    headers: {
-      'Content-Type': 'image/svg+xml',
-      'Cache-Control': 'public, max-age=3600',
-    },
-  })
+    const svg = generateFrameImageSVG(nft, action)
+    
+    const response = new NextResponse(svg, {
+      headers: {
+        'Content-Type': 'image/svg+xml',
+        'Cache-Control': 'public, max-age=3600',
+      },
+    })
+    addSecurityHeaders(response)
+    return response
+  } catch (error) {
+    console.error('❌ Frame image generation error:', error)
+    
+    // Handle rate limit errors
+    if (error instanceof Error && error.message.includes('Rate limit exceeded')) {
+      const response = new NextResponse('Too many requests', { status: 429 })
+      addSecurityHeaders(response)
+      return response
+    }
+    
+    // Don't leak error details
+    const errorMessage = process.env.NODE_ENV === 'development'
+      ? (error instanceof Error ? error.message : 'Unknown error')
+      : 'Image generation failed'
+    
+    const response = new NextResponse(errorMessage, { status: 500 })
+    addSecurityHeaders(response)
+    return response
+  }
 }

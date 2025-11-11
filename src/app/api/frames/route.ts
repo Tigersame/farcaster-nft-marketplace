@@ -1,8 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { SecurityUtils } from '@/lib/security'
+import { addSecurityHeaders } from '@/lib/middleware'
+
+// Mark this route as dynamic since it uses request.url
+export const dynamic = 'force-dynamic'
 
 export async function GET(request: NextRequest) {
-  const url = new URL(request.url)
-  const baseUrl = `${url.protocol}//${url.host}`
+  const ip = request.ip || 'unknown'
+  
+  try {
+    // Rate limit frames discovery endpoint
+    SecurityUtils.checkRateLimit(ip, 100, 60000)
+    
+    const url = new URL(request.url)
+    const baseUrl = `${url.protocol}//${url.host}`
 
   // Available NFT frames
   const nftFrames = [
@@ -36,7 +47,7 @@ export async function GET(request: NextRequest) {
     <!DOCTYPE html>
     <html>
       <head>
-        <title>NFT Frames | Base NFT Marketplace</title>
+        <title>NFT Frames | FarcastSea</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <style>
@@ -125,9 +136,30 @@ export async function GET(request: NextRequest) {
     </html>
   `
 
-  return new NextResponse(html, {
-    headers: {
-      'Content-Type': 'text/html',
-    },
-  })
+    const response = new NextResponse(html, {
+      headers: {
+        'Content-Type': 'text/html',
+      },
+    })
+    addSecurityHeaders(response)
+    return response
+  } catch (error) {
+    console.error('Error generating frames discovery page:', error)
+    
+    // Handle rate limit errors
+    if (error instanceof Error && error.message.includes('Rate limit exceeded')) {
+      const response = NextResponse.json({ error: 'Too many requests' }, { status: 429 })
+      addSecurityHeaders(response)
+      return response
+    }
+    
+    // Don't leak error details in production
+    const errorMessage = process.env.NODE_ENV === 'development'
+      ? (error instanceof Error ? error.message : 'Unknown error')
+      : 'Failed to load frames'
+    
+    const response = NextResponse.json({ error: errorMessage }, { status: 500 })
+    addSecurityHeaders(response)
+    return response
+  }
 }

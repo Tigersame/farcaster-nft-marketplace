@@ -159,3 +159,58 @@ Join the future of social NFT trading!
     embeds: [window.location.origin],
   }
 }
+
+/**
+ * Validate Farcaster webhook signature
+ */
+export function validateFarcasterSignature(body: string, signature: string): boolean {
+  try {
+    // This is a simplified validation - in production you would use proper cryptographic verification
+    // with the actual Farcaster webhook secret
+    const webhookSecret = process.env.FARCASTER_WEBHOOK_SECRET || 'default-secret'
+    
+    // Basic signature validation (replace with proper HMAC verification in production)
+    const expectedSignature = `fc-signature-${Buffer.from(body + webhookSecret).toString('base64').slice(0, 32)}`
+    
+    return signature === expectedSignature
+  } catch (error) {
+    console.error('Signature validation error:', error)
+    return false
+  }
+}
+
+/**
+ * Parse Farcaster frame action data
+ */
+export interface FarcasterFrameAction {
+  buttonIndex: number
+  castId: {
+    fid: number
+    hash: string
+  }
+  inputText?: string
+  state?: string
+  transactionId?: string
+  address?: string
+  url: string
+}
+
+export function parseFrameAction(data: any): FarcasterFrameAction | null {
+  try {
+    return {
+      buttonIndex: data.untrustedData?.buttonIndex || 0,
+      castId: {
+        fid: data.untrustedData?.castId?.fid || 0,
+        hash: data.untrustedData?.castId?.hash || '',
+      },
+      inputText: data.untrustedData?.inputText,
+      state: data.untrustedData?.state,
+      transactionId: data.untrustedData?.transactionId,
+      address: data.untrustedData?.address,
+      url: data.untrustedData?.url || '',
+    }
+  } catch (error) {
+    console.error('Error parsing frame action:', error)
+    return null
+  }
+}

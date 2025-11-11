@@ -4,15 +4,56 @@ import { useEffect } from 'react'
 
 export function WalletErrorHandler() {
   useEffect(() => {
+    // Aggressive console.error suppression for wallet conflicts
+    const originalError = console.error
+    console.error = (...args) => {
+      const message = String(args[0] || '')
+      
+      // Suppress all wallet-related errors
+      if (
+        message.includes('MetaMask') ||
+        message.includes('ethereum') ||
+        message.includes('Cannot set property') ||
+        message.includes('Cannot redefine property') ||
+        message.includes('wallet') ||
+        message.includes('extension') ||
+        message.includes('runtime.lastError') ||
+        message.includes('Receiving end does not exist') ||
+        message.includes('inpage.js')
+      ) {
+        return // Completely suppress these
+      }
+      
+      originalError.apply(console, args)
+    }
+    
+    // Suppress console.log for React DevTools and other noise
+    const originalLog = console.log
+    console.log = (...args) => {
+      const message = String(args[0] || '')
+      
+      if (
+        message.includes('Download the React DevTools') ||
+        message.includes('better development experience')
+      ) {
+        return // Suppress React DevTools message
+      }
+      
+      originalLog.apply(console, args)
+    }
+
     // Handle MetaMask provider conflicts
     const handleProviderError = (event: ErrorEvent) => {
       const message = event.message || ''
       
       // Suppress MetaMask global provider conflicts
       if (message.includes('Cannot set property ethereum') || 
+          message.includes('Cannot redefine property: ethereum') ||
           message.includes('setting the global Ethereum provider') ||
-          message.includes('MetaMask encountered an error')) {
-        console.warn('⚠️ Multiple wallet extensions detected. This is normal - RainbowKit will handle provider selection.')
+          message.includes('MetaMask encountered an error') ||
+          message.includes('Error in invocation of runtime.sendMessage') ||
+          message.includes('chrome.runtime.sendMessage') ||
+          message.includes('Extension ID')) {
         event.preventDefault()
         return false
       }

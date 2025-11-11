@@ -230,7 +230,7 @@ export function XMTPChat({ nftId, nftName, isOpen = false, onClose }: XMTPChatPr
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 20 }}
-        className="fixed bottom-6 right-6 w-96 h-[600px] bg-white rounded-3xl shadow-2xl border z-50 flex flex-col overflow-hidden"
+        className="fixed bottom-6 right-6 w-96 h-[600px] bg-white dark:bg-gray-800 rounded-3xl shadow-2xl border border-gray-200 dark:border-gray-700 z-50 flex flex-col overflow-hidden"
       >
         {/* Header */}
         <div className="bg-gradient-to-r from-blue-500 to-purple-500 p-4 flex items-center justify-between">
@@ -288,7 +288,7 @@ export function XMTPChat({ nftId, nftName, isOpen = false, onClose }: XMTPChatPr
           {/* Typing indicator */}
           {isTyping && (
             <div className="flex justify-start">
-              <div className="bg-gray-100 px-4 py-2 rounded-2xl">
+              <div className="bg-gray-100 dark:bg-gray-700 px-4 py-2 rounded-2xl">
                 <div className="flex space-x-1">
                   {[0, 1, 2].map((i) => (
                     <motion.div

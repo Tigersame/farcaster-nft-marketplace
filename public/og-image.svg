@@ -1,0 +1,36 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#1a1a2e"/>
+  
+  <!-- Gradient overlay -->
+  <rect width="1200" height="630" fill="url(#ogGradient)" opacity="0.3"/>
+  <defs>
+    <linearGradient id="ogGradient" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#2563eb"/>
+      <stop offset="100%" stop-color="#7c3aed"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Logo/Icon -->
+  <circle cx="150" cy="315" r="80" fill="#2563eb"/>
+  <text x="150" y="355" font-size="80" text-anchor="middle" fill="white">🌊</text>
+  
+  <!-- Title -->
+  <text x="280" y="280" font-family="system-ui, -apple-system, sans-serif" font-size="72" font-weight="bold" fill="white">FarcastSea</text>
+  
+  <!-- Subtitle -->
+  <text x="280" y="340" font-family="system-ui, -apple-system, sans-serif" font-size="36" fill="#94a3b8">NFT Marketplace</text>
+  
+  <!-- Tagline -->
+  <text x="280" y="400" font-family="system-ui, -apple-system, sans-serif" font-size="28" fill="#cbd5e1">Trade securely on Base Network</text>
+  
+  <!-- Feature badges -->
+  <rect x="280" y="440" width="140" height="40" rx="20" fill="#2563eb"/>
+  <text x="350" y="467" font-family="system-ui" font-size="18" text-anchor="middle" fill="white">Frames</text>
+  
+  <rect x="440" y="440" width="140" height="40" rx="20" fill="#7c3aed"/>
+  <text x="510" y="467" font-family="system-ui" font-size="18" text-anchor="middle" fill="white">ERC20 Gas</text>
+  
+  <rect x="600" y="440" width="140" height="40" rx="20" fill="#059669"/>
+  <text x="670" y="467" font-family="system-ui" font-size="18" text-anchor="middle" fill="white">Secure</text>
+</svg>

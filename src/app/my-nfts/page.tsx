@@ -4,6 +4,7 @@ import { useAccount } from 'wagmi'
 import { useActiveListings } from '@/lib/contracts/hooks'
 import { NFTCard } from '@/components/NFTCard'
 import { LoadingSpinner } from '@/components/LoadingSpinner'
+import { BackToMainButton } from '@/components/BackToMainButton'
 
 export default function MyNFTsPage() {
   const { address, isConnected } = useAccount()
@@ -11,8 +12,9 @@ export default function MyNFTsPage() {
 
   if (!isConnected) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-6">
+      <div className="min-h-screen bg-blue-50 dark:bg-blue-900 p-6">
         <div className="max-w-4xl mx-auto">
+          <BackToMainButton />
           <div className="text-center py-12">
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
               My NFTs
@@ -31,8 +33,9 @@ export default function MyNFTsPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-6">
+      <div className="min-h-screen bg-blue-50 dark:bg-blue-900 p-6">
         <div className="max-w-4xl mx-auto">
+          <BackToMainButton />
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
             My NFTs
           </h1>
@@ -50,8 +53,9 @@ export default function MyNFTsPage() {
     : []
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-6">
+    <div className="min-h-screen bg-blue-50 dark:bg-blue-900 p-6">
       <div className="max-w-4xl mx-auto">
+        <BackToMainButton />
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
             My NFTs

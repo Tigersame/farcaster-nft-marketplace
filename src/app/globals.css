@@ -2,20 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
 /* Dark mode root variables */
 :root {
-  --background: 255 255 255;
+  --background: 219 234 254; /* Light blue background (blue-100) */
   --foreground: 15 23 42;
-  --card: 255 255 255;
+  --card: 239 246 255; /* Lighter blue for cards (blue-50) */
   --card-foreground: 15 23 42;
   --primary: 59 130 246;
   --primary-foreground: 255 255 255;
 }
 
 .dark {
-  --background: 15 23 42;
+  --background: 30 58 138; /* Dark blue background (blue-900) */
   --foreground: 248 250 252;
-  --card: 30 41 59;
+  --card: 37 99 235; /* Medium blue for cards (blue-600) */
   --card-foreground: 248 250 252;
   --primary: 96 165 250;
   --primary-foreground: 15 23 42;
@@ -188,4 +193,62 @@ body {
     --ock-border-line-inverse: #e2e8f0;
   }
 
+}
+/* Mini App Optimizations */
+@layer utilities {
+  /* Minimum touch target size for Mini Apps (44px) */
+  .touch-target {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  /* Responsive font sizes for Mini App */
+  .text-miniapp-sm {
+    font-size: clamp(0.875rem, 2vw, 1rem);
+  }
+
+  .text-miniapp-base {
+    font-size: clamp(1rem, 2.5vw, 1.125rem);
+  }
+
+  .text-miniapp-lg {
+    font-size: clamp(1.125rem, 3vw, 1.25rem);
+  }
+
+  /* Safe area aware spacing */
+  .safe-top {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .safe-left {
+    padding-left: env(safe-area-inset-left);
+  }
+
+  .safe-right {
+    padding-right: env(safe-area-inset-right);
+  }
+
+  /* Mobile-first grid for NFT cards */
+  .miniapp-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+    gap: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .miniapp-grid {
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+  }
+}
+
+/* Prevent zoom on input focus (important for Mini Apps) */
+@media (max-width: 768px) {
+  input, select, textarea {
+    font-size: 16px !important;
+  }
 }

@@ -76,17 +76,17 @@ export function StatsCard({
 
   if (isLoading) {
     return (
-      <div className="bg-white/90 backdrop-blur-xl rounded-3xl p-6 border border-gray-200/50 shadow-lg">
+      <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-3xl p-6 border border-gray-200/50 dark:border-gray-700/50 shadow-lg">
         <div className="animate-pulse">
           <div className="flex items-center justify-between mb-6">
-            <div className="w-14 h-14 bg-gray-200 rounded-2xl"></div>
+            <div className="w-14 h-14 bg-gray-200 dark:bg-gray-700 rounded-2xl"></div>
             <div className="text-right">
-              <div className="w-20 h-8 bg-gray-200 rounded mb-2"></div>
-              {trend && <div className="w-12 h-4 bg-gray-200 rounded"></div>}
+              <div className="w-20 h-8 bg-gray-200 dark:bg-gray-700 rounded mb-2"></div>
+              {trend && <div className="w-12 h-4 bg-gray-200 dark:bg-gray-700 rounded"></div>}
             </div>
           </div>
-          <div className="w-28 h-6 bg-gray-200 rounded mb-2"></div>
-          <div className="w-36 h-4 bg-gray-200 rounded"></div>
+          <div className="w-28 h-6 bg-gray-200 dark:bg-gray-700 rounded mb-2"></div>
+          <div className="w-36 h-4 bg-gray-200 dark:bg-gray-700 rounded"></div>
         </div>
       </div>
     )

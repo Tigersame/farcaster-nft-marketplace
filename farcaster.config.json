@@ -1,0 +1,35 @@
+{
+  "accountAssociation": {
+   "accountAssociation": {
+    "header": "eyJmaWQiOjYzOTczNCwidHlwZSI6ImN1c3RvZHkiLCJrZXkiOiIweDM4YmM1ODA5RTNCMTQyMkU2RDAzZjIwOGNmNTNEMDUyQTFlQ0E4RDMifQ",
+    "payload": "eyJkb21haW4iOiJmYXJjYXN0ZXItbmZ0LW1hcmtldHBsYWNlLnZlcmNlbC5hcHAifQ",
+    "signature": "6/0ZgSTYy2+hGd9dKesV4XAEkYV62crYt+rFuHUU7EB2LGmHj8qhaEkeNqxwp54RujaJt5h7RPhAEp+zVN2xZxw="
+  },
+  "baseBuilder": {
+    "ownerAddress": "0xEaFE5088BCd7eb27fa1e4AA417a55eD5ea2dab8B"
+  },
+  "miniapp": {
+    "version": "1",
+    "name": "FarcastSea NFT Marketplace",
+    "homeUrl": "https://farcaster-nft-marketplace-fxmwyjgo8-devsminiapp.vercel.app",
+    "iconUrl": "https://farcaster-nft-marketplace-fxmwyjgo8-devsminiapp.vercel.app/icon.png",
+    "splashImageUrl": "https://farcaster-nft-marketplace-fxmwyjgo8-devsminiapp.vercel.app/splash.png",
+    "splashBackgroundColor": "#1a1a2e",
+    "webhookUrl": "https://farcaster-nft-marketplace-fxmwyjgo8-devsminiapp.vercel.app/api/webhook",
+    "subtitle": "Trade NFTs on Base",
+    "description": "Secure, hack-proof NFT marketplace built for the Base network with Farcaster frames integration and innovative ERC20 gas payments.",
+    "screenshotUrls": [
+      "https://farcaster-nft-marketplace-fxmwyjgo8-devsminiapp.vercel.app/screenshots/marketplace.png",
+      "https://farcaster-nft-marketplace-fxmwyjgo8-devsminiapp.vercel.app/screenshots/frames.png",
+      "https://farcaster-nft-marketplace-fxmwyjgo8-devsminiapp.vercel.app/screenshots/chat.png"
+    ],
+    "primaryCategory": "nft",
+    "tags": ["nft", "marketplace", "base", "defi"],
+    "heroImageUrl": "https://farcaster-nft-marketplace-fxmwyjgo8-devsminiapp.vercel.app/hero.png",
+    "tagline": "Trade securely on Base",
+    "ogTitle": "FarcastSea - Secure NFT Marketplace",
+    "ogDescription": "Hack-proof NFT marketplace with Farcaster frames and ERC20 gas payments on Base network.",
+    "ogImageUrl": "https://farcaster-nft-marketplace-fxmwyjgo8-devsminiapp.vercel.app/og-image.png",
+    "noindex": false
+  }
+}

@@ -213,7 +213,7 @@ export function UserEngagementSystem({
             animate={{ scale: 1, rotate: 0 }}
             transition={{ delay: 0.2, type: "spring" }}
           >
-            <div className="bg-white rounded-full p-2 shadow-lg text-2xl">
+            <div className="bg-white dark:bg-gray-800 rounded-full p-2 shadow-lg text-2xl">
               {styles.icon}
             </div>
           </motion.div>

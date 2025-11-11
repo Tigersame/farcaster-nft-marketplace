@@ -134,7 +134,7 @@ const NFTCreator: React.FC = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <div className="max-w-3xl mx-auto p-4">
       {/* Header with Mode Toggle */}
       <div className="text-center mb-8">
         <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4 flex items-center justify-center gap-3">
@@ -177,7 +177,7 @@ const NFTCreator: React.FC = () => {
 
       {/* Content based on mode */}
       {viewMode === 'create' ? (
-        <div className="max-w-2xl mx-auto bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6">
+        <div className="max-w-xl mx-auto bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-4">
           <form onSubmit={handleSubmit} className="space-y-6">
         {/* Image Upload */}
         <div>

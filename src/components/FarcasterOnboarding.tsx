@@ -26,7 +26,7 @@ export function FarcasterOnboarding({ onComplete, isConnected }: OnboardingProps
 
   const steps = [
     {
-      title: "hey, welcome to the farcaster nft marketplace! 🖼️",
+      title: "hey, welcome to FarcastSea! 🖼️",
       subtitle: "i'm your guide to discovering, collecting, and trading nfts on base network.",
       content: [
         "• discover unique nfts: browse curated collections from farcaster creators",
@@ -102,7 +102,7 @@ export function FarcasterOnboarding({ onComplete, isConnected }: OnboardingProps
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
-        className="bg-white/95 backdrop-blur-xl rounded-3xl p-8 border border-gray-200/50 shadow-2xl max-w-2xl mx-auto"
+        className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl rounded-3xl p-8 border border-gray-200/50 dark:border-gray-700/50 shadow-2xl max-w-2xl mx-auto"
       >
         {/* Progress Indicator */}
         <div className="flex justify-center mb-6">
@@ -114,7 +114,7 @@ export function FarcasterOnboarding({ onComplete, isConnected }: OnboardingProps
                   ? 'bg-gradient-to-r from-purple-500 to-blue-500'
                   : index < currentStep
                   ? 'bg-green-500'
-                  : 'bg-gray-300'
+                  : 'bg-gray-300 dark:bg-gray-600'
               }`}
               initial={{ scale: 0.8 }}
               animate={{ scale: index === currentStep ? 1.2 : 1 }}
@@ -217,7 +217,7 @@ export function FarcasterOnboarding({ onComplete, isConnected }: OnboardingProps
                     animate={{ scale: 1, y: 0 }}
                     exit={{ scale: 0, y: -10 }}
                   >
-                    <div className="bg-white rounded-full p-2 shadow-lg border-2 border-green-500">
+                    <div className="bg-white dark:bg-gray-800 rounded-full p-2 shadow-lg border-2 border-green-500">
                       👍
                     </div>
                   </motion.div>

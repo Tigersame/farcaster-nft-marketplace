@@ -83,9 +83,9 @@ export function VerticalSidebar({
 }: SidebarProps) {
   const { isDarkMode, toggleDarkMode } = useTheme()
   const { address } = useAccount()
-  const [isCollapsed, setIsCollapsed] = useState(false)
+  const [isCollapsed, setIsCollapsed] = useState(false) // Always keep expanded
   const [isMinimized, setIsMinimized] = useState(false)
-  const [selectedCategory, setSelectedCategory] = useState<string>('main')
+  const [selectedCategory, setSelectedCategory] = useState<string>('all') // Show all categories by default
   const [searchQuery, setSearchQuery] = useState('')
   const [notifications, setNotifications] = useState(3)
 
@@ -173,8 +173,8 @@ export function VerticalSidebar({
   }
 
   const sidebarVariants = {
-    expanded: { width: isMinimized ? 0 : 320 },
-    collapsed: { width: isMinimized ? 0 : 80 }
+    expanded: { width: isMinimized ? 0 : 240 }, // Wider sidebar for better visibility
+    collapsed: { width: isMinimized ? 0 : 240 } // Always expanded
   }
 
   const itemVariants = {
@@ -194,29 +194,27 @@ export function VerticalSidebar({
         }`}
       >
         {/* Header */}
-        <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+        <div className="p-3 border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-center justify-between">
-            {!isCollapsed && (
-              <motion.div
-                variants={itemVariants}
-                animate={isCollapsed ? 'collapsed' : 'expanded'}
-                className="flex items-center gap-3"
-              >
-                <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-                  <FiZap className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <h2 className="font-bold text-gray-900 dark:text-white">NFT Hub</h2>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">Navigation</p>
-                </div>
-              </motion.div>
-            )}
+            <motion.div
+              variants={itemVariants}
+              animate="expanded"
+              className="flex items-center gap-2"
+            >
+              <div className="w-7 h-7 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+                <FiZap className="w-4 h-4 text-white" />
+              </div>
+              <div>
+                <h2 className="font-bold text-sm text-gray-900 dark:text-white">NFT Hub</h2>
+                <p className="text-xs text-gray-500 dark:text-gray-400">All Portals</p>
+              </div>
+            </motion.div>
             
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1">
               {/* Theme Toggle */}
               <button
                 onClick={toggleDarkMode}
-                className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors touch-target"
                 title={isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
               >
                 {isDarkMode ? (
@@ -226,10 +224,10 @@ export function VerticalSidebar({
                 )}
               </button>
               
-              {/* Collapse Toggle */}
-              <button
+              {/* Collapse Toggle - Removed to keep sidebar always open */}
+              {/* <button
                 onClick={() => setIsCollapsed(!isCollapsed)}
-                className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors touch-target"
                 title={isCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
               >
                 {isCollapsed ? (
@@ -237,42 +235,39 @@ export function VerticalSidebar({
                 ) : (
                   <FiChevronLeft className="w-4 h-4 text-gray-600 dark:text-gray-400" />
                 )}
-              </button>
+              </button> */}
             </div>
           </div>
 
-          {/* Search Bar */}
-          {!isCollapsed && (
-            <motion.div
-              variants={itemVariants}
-              animate={isCollapsed ? 'collapsed' : 'expanded'}
-              className="mt-4"
-            >
-              <div className="relative">
-                <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Search navigation..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-              </div>
-            </motion.div>
-          )}
-        </div>
-
-        {/* Category Tabs */}
-        {!isCollapsed && (
+          {/* Search Bar - Always visible */}
           <motion.div
             variants={itemVariants}
-            animate={isCollapsed ? 'collapsed' : 'expanded'}
-            className="p-4 border-b border-gray-200 dark:border-gray-700"
+            animate="expanded"
+            className="mt-3"
           >
-            <div className="flex flex-wrap gap-2">
+              <div className="relative">
+                <FiSearch className="absolute left-2.5 top-1/2 transform -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-9 pr-3 py-1.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+          </motion.div>
+        </div>
+
+        {/* Category Tabs - Always visible */}
+        <motion.div
+          variants={itemVariants}
+          animate="expanded"
+          className="p-2 border-b border-gray-200 dark:border-gray-700"
+        >
+            <div className="flex flex-wrap gap-1.5">
               <button
                 onClick={() => setSelectedCategory('all')}
-                className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
+                className={`px-2.5 py-1 rounded-full text-xs font-medium transition-colors touch-target ${
                   selectedCategory === 'all'
                     ? 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300'
                     : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'
@@ -284,7 +279,7 @@ export function VerticalSidebar({
                 <button
                   key={category.id}
                   onClick={() => setSelectedCategory(category.id)}
-                  className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
+                  className={`px-2.5 py-1 rounded-full text-xs font-medium transition-colors touch-target ${
                     selectedCategory === category.id
                       ? 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300'
                       : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'
@@ -295,11 +290,10 @@ export function VerticalSidebar({
               ))}
             </div>
           </motion.div>
-        )}
 
         {/* Navigation Items */}
         <div className="flex-1 overflow-y-auto p-2">
-          <div className="space-y-1">
+          <div className="space-y-0.5">
             {filteredItems.map((item, index) => {
               const Icon = item.icon
               const isActive = currentView === item.id
@@ -313,48 +307,43 @@ export function VerticalSidebar({
                   transition={{ delay: index * 0.05 }}
                   onClick={() => handleItemClick(item)}
                   disabled={isDisabled}
-                  className={`w-full p-3 rounded-xl text-left transition-all duration-200 group relative ${
+                  className={`w-full p-2 rounded-lg text-left transition-all duration-200 group relative touch-target ${
                     isActive
-                      ? `bg-${item.color}-100 dark:bg-${item.color}-900/30 text-${item.color}-700 dark:text-${item.color}-300 shadow-md`
+                      ? `bg-${item.color}-100 dark:bg-${item.color}-900/30 text-${item.color}-700 dark:text-${item.color}-300 shadow-sm`
                       : isDisabled
                       ? 'text-gray-400 dark:text-gray-600 cursor-not-allowed'
-                      : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:shadow-sm'
-                  } ${isCollapsed ? 'justify-center' : ''}`}
-                  title={isCollapsed ? item.label : item.description}
+                      : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                  }`}
+                  title={item.description}
                 >
-                  <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'gap-3'}`}>
-                    <div className={`relative ${isCollapsed ? '' : 'flex-shrink-0'}`}>
-                      <Icon className={`w-5 h-5 ${isActive ? `text-${item.color}-600 dark:text-${item.color}-400` : ''}`} />
+                  <div className="flex items-center gap-2.5">
+                    <div className="relative flex-shrink-0">
+                      <Icon className={`w-4 h-4 ${isActive ? `text-${item.color}-600 dark:text-${item.color}-400` : ''}`} />
                       
                       {/* Badge */}
                       {item.badge && (
-                        <div className={`absolute -top-2 -right-2 min-w-[18px] h-[18px] bg-red-500 text-white text-xs rounded-full flex items-center justify-center px-1 ${
-                          isCollapsed ? 'transform translate-x-2' : ''
-                        }`}>
+                        <div className="absolute -top-1.5 -right-1.5 min-w-[16px] h-[16px] bg-red-500 text-white text-[10px] rounded-full flex items-center justify-center px-0.5">
                           {typeof item.badge === 'number' && item.badge > 99 ? '99+' : item.badge}
                         </div>
                       )}
                       
                       {/* New Indicator */}
                       {item.isNew && (
-                        <div className={`absolute -top-1 -right-1 w-2 h-2 bg-green-400 rounded-full ${
-                          isCollapsed ? 'transform translate-x-1' : ''
-                        }`} />
+                        <div className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-green-400 rounded-full" />
                       )}
                     </div>
                     
-                    {!isCollapsed && (
-                      <motion.div
-                        variants={itemVariants}
-                        animate={isCollapsed ? 'collapsed' : 'expanded'}
-                        className="flex-1 min-w-0"
-                      >
+                    <motion.div
+                      variants={itemVariants}
+                      animate="expanded"
+                      className="flex-1 min-w-0"
+                    >
                         <div className="flex items-center justify-between">
-                          <span className="font-medium truncate">{item.label}</span>
+                          <span className="text-sm font-medium truncate">{item.label}</span>
                           {(item.badge || item.isNew) && (
-                            <div className="flex items-center gap-1 ml-2">
+                            <div className="flex items-center gap-1 ml-1.5">
                               {item.badge && (
-                                <span className={`px-2 py-0.5 text-xs font-bold rounded-full ${
+                                <span className={`px-1.5 py-0.5 text-[10px] font-bold rounded-full ${
                                   isActive 
                                     ? `bg-${item.color}-200 text-${item.color}-800 dark:bg-${item.color}-800 dark:text-${item.color}-200`
                                     : 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300'
@@ -363,7 +352,7 @@ export function VerticalSidebar({
                                 </span>
                               )}
                               {item.isNew && (
-                                <span className="px-2 py-0.5 text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300 rounded-full">
+                                <span className="px-1.5 py-0.5 text-[10px] font-bold bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300 rounded-full">
                                   NEW
                                 </span>
                               )}
@@ -376,23 +365,11 @@ export function VerticalSidebar({
                           </p>
                         )}
                       </motion.div>
-                    )}
                     
-                    {!isCollapsed && isActive && (
+                    {isActive && (
                       <FiChevronRight className="w-4 h-4 opacity-60" />
                     )}
                   </div>
-
-                  {/* Tooltip for collapsed state */}
-                  {isCollapsed && (
-                    <div className="absolute left-full ml-2 top-1/2 transform -translate-y-1/2 bg-gray-900 dark:bg-gray-700 text-white text-sm px-3 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50">
-                      <div className="font-medium">{item.label}</div>
-                      {item.description && (
-                        <div className="text-xs text-gray-300 dark:text-gray-400">{item.description}</div>
-                      )}
-                      <div className="absolute right-full top-1/2 transform -translate-y-1/2 border-4 border-transparent border-r-gray-900 dark:border-r-gray-700"></div>
-                    </div>
-                  )}
                 </motion.button>
               )
             })}
