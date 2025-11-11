@@ -71,81 +71,37 @@ export function NFTCard({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -4, scale: 1.03 }}
+      whileHover={{ y: -4, scale: 1.02 }}
       transition={{ duration: 0.2 }}
-      className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-xl dark:shadow-gray-900/20 transition-all overflow-hidden border border-gray-200 dark:border-gray-700 group w-full max-w-[180px] sm:max-w-[270px] h-[250px] sm:h-[340px] flex flex-col mx-auto"
+      className="bg-gray-900 rounded-xl shadow-lg hover:shadow-2xl transition-all overflow-hidden w-full max-w-[180px] sm:max-w-[270px] h-[250px] sm:h-[340px] flex flex-col mx-auto"
     >
-      {/* Image Container - OpenSea Style - 160x160px mobile, 250x250px desktop */}
-      <div className="w-full h-[160px] sm:h-[250px] bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-600 flex items-center justify-center relative overflow-hidden flex-shrink-0">
+      {/* Image Container - 160x160px mobile, 250x250px desktop */}
+      <div className="w-full h-[160px] sm:h-[250px] bg-gray-800 flex items-center justify-center relative overflow-hidden flex-shrink-0">
         {/* Placeholder for NFT image */}
-        <div className="text-4xl sm:text-5xl opacity-60">🖼️</div>
-        
-        {/* Hover overlay with interactions */}
-        <div className="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-          <div className="flex space-x-2">
-            <button className="bg-white bg-opacity-20 backdrop-blur-sm text-white p-2 rounded-full hover:bg-opacity-30 transition-all">
-              <FiEye className="w-4 h-4" />
-            </button>
-            <button className="bg-white bg-opacity-20 backdrop-blur-sm text-white p-2 rounded-full hover:bg-opacity-30 transition-all">
-              <FiHeart className="w-4 h-4" />
-            </button>
-            <button className="bg-white bg-opacity-20 backdrop-blur-sm text-white p-2 rounded-full hover:bg-opacity-30 transition-all">
-              <FiMoreHorizontal className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-
-        {/* Top badges */}
-        <div className="absolute top-2 left-2 right-2 flex justify-between items-start">
-          <div className="bg-white dark:bg-gray-800 bg-opacity-90 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-medium text-gray-900 dark:text-white">
-            #{tokenId}
-          </div>
-          <div className="flex space-x-1.5">
-            <div className="bg-blue-500 bg-opacity-90 backdrop-blur-sm text-white px-2 py-1 rounded-full text-xs font-medium flex items-center space-x-1">
-              <FiTrendingUp className="w-3 h-3" />
-              <span>Hot</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Bottom stats overlay */}
-        <div className="absolute bottom-2 left-2 right-2 flex justify-between items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <div className="flex space-x-2 text-white text-xs">
-            <div className="flex items-center space-x-1 bg-black bg-opacity-40 backdrop-blur-sm px-2 py-1 rounded-full">
-              <FiEye className="w-3 h-3" />
-              <span>234</span>
-            </div>
-            <div className="flex items-center space-x-1 bg-black bg-opacity-40 backdrop-blur-sm px-2 py-1 rounded-full">
-              <FiHeart className="w-3 h-3" />
-              <span>12</span>
-            </div>
-          </div>
-        </div>
+        <img 
+          src={image || '/placeholder-nft.png'} 
+          alt={name} 
+          className="w-full h-full object-cover" 
+          onError={(e) => {
+            e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%23374151" width="100" height="100"/%3E%3Ctext x="50" y="55" font-size="40" text-anchor="middle" fill="%239CA3AF"%3E🖼️%3C/text%3E%3C/svg%3E'
+          }} 
+        />
       </div>
       
-      {/* Card Content - OpenSea Style - Fixed height for remaining 90px */}
-      <div className="p-3 flex-1 flex flex-col justify-between">
-        {/* Collection and Title */}
-        <div className="mb-2">
-          <div className="text-[10px] text-blue-600 dark:text-blue-400 font-medium mb-0.5 uppercase tracking-wide">
-            Base Collection
-          </div>
-          <h3 className="font-semibold text-sm text-gray-900 dark:text-white mb-0.5 line-clamp-1">{name}</h3>
-          <p className="text-gray-600 dark:text-gray-300 text-xs line-clamp-1 leading-tight">{description}</p>
+      {/* Card Content - Simplified Clean Design */}
+      <div className="p-3 flex-1 flex flex-col justify-between bg-gray-900">
+        {/* NFT Info */}
+        <div>
+          <div className="text-sm text-gray-300 font-semibold mb-1 truncate">{name}</div>
+          <div className="text-xs text-gray-400">#{tokenId} • Base Collection</div>
         </div>
         
-        {/* Price and Action - Compact */}
-        <div className="flex items-center justify-between gap-2">
-          <div className="flex-1">
-            <div className="text-[10px] text-gray-500 dark:text-gray-400">Price</div>
-            <div className="flex items-baseline gap-1">
-              <span className="font-bold text-sm text-gray-900 dark:text-white">{ethPrice}</span>
-              <span className="text-[10px] text-gray-600 dark:text-gray-400">ETH</span>
-            </div>
-          </div>
+        {/* Price and Action */}
+        <div className="flex items-center justify-between mt-3">
+          <div className="text-xs text-gray-200 font-medium">{ethPrice} ETH</div>
           <button 
             onClick={onBuy}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 hover:scale-105"
+            className="text-xs bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded transition-colors"
           >
             Buy
           </button>

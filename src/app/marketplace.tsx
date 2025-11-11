@@ -246,7 +246,7 @@ export default function MarketplaceContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 transition-colors duration-300">
+    <div className="min-h-screen bg-[#0b0b0b] transition-colors duration-300">
       {/* Vertical Sidebar - Scrollable (Wallet button moved to header) */}
       <aside className="fixed left-0 top-0 h-screen w-20 bg-gray-950 border-r border-gray-800 flex flex-col items-center py-6 z-40 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900">
         
@@ -527,10 +527,7 @@ export default function MarketplaceContent() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="grid gap-4 sm:gap-5 justify-items-center"
-            style={{ 
-              gridTemplateColumns: 'repeat(auto-fill, minmax(min(160px, 100%), 1fr))',
-            }}
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-5"
           >
             {marketItems.map((item, index) => (
               <motion.div
@@ -538,7 +535,6 @@ export default function MarketplaceContent() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: index * 0.05 }}
-                className="w-full max-w-[180px] sm:max-w-[270px]"
               >
                 <NFTCard {...item} onBuy={() => console.log('Buy clicked')} />
               </motion.div>
