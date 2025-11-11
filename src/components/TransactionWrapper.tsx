@@ -53,7 +53,7 @@ export default function TransactionWrapper({
         {
           name: functionName,
           type: 'function' as const,
-          stateMutability: 'payable' as const,
+          stateMutability: functionName === 'mintNFT' ? 'nonpayable' as const : 'payable' as const,
           inputs: functionName === 'mintNFT' ? [
             { name: 'metadataURI', type: 'string' },
             { name: 'royaltyPercentage', type: 'uint256' }
