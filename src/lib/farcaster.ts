@@ -104,7 +104,7 @@ export const BASE_CHAIN_CONFIG = {
   chainId: 8453, // Base Mainnet
   name: 'Base',
   currency: 'ETH',
-  rpcUrl: 'https://mainnet.base.org',
+  rpcUrl: `https://base-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY || 'skI70Usmhsnf0GDuGdYqj'}`,
   blockExplorer: 'https://basescan.org',
 }
 

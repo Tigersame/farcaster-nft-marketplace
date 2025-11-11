@@ -19,7 +19,7 @@ const config: HardhatUserConfig = {
   networks: {
     // Base Mainnet
     base: {
-      url: process.env.NEXT_PUBLIC_BASE_RPC_URL || "https://mainnet.base.org",
+      url: process.env.NEXT_PUBLIC_BASE_RPC_URL || `https://base-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY || 'skI70Usmhsnf0GDuGdYqj'}`,
       accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
       chainId: 8453,
     },

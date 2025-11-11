@@ -54,15 +54,22 @@ export const farcasterFrameConfig = createConfig({
   ],
   transports: {
     [base.id]: fallback([
-      http(`https://base-mainnet.g.alchemy.com/v2/${alchemyApiKey}`),
-      http('https://base.llamarpc.com'),
-      http('https://base.blockpi.network/v1/rpc/public'),
-      http('https://mainnet.base.org'),
+      http(`https://base-mainnet.g.alchemy.com/v2/${alchemyApiKey}`, {
+        batch: true,
+        retryCount: 3,
+        timeout: 30_000,
+      }),
+      http('https://base.llamarpc.com', { retryCount: 2 }),
+      http('https://base.blockpi.network/v1/rpc/public', { retryCount: 2 }),
     ]),
     [mainnet.id]: fallback([
-      http(`https://eth-mainnet.g.alchemy.com/v2/${alchemyApiKey}`),
-      http('https://ethereum.publicnode.com'),
-      http('https://cloudflare-eth.com'),
+      http(`https://eth-mainnet.g.alchemy.com/v2/${alchemyApiKey}`, {
+        batch: true,
+        retryCount: 3,
+        timeout: 30_000,
+      }),
+      http('https://ethereum.publicnode.com', { retryCount: 2 }),
+      http('https://cloudflare-eth.com', { retryCount: 2 }),
     ]),
   },
   ssr: true,

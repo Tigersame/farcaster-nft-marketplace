@@ -187,8 +187,11 @@ export function NFTMintCardEnhanced({
           <TransactionWrapper
             address={address}
             contractAddress={contractAddress as `0x${string}`}
-            functionName="mint"
-            args={[address, quantity]}
+            functionName="mintNFT"
+            args={[
+              `ipfs://QmExample${tokenId}`, // metadataURI (placeholder)
+              500 // royaltyPercentage (5%)
+            ]}
             onSuccess={handleMintSuccess}
             onError={handleMintError}
             className="w-full"

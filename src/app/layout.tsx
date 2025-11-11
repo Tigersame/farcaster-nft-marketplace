@@ -95,7 +95,7 @@ export default function RootLayout({
           }}
         />
         {/* Preconnect to important domains */}
-        <link rel="preconnect" href="https://mainnet.base.org" />
+        <link rel="preconnect" href="https://base-mainnet.g.alchemy.com" />
         <link rel="preconnect" href="https://gateway.pinata.cloud" />
         <link rel="preconnect" href="https://hub.pinata.cloud" />
       </head>

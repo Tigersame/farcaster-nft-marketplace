@@ -1,7 +1,7 @@
 'use client'
 
 import { Header } from '../../components/Header'
-import { SwapReal } from '../../components/SwapReal'
+import { SwapTest } from '../../components/SwapTest'
 import { BackToMainButton } from '../../components/BackToMainButton'
 
 export default function SwapPage() {
@@ -12,7 +12,7 @@ export default function SwapPage() {
         <div className="w-full max-w-7xl mx-auto">
           <BackToMainButton />
           <div className="flex items-center justify-center py-8">
-            <SwapReal />
+            <SwapTest />
           </div>
         </div>
       </main>

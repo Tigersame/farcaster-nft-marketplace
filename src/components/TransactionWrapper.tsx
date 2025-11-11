@@ -31,7 +31,7 @@ export default function TransactionWrapper({
   onSuccess,
   onError,
   contractAddress = (process.env.NEXT_PUBLIC_MARKETPLACE_CONTRACT || '0xE4241917A3B75C761C87BE335F392e220F67afCf') as `0x${string}`,
-  functionName = 'mint',
+  functionName = 'mintNFT',
   args = [],
   isSponsored = false,
 }: TransactionWrapperProps) {
@@ -45,7 +45,7 @@ export default function TransactionWrapper({
     if (onError) onError(error);
   };
 
-  // Define the contract call
+  // Define the contract call with proper ABI
   const contracts = [
     {
       address: contractAddress,
@@ -54,8 +54,16 @@ export default function TransactionWrapper({
           name: functionName,
           type: 'function' as const,
           stateMutability: 'payable' as const,
-          inputs: [],
-          outputs: [],
+          inputs: functionName === 'mintNFT' ? [
+            { name: 'metadataURI', type: 'string' },
+            { name: 'royaltyPercentage', type: 'uint256' }
+          ] : functionName === 'listNFT' ? [
+            { name: 'tokenId', type: 'uint256' },
+            { name: 'price', type: 'uint256' }
+          ] : functionName === 'buyNFT' ? [
+            { name: 'tokenId', type: 'uint256' }
+          ] : [],
+          outputs: functionName === 'mintNFT' ? [{ name: '', type: 'uint256' }] : [],
         },
       ],
       functionName,
