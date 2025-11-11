@@ -14,7 +14,7 @@ import {
 
 // Base chain configuration
 const BASE_CHAIN_ID = 8453 // Base mainnet
-const MARKETPLACE_CONTRACT = '0xb4703a3a73aec16e764cbd210b0fde9efdab8941'
+const MARKETPLACE_CONTRACT = process.env.NEXT_PUBLIC_MARKETPLACE_CONTRACT || '0xE4241917A3B75C761C87BE335F392e220F67afCf'
 
 // ABI for marketplace purchase function
 const PURCHASE_ABI = [
@@ -46,8 +46,8 @@ const mockNFTs: Record<string, NFT> = {
     name: 'Farcaster Genesis #001',
     price: '2500000000000000000',
     ethPrice: '2.5',
-    seller: '0x742d35Cc6635Cc532A3Fdb1b4858b4c115D29E53',
-    owner: '0x742d35Cc6635Cc532A3Fdb1b4858b4c115D29E53'
+    seller: process.env.NEXT_PUBLIC_ADMIN_ADDRESS || '0xEaFE5088BCd7eb27fa1e4AA417a55eD5ea2dab8B',
+    owner: process.env.NEXT_PUBLIC_ADMIN_ADDRESS || '0xEaFE5088BCd7eb27fa1e4AA417a55eD5ea2dab8B'
   },
   '2': {
     tokenId: '2',

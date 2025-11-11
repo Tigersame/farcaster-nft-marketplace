@@ -23,8 +23,8 @@ const mockNFTs: Record<string, NFT> = {
     image: 'https://picsum.photos/400/400?random=1',
     price: '2500000000000000000',
     ethPrice: '2.5',
-    seller: '0x742d35Cc6635Cc532A3Fdb1b4858b4c115D29E53',
-    owner: '0x742d35Cc6635Cc532A3Fdb1b4858b4c115D29E53'
+    seller: process.env.NEXT_PUBLIC_ADMIN_ADDRESS || '0xEaFE5088BCd7eb27fa1e4AA417a55eD5ea2dab8B',
+    owner: process.env.NEXT_PUBLIC_ADMIN_ADDRESS || '0xEaFE5088BCd7eb27fa1e4AA417a55eD5ea2dab8B'
   },
   '2': {
     tokenId: '2',

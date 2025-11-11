@@ -7,35 +7,38 @@ import { BaseSvg, OnchainkitSvg } from './svg'
 export function NFTMintCardShowcase() {
   const [selectedContract, setSelectedContract] = useState(0)
   
+  const contractAddress = process.env.NEXT_PUBLIC_MARKETPLACE_CONTRACT || '0xE4241917A3B75C761C87BE335F392e220F67afCf'
+  const adminAddress = process.env.NEXT_PUBLIC_ADMIN_ADDRESS || '0xEaFE5088BCd7eb27fa1e4AA417a55eD5ea2dab8B'
+  
   const mintContracts = [
     {
-      contractAddress: '0xb4703a3a73aec16e764cbd210b0fde9efdab8941',
+      contractAddress: contractAddress,
       title: 'Farcaster Genesis Collection',
       description: 'Exclusive NFTs celebrating the Farcaster ecosystem on Base',
       imageUrl: '',
-      creator: '0x1234567890123456789012345678901234567890',
+      creator: adminAddress,
       mintPrice: '25.00',
       mintPriceETH: '0.025',
       maxSupply: 1000,
       totalSupply: 347,
     },
     {
-      contractAddress: '0xed2f34043387783b2727ff2799a46ce3ae1a34d2',
+      contractAddress: contractAddress,
       title: 'Base Builder Badges',
       description: 'Commemorative badges for Base ecosystem builders',
       imageUrl: '',
-      creator: '0x9876543210987654321098765432109876543210',
+      creator: adminAddress,
       mintPrice: '15.00',
       mintPriceETH: '0.015',
       maxSupply: 500,
       totalSupply: 128,
     },
     {
-      contractAddress: '0x877f0f3fef81c28a8c40fe060b17d254003377ad',
+      contractAddress: contractAddress,
       title: 'OnchainKit Pioneers',
       description: 'Limited edition NFTs for OnchainKit early adopters',
       imageUrl: '',
-      creator: '0x1111222233334444555566667777888899990000',
+      creator: adminAddress,
       mintPrice: '75.00',
       mintPriceETH: '0.075',
       maxSupply: 250,

@@ -52,9 +52,7 @@ export const config = {
   
   // Contract addresses (environment-specific)
   contracts: {
-    nftMarketplace: ENVIRONMENT === 'development' 
-      ? '0x1234567890123456789012345678901234567890' // Testnet
-      : '0x0987654321098765432109876543210987654321', // Mainnet
+    nftMarketplace: process.env.NEXT_PUBLIC_MARKETPLACE_CONTRACT || '0xE4241917A3B75C761C87BE335F392e220F67afCf', // Base Mainnet
   },
 };
 

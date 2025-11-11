@@ -30,7 +30,7 @@ export default function TransactionWrapper({
   className = '',
   onSuccess,
   onError,
-  contractAddress = '0x1234567890123456789012345678901234567890', // Demo contract
+  contractAddress = (process.env.NEXT_PUBLIC_MARKETPLACE_CONTRACT || '0xE4241917A3B75C761C87BE335F392e220F67afCf') as `0x${string}`,
   functionName = 'mint',
   args = [],
   isSponsored = false,

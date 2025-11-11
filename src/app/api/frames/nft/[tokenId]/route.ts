@@ -54,8 +54,8 @@ interface NFT {
 }
 
 // Base chain contract addresses (replace with your actual deployed contracts)
-const MARKETPLACE_CONTRACT = '0xb4703a3a73aec16e764cbd210b0fde9efdab8941'
-const NFT_CONTRACT = '0x1234567890123456789012345678901234567890'
+const MARKETPLACE_CONTRACT = process.env.NEXT_PUBLIC_MARKETPLACE_CONTRACT || '0xE4241917A3B75C761C87BE335F392e220F67afCf'
+const NFT_CONTRACT = process.env.NEXT_PUBLIC_MARKETPLACE_CONTRACT || '0xE4241917A3B75C761C87BE335F392e220F67afCf'
 const BASE_CHAIN_ID = 8453 // Base mainnet
 
 // Mock NFT data - in production, fetch from blockchain
@@ -67,8 +67,8 @@ const mockNFTs: Record<string, NFT> = {
     image: 'https://picsum.photos/400/400?random=1',
     price: '2500000000000000000', // Wei
     ethPrice: '2.5',
-    seller: '0x742d35Cc6635Cc532A3Fdb1b4858b4c115D29E53',
-    owner: '0x742d35Cc6635Cc532A3Fdb1b4858b4c115D29E53',
+    seller: process.env.NEXT_PUBLIC_ADMIN_ADDRESS || '0xEaFE5088BCd7eb27fa1e4AA417a55eD5ea2dab8B',
+    owner: process.env.NEXT_PUBLIC_ADMIN_ADDRESS || '0xEaFE5088BCd7eb27fa1e4AA417a55eD5ea2dab8B',
     contractAddress: NFT_CONTRACT,
     chainId: BASE_CHAIN_ID,
     attributes: [
@@ -112,11 +112,11 @@ const mockNFTs: Record<string, NFT> = {
     tokenId: '4',
     name: 'Crypto Punk Revival #2847',
     description: 'A modern tribute to the original CryptoPunks with enhanced attributes.',
-    image: 'https://picsum.photos/400/400?random=4',
-    price: '5000000000000000000',
-    ethPrice: '5.0',
-    seller: '0x456d35Cc6635Cc532A3Fdb1b4858b4c115D29E78',
-    owner: '0x456d35Cc6635Cc532A3Fdb1b4858b4c115D29E78',
+    image: 'https://picsum.photos/400/400?random=2',
+    price: '1000000000000000000', // Wei
+    ethPrice: '1.0',
+    seller: process.env.NEXT_PUBLIC_ADMIN_ADDRESS || '0xEaFE5088BCd7eb27fa1e4AA417a55eD5ea2dab8B',
+    owner: process.env.NEXT_PUBLIC_ADMIN_ADDRESS || '0xEaFE5088BCd7eb27fa1e4AA417a55eD5ea2dab8B',
     contractAddress: NFT_CONTRACT,
     chainId: BASE_CHAIN_ID,
     attributes: [

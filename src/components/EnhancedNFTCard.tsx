@@ -24,7 +24,7 @@ export interface EnhancedNFTCardProps {
 
 export function EnhancedNFTCard({ 
   tokenId, 
-  contractAddress = '0xb4703a3a73aec16e764cbd210b0fde9efdab8941', // Default to a demo contract
+  contractAddress = process.env.NEXT_PUBLIC_MARKETPLACE_CONTRACT || '0xE4241917A3B75C761C87BE335F392e220F67afCf',
   name, 
   description, 
   image, 

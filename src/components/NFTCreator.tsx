@@ -392,7 +392,7 @@ const NFTCreator: React.FC = () => {
         // Mint Mode - Enhanced NFT Mint Cards
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
           <NFTMintCardEnhanced
-            contractAddress="0xb4703a3a73aec16e764cbd210b0fde9efdab8941"
+            contractAddress={process.env.NEXT_PUBLIC_MARKETPLACE_CONTRACT || '0xE4241917A3B75C761C87BE335F392e220F67afCf'}
             title="Farcaster Genesis Collection"
             description="Exclusive NFTs celebrating the Farcaster ecosystem on Base"
             mintPrice="25.00"
@@ -404,7 +404,7 @@ const NFTCreator: React.FC = () => {
           />
           
           <NFTMintCardEnhanced
-            contractAddress="0xed2f34043387783b2727ff2799a46ce3ae1a34d2"
+            contractAddress={process.env.NEXT_PUBLIC_MARKETPLACE_CONTRACT || '0xE4241917A3B75C761C87BE335F392e220F67afCf'}
             title="Base Builder Badges"
             description="Commemorative badges for Base ecosystem builders"
             mintPrice="15.00"
@@ -416,7 +416,7 @@ const NFTCreator: React.FC = () => {
           />
           
           <NFTMintCardEnhanced
-            contractAddress="0x877f0f3fef81c28a8c40fe060b17d254003377ad"
+            contractAddress={process.env.NEXT_PUBLIC_MARKETPLACE_CONTRACT || '0xE4241917A3B75C761C87BE335F392e220F67afCf'}
             title="OnchainKit Pioneers"
             description="Limited edition NFTs for OnchainKit early adopters"
             mintPrice="75.00"
