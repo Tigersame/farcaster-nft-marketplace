@@ -13,6 +13,7 @@ import { useAccount, useBalance, useEnsName } from 'wagmi'
 import { base } from 'viem/chains'
 import { Name, Avatar, Identity, Address } from '@coinbase/onchainkit/identity'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
+import { useBaseNFTs } from '@/hooks/useBaseNFTs'
 import { 
   FiGrid, 
   FiTrendingUp, 
@@ -49,6 +50,12 @@ interface NFTItem {
 }
 
 export default function MarketplaceContent() {
+  // DX Terminal NFT Collection on Base
+  const DX_TERMINAL_CONTRACT = '0x41Dc69132ccE31FCbF6755c84538CA268520246f'
+  
+  // Fetch real NFTs from Base chain using Alchemy
+  const { nfts: baseNFTs, loading: nftsLoading, error: nftsError, hasMore, loadMore } = useBaseNFTs(DX_TERMINAL_CONTRACT)
+  
   const [marketItems, setMarketItems] = useState<NFTItem[]>([])
   const [loading, setLoading] = useState(true)
   const [activeView, setActiveView] = useState('all')
@@ -71,6 +78,30 @@ export default function MarketplaceContent() {
   // Wallet integration
   const { address, isConnected, chain } = useAccount()
   const { data: balance } = useBalance({ address, chainId: base.id })
+
+  // Load NFTs from Base chain
+  useEffect(() => {
+    if (!nftsLoading && baseNFTs.length > 0) {
+      const transformedNFTs: NFTItem[] = baseNFTs.map(nft => ({
+        tokenId: nft.tokenId,
+        name: nft.name,
+        description: nft.description,
+        image: nft.image,
+        price: nft.price || '3800000000000000',
+        seller: DX_TERMINAL_CONTRACT,
+        owner: DX_TERMINAL_CONTRACT,
+        ethPrice: nft.ethPrice || '0.0038',
+        listedAt: new Date().toISOString(),
+      }))
+      setMarketItems(transformedNFTs)
+      setLoading(false)
+    } else if (nftsError) {
+      console.error('Error loading NFTs:', nftsError)
+      // Fallback to mock data if API fails
+      setMarketItems([])
+      setLoading(false)
+    }
+  }, [baseNFTs, nftsLoading, nftsError])
 
   // Handle image upload
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -138,106 +169,7 @@ export default function MarketplaceContent() {
     setTimeout(() => setCopied(false), 2000)
   }
 
-  // Your own NFT data - customize this with your collection!
-  useEffect(() => {
-    const myNFTCollection: NFTItem[] = [
-      {
-        tokenId: '1',
-        name: 'DX Terminal #1523',
-        description: 'Floor: 0.0038 ETH | 1D Vol: 1.89 ETH | Owners: 7,673 | Supply: 36,647',
-        image: '/api/placeholder/400/400',
-        price: '3800000000000000',
-        seller: '0x41Dc69132ccE31FCbF6755c84538CA268520246f',
-        owner: '0x41Dc69132ccE31FCbF6755c84538CA268520246f',
-        ethPrice: '0.0038',
-        listedAt: new Date().toISOString(),
-      },
-      {
-        tokenId: '2',
-        name: 'DX Terminal #3891',
-        description: 'Top Offer: 0.0036 WETH | 1D Sales: 472 | Gaming Category',
-        image: '/api/placeholder/400/400',
-        price: '4000000000000000',
-        seller: '0x41Dc69132ccE31FCbF6755c84538CA268520246f',
-        owner: '0x41Dc69132ccE31FCbF6755c84538CA268520246f',
-        ethPrice: '0.004',
-        listedAt: new Date(Date.now() - 3600000).toISOString(),
-      },
-      {
-        tokenId: '3',
-        name: 'DX Terminal #7234',
-        description: 'Verified Collection | Base Network | DXTerminal by DXRG.ai',
-        image: '/api/placeholder/400/400',
-        price: '3900000000000000',
-        seller: '0x41Dc69132ccE31FCbF6755c84538CA268520246f',
-        owner: '0x41Dc69132ccE31FCbF6755c84538CA268520246f',
-        ethPrice: '0.0039',
-        listedAt: new Date(Date.now() - 7200000).toISOString(),
-      },
-      {
-        tokenId: '4',
-        name: 'DX Terminal #12456',
-        description: 'Premium Terminal | May 2025 Release | 36K+ Supply',
-        image: '/api/placeholder/400/400',
-        price: '4200000000000000',
-        seller: '0x41Dc69132ccE31FCbF6755c84538CA268520246f',
-        owner: '0x41Dc69132ccE31FCbF6755c84538CA268520246f',
-        ethPrice: '0.0042',
-        listedAt: new Date(Date.now() - 10800000).toISOString(),
-      },
-      {
-        tokenId: '5',
-        name: 'DX Terminal #18903',
-        description: 'Gaming NFT | Base Chain | Active Trading Volume: 1.89 ETH',
-        image: '/api/placeholder/400/400',
-        price: '3800000000000000',
-        seller: '0x41Dc69132ccE31FCbF6755c84538CA268520246f',
-        owner: '0x41Dc69132ccE31FCbF6755c84538CA268520246f',
-        ethPrice: '0.0038',
-        listedAt: new Date(Date.now() - 14400000).toISOString(),
-      },
-      {
-        tokenId: '6',
-        name: 'DX Terminal #25671',
-        description: 'Listed on OpenSea | 7.6K Unique Owners | Trending Gaming NFT',
-        image: '/api/placeholder/400/400',
-        price: '4100000000000000',
-        seller: '0x41Dc69132ccE31FCbF6755c84538CA268520246f',
-        owner: '0x41Dc69132ccE31FCbF6755c84538CA268520246f',
-        ethPrice: '0.0041',
-        listedAt: new Date(Date.now() - 18000000).toISOString(),
-      },
-      {
-        tokenId: '7',
-        name: 'DX Terminal #30192',
-        description: 'Floor Price: 0.0038 ETH | Recent Sales: 472 | Top Gaming Collection',
-        image: '/api/placeholder/400/400',
-        price: '3900000000000000',
-        seller: '0x41Dc69132ccE31FCbF6755c84538CA268520246f',
-        owner: '0x41Dc69132ccE31FCbF6755c84538CA268520246f',
-        ethPrice: '0.0039',
-        listedAt: new Date(Date.now() - 21600000).toISOString(),
-      },
-      {
-        tokenId: '8',
-        name: 'DX Terminal #34528',
-        description: 'Verified by OpenSea | DXRG.ai Official | Base Network Gaming',
-        image: '/api/placeholder/400/400',
-        price: '4000000000000000',
-        seller: '0x41Dc69132ccE31FCbF6755c84538CA268520246f',
-        owner: '0x41Dc69132ccE31FCbF6755c84538CA268520246f',
-        ethPrice: '0.004',
-        listedAt: new Date(Date.now() - 25200000).toISOString(),
-      },
-    ]
-    
-    setTimeout(() => {
-      setMarketItems(myNFTCollection)
-      setLoading(false)
-    }, 500)
-  }, [])
-
-  if (loading) {
+  if (loading || nftsLoading) {
     return (
       <div className="min-h-screen bg-gray-900 flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent"></div>
@@ -540,6 +472,25 @@ export default function MarketplaceContent() {
               </motion.div>
             ))}
           </motion.div>
+        )}
+
+        {/* Load More Button */}
+        {activeView === 'all' && hasMore && !nftsLoading && (
+          <div className="flex justify-center mt-8">
+            <button
+              onClick={loadMore}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-semibold transition-colors"
+            >
+              Load More NFTs
+            </button>
+          </div>
+        )}
+
+        {/* Loading indicator for pagination */}
+        {nftsLoading && marketItems.length > 0 && (
+          <div className="flex justify-center mt-8">
+            <div className="animate-spin rounded-full h-8 w-8 border-4 border-blue-500 border-t-transparent"></div>
+          </div>
         )}
 
         {/* AI Agent Swap View with Spend Permissions */}
