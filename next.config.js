@@ -23,7 +23,7 @@ const nextConfig = {
         headers: [
           {
             key: 'Content-Security-Policy',
-            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' chrome-extension: moz-extension:; object-src 'none'; base-uri 'self'; connect-src 'self' https: wss: chrome-extension: moz-extension:; img-src 'self' data: https: chrome-extension: moz-extension:; style-src 'self' 'unsafe-inline' https: chrome-extension: moz-extension:; font-src 'self' https: chrome-extension: moz-extension: data:;"
+            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' chrome-extension: moz-extension:; object-src 'none'; base-uri 'self'; connect-src 'self' https: wss: chrome-extension: moz-extension:; img-src 'self' data: https: chrome-extension: moz-extension:; style-src 'self' 'unsafe-inline' https: chrome-extension: moz-extension: https://cdn.jsdelivr.net https://unpkg.com; style-src-elem 'self' 'unsafe-inline' https: chrome-extension: moz-extension: https://cdn.jsdelivr.net https://unpkg.com; font-src 'self' https: chrome-extension: moz-extension: data:;"
           },
           {
             key: 'X-Content-Type-Options',
