@@ -55,9 +55,9 @@ export function useMultiContractNFTs(contractAddresses: string[], limit: number 
 
             const response = await fetch(url.toString())
             
-            // Skip if rate limited
-            if (response.status === 429) {
-              console.warn(`Rate limited for ${address}, skipping...`)
+            // Skip if rate limited or forbidden
+            if (response.status === 429 || response.status === 403) {
+              console.warn(`API blocked for ${address} (${response.status}). Please update ALCHEMY_API_KEY in .env.local`)
               continue
             }
             
@@ -99,6 +99,12 @@ export function useMultiContractNFTs(contractAddresses: string[], limit: number 
         // Shuffle for variety
         const shuffled = allNfts.sort(() => Math.random() - 0.5)
         setNfts(shuffled.slice(0, limit))
+        
+        // If no NFTs loaded, set error message
+        if (allNfts.length === 0) {
+          setError('Alchemy API key is blocked (403). Please update NEXT_PUBLIC_ALCHEMY_API_KEY in .env.local with a new key from https://dashboard.alchemy.com')
+        }
+        
         setLoading(false)
       } catch (err) {
         console.error('Error fetching multi-contract NFTs:', err)

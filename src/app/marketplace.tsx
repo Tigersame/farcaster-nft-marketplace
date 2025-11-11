@@ -449,6 +449,32 @@ export default function MarketplaceContent() {
                   Discover and collect NFTs from verified Base chain collections
                 </p>
                 
+                {/* API Error Banner */}
+                {error && (
+                  <div className="mb-6 bg-red-900/30 border border-red-500/50 rounded-lg p-4">
+                    <div className="flex items-start gap-3">
+                      <span className="text-2xl">⚠️</span>
+                      <div className="flex-1">
+                        <h3 className="text-red-400 font-semibold mb-1">Alchemy API Key Blocked</h3>
+                        <p className="text-red-300 text-sm mb-2">
+                          Unable to load NFT data. Your Alchemy API key is returning 403 Forbidden errors.
+                        </p>
+                        <div className="bg-black/30 rounded p-3 text-xs font-mono text-gray-300 mb-2">
+                          <p className="mb-1"><strong>Steps to fix:</strong></p>
+                          <p>1. Visit <a href="https://dashboard.alchemy.com" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">dashboard.alchemy.com</a></p>
+                          <p>2. Create new app for Base Mainnet</p>
+                          <p>3. Copy API key and update .env.local:</p>
+                          <p className="mt-2 text-yellow-400">NEXT_PUBLIC_ALCHEMY_API_KEY=your_new_key</p>
+                          <p className="mt-1">4. Restart dev server</p>
+                        </div>
+                        <p className="text-red-300/80 text-xs">
+                          Current key: skI70Usmhsnf0GDuGdYqj (blocked)
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                
                 {/* Collection Selector */}
                 <div className="flex flex-wrap gap-3 mb-6">
                   <button
