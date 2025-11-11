@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { Header } from '@/components/Header'
 import { Footer } from '@/components/Footer'
@@ -52,6 +53,8 @@ interface NFTItem {
 }
 
 export default function MarketplaceContent() {
+  const router = useRouter()
+  
   // Collection selection state
   const [selectedCollection, setSelectedCollection] = useState<'all' | string>('all')
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
@@ -472,6 +475,19 @@ export default function MarketplaceContent() {
                     </button>
                   ))}
                 </div>
+
+                {/* View Full Collection Page Button */}
+                {selectedCollection !== 'all' && (
+                  <motion.button
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    onClick={() => router.push(`/collection/${selectedCollection}`)}
+                    className="mb-6 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 rounded-xl font-semibold transition-all shadow-lg hover:shadow-xl flex items-center gap-2"
+                  >
+                    <FiExternalLink className="w-4 h-4" />
+                    View Full Collection Page
+                  </motion.button>
+                )}
                 
                 {/* Collection Stats */}
                 <div className="flex flex-wrap gap-6 sm:gap-8">
