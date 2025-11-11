@@ -14,6 +14,8 @@ import { base } from 'viem/chains'
 import { Name, Avatar, Identity, Address } from '@coinbase/onchainkit/identity'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { useBaseNFTs } from '@/hooks/useBaseNFTs'
+import { useVerifiedNFTs, useNFTsByCategory } from '@/hooks/useMultiContractNFTs'
+import { BASE_NFT_CONTRACTS, getContractsByCategory } from '@/lib/nftContracts'
 import { 
   FiGrid, 
   FiTrendingUp, 
@@ -50,11 +52,16 @@ interface NFTItem {
 }
 
 export default function MarketplaceContent() {
-  // DX Terminal NFT Collection on Base
-  const DX_TERMINAL_CONTRACT = '0x41Dc69132ccE31FCbF6755c84538CA268520246f'
+  // Collection selection state
+  const [selectedCollection, setSelectedCollection] = useState<'all' | string>('all')
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
   
-  // Fetch real NFTs from Base chain using Alchemy
-  const { nfts: baseNFTs, loading: nftsLoading, error: nftsError, hasMore, loadMore } = useBaseNFTs(DX_TERMINAL_CONTRACT)
+  // Fetch NFTs based on selection
+  const { nfts: verifiedNFTs, loading: verifiedLoading } = useVerifiedNFTs(100)
+  const { nfts: categoryNFTs, loading: categoryLoading } = useNFTsByCategory(selectedCategory || 'Gaming', 50)
+  const { nfts: singleCollectionNFTs, loading: singleLoading, hasMore, loadMore } = useBaseNFTs(
+    selectedCollection !== 'all' ? selectedCollection : ''
+  )
   
   const [marketItems, setMarketItems] = useState<NFTItem[]>([])
   const [loading, setLoading] = useState(true)
@@ -79,29 +86,43 @@ export default function MarketplaceContent() {
   const { address, isConnected, chain } = useAccount()
   const { data: balance } = useBalance({ address, chainId: base.id })
 
-  // Load NFTs from Base chain
+  // Load NFTs from Base chain based on selection
   useEffect(() => {
-    if (!nftsLoading && baseNFTs.length > 0) {
-      const transformedNFTs: NFTItem[] = baseNFTs.map(nft => ({
+    let nftsToDisplay: any[] = []
+    let isLoading = false
+
+    if (selectedCollection === 'all') {
+      nftsToDisplay = verifiedNFTs
+      isLoading = verifiedLoading
+    } else if (selectedCategory) {
+      nftsToDisplay = categoryNFTs
+      isLoading = categoryLoading
+    } else {
+      nftsToDisplay = singleCollectionNFTs
+      isLoading = singleLoading
+    }
+
+    if (!isLoading && nftsToDisplay.length > 0) {
+      const transformedNFTs: NFTItem[] = nftsToDisplay.map(nft => ({
         tokenId: nft.tokenId,
         name: nft.name,
-        description: nft.description,
+        description: nft.description || (nft as any).contractName || '',
         image: nft.image,
         price: nft.price || '3800000000000000',
-        seller: DX_TERMINAL_CONTRACT,
-        owner: DX_TERMINAL_CONTRACT,
+        seller: nft.contractAddress,
+        owner: nft.contractAddress,
         ethPrice: nft.ethPrice || '0.0038',
         listedAt: new Date().toISOString(),
       }))
       setMarketItems(transformedNFTs)
       setLoading(false)
-    } else if (nftsError) {
-      console.error('Error loading NFTs:', nftsError)
-      // Fallback to mock data if API fails
+    } else if (!isLoading && nftsToDisplay.length === 0) {
       setMarketItems([])
       setLoading(false)
+    } else {
+      setLoading(isLoading)
     }
-  }, [baseNFTs, nftsLoading, nftsError])
+  }, [verifiedNFTs, categoryNFTs, singleCollectionNFTs, selectedCollection, selectedCategory, verifiedLoading, categoryLoading, singleLoading])
 
   // Handle image upload
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -169,10 +190,13 @@ export default function MarketplaceContent() {
     setTimeout(() => setCopied(false), 2000)
   }
 
-  if (loading || nftsLoading) {
+  if (loading || verifiedLoading || categoryLoading || singleLoading) {
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent"></div>
+      <div className="min-h-screen bg-[#0b0b0b] flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent mx-auto mb-4"></div>
+          <p className="text-gray-400">Loading NFTs from Base chain...</p>
+        </div>
       </div>
     )
   }
@@ -416,11 +440,38 @@ export default function MarketplaceContent() {
               {/* Collection Info */}
               <div className="flex-1">
                 <h1 className="text-4xl sm:text-5xl font-bold text-white mb-3">
-                  My NFT Collection
+                  Base NFT Marketplace
                 </h1>
                 <p className="text-gray-300 text-lg mb-6 max-w-2xl">
-                  Your unique digital art collection on Base chain. Each piece tells a story in the metaverse.
+                  Discover and collect NFTs from verified Base chain collections
                 </p>
+                
+                {/* Collection Selector */}
+                <div className="flex flex-wrap gap-3 mb-6">
+                  <button
+                    onClick={() => { setSelectedCollection('all'); setSelectedCategory(null); }}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      selectedCollection === 'all' 
+                        ? 'bg-blue-600 text-white' 
+                        : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                    }`}
+                  >
+                    All Collections
+                  </button>
+                  {BASE_NFT_CONTRACTS.slice(0, 5).map(contract => (
+                    <button
+                      key={contract.address}
+                      onClick={() => { setSelectedCollection(contract.address); setSelectedCategory(null); }}
+                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                        selectedCollection === contract.address 
+                          ? 'bg-blue-600 text-white' 
+                          : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                      }`}
+                    >
+                      {contract.name}
+                    </button>
+                  ))}
+                </div>
                 
                 {/* Collection Stats */}
                 <div className="flex flex-wrap gap-6 sm:gap-8">
@@ -475,7 +526,7 @@ export default function MarketplaceContent() {
         )}
 
         {/* Load More Button */}
-        {activeView === 'all' && hasMore && !nftsLoading && (
+        {activeView === 'all' && hasMore && !singleLoading && selectedCollection !== 'all' && (
           <div className="flex justify-center mt-8">
             <button
               onClick={loadMore}
@@ -487,7 +538,7 @@ export default function MarketplaceContent() {
         )}
 
         {/* Loading indicator for pagination */}
-        {nftsLoading && marketItems.length > 0 && (
+        {(singleLoading && marketItems.length > 0) && (
           <div className="flex justify-center mt-8">
             <div className="animate-spin rounded-full h-8 w-8 border-4 border-blue-500 border-t-transparent"></div>
           </div>
