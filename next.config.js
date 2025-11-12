@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['gateway.pinata.cloud', 'ipfs.io'],
+    domains: ['gateway.pinata.cloud', 'ipfs.io', 'farcastmints.com'],
   },
   // Disable TypeScript checking during development to prevent build failures
   typescript: {

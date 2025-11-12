@@ -10,6 +10,7 @@ const isFarcasterFrame = typeof window !== 'undefined' &&
 
 // RPC Configuration with fallbacks to avoid rate limits
 const alchemyApiKey = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY || 'skI70Usmhsnf0GDuGdYqj'
+const baseRpcUrl = process.env.NEXT_PUBLIC_BASE_RPC_URL || `https://base-mainnet.g.alchemy.com/v2/${alchemyApiKey}`
 
 export const config = getDefaultConfig({
   appName: 'FarcasterSea NFT Marketplace',
@@ -17,9 +18,14 @@ export const config = getDefaultConfig({
   chains: [base, mainnet],
   transports: {
     [base.id]: fallback([
-      http(`https://base-mainnet.g.alchemy.com/v2/${alchemyApiKey}`, {
+      http(baseRpcUrl, {
         batch: true,
         retryCount: 3,
+        timeout: 30_000,
+      }),
+      http(`https://base-mainnet.g.alchemy.com/v2/${alchemyApiKey}`, {
+        batch: true,
+        retryCount: 2,
         timeout: 30_000,
       }),
       http('https://base.llamarpc.com', { retryCount: 2 }),
@@ -54,9 +60,14 @@ export const farcasterFrameConfig = createConfig({
   ],
   transports: {
     [base.id]: fallback([
-      http(`https://base-mainnet.g.alchemy.com/v2/${alchemyApiKey}`, {
+      http(baseRpcUrl, {
         batch: true,
         retryCount: 3,
+        timeout: 30_000,
+      }),
+      http(`https://base-mainnet.g.alchemy.com/v2/${alchemyApiKey}`, {
+        batch: true,
+        retryCount: 2,
         timeout: 30_000,
       }),
       http('https://base.llamarpc.com', { retryCount: 2 }),
@@ -79,7 +90,7 @@ export const farcasterFrameConfig = createConfig({
 export const baseConfig = {
   chainId: base.id,
   name: 'Base',
-  rpcUrl: `https://base-mainnet.g.alchemy.com/v2/${alchemyApiKey}`,
+  rpcUrl: baseRpcUrl,
   explorerUrl: 'https://basescan.org',
   currency: {
     name: 'Ethereum',

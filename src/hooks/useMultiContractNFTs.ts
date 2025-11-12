@@ -87,9 +87,13 @@ export function useMultiContractNFTs(contractAddresses: string[], limit: number 
             
             allNfts.push(...contractNfts)
             
-            // Add delay between requests (300ms) to avoid rate limiting
+            // Update UI immediately as each collection loads
+            const shuffled = [...allNfts].sort(() => Math.random() - 0.5)
+            setNfts(shuffled.slice(0, limit))
+            
+            // Add shorter delay between requests (100ms) for faster loading
             if (i < contractAddresses.length - 1) {
-              await delay(300)
+              await delay(100)
             }
           } catch (err) {
             console.error(`Error fetching NFTs from ${address}:`, err)
