@@ -4,6 +4,9 @@
 
 import { NextResponse } from 'next/server';
 
+// Prevent static export - this route uses request.url
+export const dynamic = 'force-dynamic';
+
 // Preview data mapping for sidebar navigation items
 // Replace with dynamic fetch from your NFT metadata service
 const PREVIEW_MAP = {
