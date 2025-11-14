@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { Providers } from './providers'
@@ -11,6 +11,13 @@ import ProSidebar from '@/components/ProSidebar'
 
 const inter = Inter({ subsets: ['latin'] })
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+}
+
 export const metadata: Metadata = {
   title: 'Farcast Mints - NFT Marketplace on Base',
   description: 'An NFT marketplace on Base with Farcaster integration',
@@ -19,12 +26,6 @@ export const metadata: Metadata = {
   creator: 'Farcast Mints',
   publisher: 'Farcast Mints',
   category: 'Finance',
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 1,
-    userScalable: false,
-  },
   openGraph: {
     title: 'Farcast Mints - NFT Marketplace on Base',
     description: 'An NFT marketplace on Base with Farcaster integration',
