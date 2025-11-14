@@ -4,6 +4,8 @@ import { Header } from '../../components/Header'
 import { SwapTest } from '../../components/SwapTest'
 import NavigationBar from '@/components/NavigationBar'
 
+export const dynamic = 'force-dynamic'
+
 export default function SwapPage() {
   return (
     <div className="min-h-screen bg-blue-50 dark:bg-blue-900 flex flex-col">

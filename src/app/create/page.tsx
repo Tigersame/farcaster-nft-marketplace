@@ -4,6 +4,8 @@ import NFTCreator from '@/components/NFTCreator'
 import { Header } from '@/components/Header'
 import NavigationBar from '@/components/NavigationBar'
 
+export const dynamic = 'force-dynamic'
+
 export default function CreatePage() {
   return (
     <div className="min-h-screen bg-blue-50 dark:bg-blue-900 transition-colors">

@@ -7,6 +7,8 @@ import { getCategoryBlurDataURL } from '@/lib/blurDataURL'
 import { LoadingSpinner } from '@/components/LoadingSpinner'
 import NavigationBar from '@/components/NavigationBar'
 
+export const dynamic = 'force-dynamic'
+
 export default function MyNFTsPage() {
   const { address, isConnected } = useAccount()
   const { data: listings, isLoading } = useActiveListings()
