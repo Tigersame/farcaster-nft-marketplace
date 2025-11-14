@@ -257,18 +257,92 @@ export default function FrontPage() {
         </section>
 
         {/* Newsletter / footer CTA */}
-        <section className="py-12 border-t border-white/6">
-          <div className="max-w-[900px] mx-auto px-6 text-center">
-            <h3 className="text-2xl font-semibold">Get notified about drops</h3>
-            <p className="text-gray-400 mt-2">Join our newsletter for curated drops and announcements.</p>
-            <div className="mt-4 flex justify-center gap-2 max-w-md mx-auto">
-              <input placeholder="Your email" className="flex-1 px-4 py-2 rounded-l-lg bg-white/5 border border-white/6 focus:outline-none focus:border-purple-500 transition" />
-              <button className="px-6 py-2 rounded-r-lg bg-gradient-to-r from-purple-600 to-indigo-500 hover:from-purple-700 hover:to-indigo-600 transition font-medium">Subscribe</button>
-            </div>
-          </div>
-        </section>
+        <NewsletterSection />
       </main>
     </>
+  );
+}
+
+/* ---------- Newsletter Section ---------- */
+function NewsletterSection() {
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState("idle"); // idle, loading, success, error
+  const [message, setMessage] = useState("");
+
+  const handleSubscribe = async (e) => {
+    e.preventDefault();
+    
+    // Validate email
+    if (!email || !email.includes("@")) {
+      setStatus("error");
+      setMessage("Please enter a valid email address");
+      setTimeout(() => setStatus("idle"), 3000);
+      return;
+    }
+
+    setStatus("loading");
+
+    // Simulate API call (replace with actual API endpoint)
+    try {
+      // Example: await fetch('/api/newsletter/subscribe', { method: 'POST', body: JSON.stringify({ email }) })
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      setStatus("success");
+      setMessage("🎉 Successfully subscribed! Check your inbox.");
+      setEmail("");
+      
+      // Reset after 5 seconds
+      setTimeout(() => {
+        setStatus("idle");
+        setMessage("");
+      }, 5000);
+    } catch (error) {
+      setStatus("error");
+      setMessage("Something went wrong. Please try again.");
+      setTimeout(() => setStatus("idle"), 3000);
+    }
+  };
+
+  return (
+    <section className="py-12 border-t border-white/6">
+      <div className="max-w-[900px] mx-auto px-6 text-center">
+        <h3 className="text-2xl font-semibold">Get notified about drops</h3>
+        <p className="text-gray-400 mt-2">Join our newsletter for curated drops and announcements.</p>
+        
+        <form onSubmit={handleSubscribe} className="mt-4 max-w-md mx-auto">
+          <div className="flex gap-2">
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Your email"
+              disabled={status === "loading" || status === "success"}
+              className="flex-1 px-4 py-2 rounded-l-lg bg-white/5 border border-white/6 focus:outline-none focus:border-purple-500 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            />
+            <button
+              type="submit"
+              disabled={status === "loading" || status === "success"}
+              className="px-6 py-2 rounded-r-lg bg-gradient-to-r from-purple-600 to-indigo-500 hover:from-purple-700 hover:to-indigo-600 transition font-medium disabled:opacity-50 disabled:cursor-not-allowed min-w-[120px]"
+            >
+              {status === "loading" ? "Subscribing..." : status === "success" ? "Subscribed ✓" : "Subscribe"}
+            </button>
+          </div>
+          
+          {/* Status Message */}
+          {message && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className={`mt-3 text-sm ${
+                status === "success" ? "text-green-400" : "text-red-400"
+              }`}
+            >
+              {message}
+            </motion.div>
+          )}
+        </form>
+      </div>
+    </section>
   );
 }
 
