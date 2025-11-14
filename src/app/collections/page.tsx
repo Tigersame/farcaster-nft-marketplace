@@ -8,6 +8,8 @@ import NavigationBar from '@/components/NavigationBar'
 import { BASE_NFT_CONTRACTS } from '@/lib/nftContracts'
 import { FiCheckCircle, FiExternalLink, FiGlobe, FiTwitter } from 'react-icons/fi'
 
+export const dynamic = 'force-dynamic'
+
 export default function CollectionsPage() {
   const router = useRouter()
 

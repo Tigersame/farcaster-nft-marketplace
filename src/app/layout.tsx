@@ -11,6 +11,10 @@ import ProSidebar from '@/components/ProSidebar'
 
 const inter = Inter({ subsets: ['latin'] })
 
+// Force dynamic rendering for all routes
+export const dynamic = 'force-dynamic'
+export const dynamicParams = true
+
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,

@@ -1,7 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Disable static export - use dynamic rendering
-  output: 'standalone',
   images: {
     // Support multiple image sources
     domains: [

@@ -3,6 +3,8 @@
 import React, { useState } from 'react';
 import { useAdmin } from '@/contexts/AdminContext';
 
+export const dynamic = 'force-dynamic'
+
 export default function AdminLoginPage() {
   const { login, isLoading, error } = useAdmin();
   const [username, setUsername] = useState('');

@@ -8,6 +8,8 @@ import FeesManager from '@/components/admin/FeesManager';
 import RevenueManager from '@/components/admin/RevenueManager';
 import AdsManager from '@/components/admin/AdsManager';
 // import NFTManager from '@/components/admin/NFTManager'; // Temporarily disabled
+
+export const dynamic = 'force-dynamic'
 import CollectionManager from '@/components/admin/CollectionManager';
 import LiveFeedManager from '@/components/admin/LiveFeedManager';
 import AdminStats from '@/components/admin/AdminStats';
