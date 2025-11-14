@@ -5,8 +5,8 @@ export const ENVIRONMENT = process.env.NODE_ENV || 'development';
 export const config = {
   // Environment-specific URLs
   baseUrl: ENVIRONMENT === 'development' 
-    ? 'http://localhost:3000' 
-    : process.env.NEXT_PUBLIC_BASE_URL || 'https://your-domain.com',
+    ? (process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3001')
+    : process.env.NEXT_PUBLIC_BASE_URL || 'https://farcastmints.com',
   
   // Chain configuration
   chain: ENVIRONMENT === 'development' ? baseSepolia : base,

@@ -40,7 +40,7 @@ export const SUPPORTED_NETWORKS = {
   base: {
     chainId: 8453,
     name: "Base",
-    rpcUrl: process.env.NEXT_PUBLIC_BASE_RPC_URL || `https://base-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY || 'skI70Usmhsnf0GDuGdYqj'}`,
+    rpcUrl: process.env.NEXT_PUBLIC_BASE_RPC_URL || `https://base-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY || ''}` || 'https://mainnet.base.org',
     blockExplorer: "https://basescan.org",
   },
   baseSepolia: {

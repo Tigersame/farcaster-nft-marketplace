@@ -1,5 +1,5 @@
 import { getDefaultConfig } from '@rainbow-me/rainbowkit'
-import { base, mainnet } from 'wagmi/chains'
+import { base, baseSepolia, mainnet } from 'wagmi/chains'
 import { http, fallback } from 'viem'
 import { createConfig } from 'wagmi'
 import { coinbaseWallet, injected, walletConnect } from 'wagmi/connectors'
@@ -8,17 +8,56 @@ import { coinbaseWallet, injected, walletConnect } from 'wagmi/connectors'
 const isFarcasterFrame = typeof window !== 'undefined' && 
   (window as any).frameSDK !== undefined
 
-// RPC Configuration with fallbacks to avoid rate limits
-const alchemyApiKey = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY || 'skI70Usmhsnf0GDuGdYqj'
-const baseRpcUrl = process.env.NEXT_PUBLIC_BASE_RPC_URL || `https://base-mainnet.g.alchemy.com/v2/${alchemyApiKey}`
+// SECURITY: No fallback API keys - must be set in environment variables
+const alchemyApiKey = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY
+const tatumApiKey = process.env.NEXT_PUBLIC_TATUM_API_KEY
+
+if (!alchemyApiKey) {
+  console.error('⚠️ CRITICAL: NEXT_PUBLIC_ALCHEMY_API_KEY is not set')
+}
+
+if (!tatumApiKey) {
+  console.error('⚠️ CRITICAL: NEXT_PUBLIC_TATUM_API_KEY is not set')
+}
+
+// Determine which network to use based on environment
+const isTestnet = process.env.NEXT_PUBLIC_NETWORK === 'baseSepolia'
+const baseRpcUrl = isTestnet 
+  ? process.env.NEXT_PUBLIC_BASE_RPC_URL || 'https://sepolia.base.org'
+  : process.env.NEXT_PUBLIC_BASE_RPC_URL || `https://base-mainnet.gateway.tatum.io/${tatumApiKey || ''}`
+const ankrRpcUrl = process.env.NEXT_PUBLIC_ANKR_RPC_URL || 'https://rpc.ankr.com/base'
+const tatumRpcUrl = tatumApiKey ? `https://base-mainnet.gateway.tatum.io/${tatumApiKey}` : undefined
 
 export const config = getDefaultConfig({
-  appName: 'FarcasterSea NFT Marketplace',
-  projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || 'e3877a06886f08ffd144013611c152d1',
-  chains: [base, mainnet],
+  appName: 'FarcastMints NFT Marketplace',
+  projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID || '',
+  chains: isTestnet ? [baseSepolia] : [base],
   transports: {
+    [baseSepolia.id]: fallback([
+      http('https://sepolia.base.org', {
+        batch: true,
+        retryCount: 3,
+        timeout: 30_000,
+      }),
+      http('https://base-sepolia.g.alchemy.com/v2/' + alchemyApiKey, {
+        batch: true,
+        retryCount: 2,
+        timeout: 30_000,
+      }),
+      http('https://base-sepolia.blockpi.network/v1/rpc/public', { retryCount: 2 }),
+    ]),
     [base.id]: fallback([
+      http(tatumRpcUrl, {
+        batch: true,
+        retryCount: 3,
+        timeout: 30_000,
+      }),
       http(baseRpcUrl, {
+        batch: true,
+        retryCount: 3,
+        timeout: 30_000,
+      }),
+      http(ankrRpcUrl, {
         batch: true,
         retryCount: 3,
         timeout: 30_000,
@@ -30,15 +69,6 @@ export const config = getDefaultConfig({
       }),
       http('https://base.llamarpc.com', { retryCount: 2 }),
       http('https://base.blockpi.network/v1/rpc/public', { retryCount: 2 }),
-    ]),
-    [mainnet.id]: fallback([
-      http(`https://eth-mainnet.g.alchemy.com/v2/${alchemyApiKey}`, {
-        batch: true,
-        retryCount: 3,
-        timeout: 30_000,
-      }),
-      http('https://ethereum.publicnode.com', { retryCount: 2 }),
-      http('https://cloudflare-eth.com', { retryCount: 2 }),
     ]),
   },
   ssr: true,
@@ -47,11 +77,11 @@ export const config = getDefaultConfig({
 
 // Enhanced config with Farcaster Frame support
 export const farcasterFrameConfig = createConfig({
-  chains: [base, mainnet],
+  chains: isTestnet ? [baseSepolia] : [base],
   connectors: [
     injected(), // MetaMask, Rabby, etc.
     coinbaseWallet({
-      appName: 'FarcasterSea NFT Marketplace',
+      appName: 'FarcastMints NFT Marketplace',
       preference: 'smartWalletOnly', // Smart wallet for Farcaster users
     }),
     walletConnect({
@@ -59,7 +89,25 @@ export const farcasterFrameConfig = createConfig({
     }),
   ],
   transports: {
+    [baseSepolia.id]: fallback([
+      http('https://sepolia.base.org', {
+        batch: true,
+        retryCount: 3,
+        timeout: 30_000,
+      }),
+      http('https://base-sepolia.g.alchemy.com/v2/' + alchemyApiKey, {
+        batch: true,
+        retryCount: 2,
+        timeout: 30_000,
+      }),
+      http('https://base-sepolia.blockpi.network/v1/rpc/public', { retryCount: 2 }),
+    ]),
     [base.id]: fallback([
+      http(tatumRpcUrl, {
+        batch: true,
+        retryCount: 3,
+        timeout: 30_000,
+      }),
       http(baseRpcUrl, {
         batch: true,
         retryCount: 3,
@@ -72,15 +120,6 @@ export const farcasterFrameConfig = createConfig({
       }),
       http('https://base.llamarpc.com', { retryCount: 2 }),
       http('https://base.blockpi.network/v1/rpc/public', { retryCount: 2 }),
-    ]),
-    [mainnet.id]: fallback([
-      http(`https://eth-mainnet.g.alchemy.com/v2/${alchemyApiKey}`, {
-        batch: true,
-        retryCount: 3,
-        timeout: 30_000,
-      }),
-      http('https://ethereum.publicnode.com', { retryCount: 2 }),
-      http('https://cloudflare-eth.com', { retryCount: 2 }),
     ]),
   },
   ssr: true,
@@ -90,7 +129,7 @@ export const farcasterFrameConfig = createConfig({
 export const baseConfig = {
   chainId: base.id,
   name: 'Base',
-  rpcUrl: baseRpcUrl,
+  rpcUrl: tatumRpcUrl,
   explorerUrl: 'https://basescan.org',
   currency: {
     name: 'Ethereum',

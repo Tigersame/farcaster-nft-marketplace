@@ -5,13 +5,14 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/Pausable.sol";
 
 /**
  * @title FarcasterNFTMarketplace
  * @dev Complete NFT marketplace with minting, listing, buying, and royalties
  * Optimized for Base Network and Farcaster integration
  */
-contract FarcasterNFTMarketplace is ERC721URIStorage, ReentrancyGuard, Ownable {
+contract FarcasterNFTMarketplace is ERC721URIStorage, ReentrancyGuard, Ownable, Pausable {
     
     uint256 private _nextTokenId = 1;
     uint256 private _itemsSold = 0;
@@ -19,6 +20,9 @@ contract FarcasterNFTMarketplace is ERC721URIStorage, ReentrancyGuard, Ownable {
     // Platform fee (2.5% = 250 basis points)
     uint256 public platformFee = 250;
     uint256 public constant FEE_DENOMINATOR = 10000;
+    
+    // Maximum price protection (1,000,000 ETH - prevents accidental or malicious overpricing)
+    uint256 public constant MAX_PRICE = 1000000 ether;
     
     // Marketplace listing structure
     struct Listing {
@@ -62,6 +66,8 @@ contract FarcasterNFTMarketplace is ERC721URIStorage, ReentrancyGuard, Ownable {
         string memory metadataURI,
         uint256 royaltyPercentage
     ) public returns (uint256) {
+        require(bytes(metadataURI).length > 0, "Metadata URI cannot be empty");
+        require(bytes(metadataURI).length <= 256, "Metadata URI too long");
         require(royaltyPercentage <= 1000, "Royalty too high"); // Max 10%
         
         uint256 newTokenId = _nextTokenId++;
@@ -86,10 +92,11 @@ contract FarcasterNFTMarketplace is ERC721URIStorage, ReentrancyGuard, Ownable {
      * @param tokenId Token ID to list
      * @param price Sale price in wei
      */
-    function listNFT(uint256 tokenId, uint256 price) public {
+    function listNFT(uint256 tokenId, uint256 price) public whenNotPaused {
         require(tokenId > 0 && tokenId < _nextTokenId, "Token does not exist");
         require(ownerOf(tokenId) == msg.sender, "Not token owner");
         require(price > 0, "Price must be greater than 0");
+        require(price <= MAX_PRICE, "Price exceeds maximum allowed");
         require(!listings[tokenId].isActive, "Already listed");
         
         // Transfer NFT to marketplace contract
@@ -110,23 +117,21 @@ contract FarcasterNFTMarketplace is ERC721URIStorage, ReentrancyGuard, Ownable {
      * @dev Buy a listed NFT
      * @param tokenId Token ID to buy
      */
-    function buyNFT(uint256 tokenId) public payable nonReentrant {
+    function buyNFT(uint256 tokenId) public payable nonReentrant whenNotPaused {
         Listing memory listing = listings[tokenId];
         require(listing.isActive, "NFT not listed");
         require(msg.value >= listing.price, "Insufficient payment");
         require(msg.sender != listing.seller, "Cannot buy own NFT");
-        
-        listings[tokenId].isActive = false;
         
         // Calculate fees and royalties
         uint256 platformFeeAmount = (listing.price * platformFee) / FEE_DENOMINATOR;
         uint256 royaltyAmount = (listing.price * nftMetadata[tokenId].royaltyPercentage) / FEE_DENOMINATOR;
         uint256 sellerAmount = listing.price - platformFeeAmount - royaltyAmount;
         
-        // Transfer NFT to buyer
-        _transfer(address(this), msg.sender, tokenId);
+        // EFFECTS: Update all state before external calls
+        listings[tokenId].isActive = false;
+        _itemsSold++;
         
-        // Distribute payments
         pendingWithdrawals[listing.seller] += sellerAmount;
         pendingWithdrawals[owner()] += platformFeeAmount;
         
@@ -136,12 +141,14 @@ contract FarcasterNFTMarketplace is ERC721URIStorage, ReentrancyGuard, Ownable {
             emit RoyaltyPaid(tokenId, creator, royaltyAmount);
         }
         
+        // INTERACTIONS: External calls last
+        _transfer(address(this), msg.sender, tokenId);
+        
         // Refund excess payment
         if (msg.value > listing.price) {
             payable(msg.sender).transfer(msg.value - listing.price);
         }
         
-        _itemsSold++;
         emit NFTSold(tokenId, msg.sender, listing.seller, listing.price);
     }
     
@@ -172,6 +179,7 @@ contract FarcasterNFTMarketplace is ERC721URIStorage, ReentrancyGuard, Ownable {
         require(listing.isActive, "NFT not listed");
         require(listing.seller == msg.sender, "Not the seller");
         require(newPrice > 0, "Price must be greater than 0");
+        require(newPrice <= MAX_PRICE, "Price exceeds maximum allowed");
         
         uint256 oldPrice = listing.price;
         listings[tokenId].price = newPrice;
@@ -263,5 +271,21 @@ contract FarcasterNFTMarketplace is ERC721URIStorage, ReentrancyGuard, Ownable {
      */
     function totalSupply() public view returns (uint256) {
         return _nextTokenId - 1;
+    }
+    
+    /**
+     * @dev Pause the marketplace (emergency use only)
+     * Only owner can pause
+     */
+    function pause() external onlyOwner {
+        _pause();
+    }
+    
+    /**
+     * @dev Unpause the marketplace
+     * Only owner can unpause
+     */
+    function unpause() external onlyOwner {
+        _unpause();
     }
 }

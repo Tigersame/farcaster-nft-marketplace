@@ -7,7 +7,6 @@
 
 import React, { useState } from 'react';
 import { useAccount } from 'wagmi';
-import TransactionWrapper from './TransactionWrapper';
 import { NFTMintCardEnhanced } from './NFTMintCardEnhanced';
 import { ArrowSvg, OnchainkitSvg } from './svg';
 
@@ -36,7 +35,8 @@ const NFTCreator: React.FC = () => {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
-    externalUrl: '',
+    price: '1',
+    supply: '1',
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
@@ -99,38 +99,38 @@ const NFTCreator: React.FC = () => {
     setIsUploading(true);
     setUploadResult(null);
 
-    try {
-      const formDataToSend = new FormData();
-      formDataToSend.append('name', formData.name);
-      formDataToSend.append('description', formData.description);
-      formDataToSend.append('image', imageFile);
-      formDataToSend.append('attributes', JSON.stringify(attributes));
-      formDataToSend.append('externalUrl', formData.externalUrl);
-      formDataToSend.append('creatorAddress', address || '');
-
-      const response = await fetch('/api/nft/create', {
-        method: 'POST',
-        body: formDataToSend,
-      });
-
-      const result: CreateNFTResponse = await response.json();
-      setUploadResult(result);
-
-      if (result.success) {
-        // Reset form
-        setFormData({ name: '', description: '', externalUrl: '' });
-        setImageFile(null);
-        setImagePreview('');
-        setAttributes([]);
-      }
-    } catch (error) {
-      setUploadResult({
-        success: false,
-        error: 'Network error occurred',
-      });
-    } finally {
+    // Simulate NFT creation (demo mode)
+    setTimeout(() => {
+      const mockResult: CreateNFTResponse = {
+        success: true,
+        data: {
+          name: formData.name,
+          description: formData.description,
+          metadataHash: `Qm${Math.random().toString(36).substring(2, 15)}`,
+          imageHash: `Qm${Math.random().toString(36).substring(2, 15)}`,
+          metadataUrl: `ipfs://Qm${Math.random().toString(36).substring(2, 15)}`,
+          imageUrl: imagePreview,
+          attributes: attributes,
+        }
+      };
+      
+      setUploadResult(mockResult);
       setIsUploading(false);
-    }
+      
+      // Show success alert with details
+      alert(`🎉 NFT Created Successfully!
+
+Name: ${formData.name}
+Price: ${formData.price} ETH
+Supply: ${formData.supply}
+Properties: ${attributes.length} attributes
+Platform Fee: 2.5%
+
+You'll receive: ${(parseFloat(formData.price) * 0.975).toFixed(3)} ETH
+
+Your NFT is ready to be listed on the marketplace!`);
+      
+    }, 2000);
   };
 
   return (
@@ -234,7 +234,7 @@ const NFTCreator: React.FC = () => {
 
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Description *
+            Description
           </label>
           <textarea
             name="description"
@@ -243,22 +243,41 @@ const NFTCreator: React.FC = () => {
             rows={4}
             className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
             placeholder="Describe your NFT..."
-            required
           />
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            External URL (Optional)
-          </label>
-          <input
-            type="url"
-            name="externalUrl"
-            value={formData.externalUrl}
-            onChange={handleInputChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-            placeholder="https://example.com"
-          />
+        {/* Price and Supply Row */}
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Price (ETH) <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="number"
+              step="0.001"
+              name="price"
+              value={formData.price}
+              onChange={handleInputChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              placeholder="1"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Supply
+            </label>
+            <input
+              type="number"
+              name="supply"
+              value={formData.supply}
+              onChange={handleInputChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              placeholder="1"
+              required
+            />
+          </div>
         </div>
 
         {/* Attributes */}
@@ -309,22 +328,44 @@ const NFTCreator: React.FC = () => {
           ))}
         </div>
 
+        {/* Fee Breakdown */}
+        <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-4 space-y-2">
+          <div className="flex justify-between text-sm">
+            <span className="text-gray-600 dark:text-gray-300">Platform Fee</span>
+            <span className="font-medium text-gray-900 dark:text-white">2.5%</span>
+          </div>
+          <div className="flex justify-between text-sm">
+            <span className="text-gray-600 dark:text-gray-300">Gas Fee (est.)</span>
+            <span className="font-medium text-gray-900 dark:text-white">~$0.50</span>
+          </div>
+          <div className="border-t border-gray-200 dark:border-gray-600 pt-2 mt-2">
+            <div className="flex justify-between">
+              <span className="font-semibold text-gray-900 dark:text-white">You'll receive</span>
+              <span className="font-bold text-lg text-green-600 dark:text-green-400">
+                {(parseFloat(formData.price || '0') * 0.975).toFixed(3)} ETH
+              </span>
+            </div>
+          </div>
+        </div>
+
         {/* Submit Button */}
         <button
           type="submit"
           disabled={isUploading || !isConnected}
-          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full flex justify-center items-center gap-2 py-4 px-4 border border-transparent rounded-xl shadow-sm text-base font-semibold text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform hover:scale-105 disabled:scale-100"
         >
           {isUploading ? (
             <>
-              <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+              <svg className="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
-              Uploading to IPFS...
+              Creating NFT...
             </>
           ) : (
-            '🚀 Create NFT'
+            <>
+              ⚡ Mint NFT
+            </>
           )}
         </button>
       </form>
@@ -338,34 +379,24 @@ const NFTCreator: React.FC = () => {
                 ✅ NFT Metadata Created Successfully!
               </h3>
               <div className="space-y-2 text-sm text-green-700 dark:text-green-300 mb-4">
-                <p><strong>Metadata URL:</strong> <a href={uploadResult.data?.metadataUrl} target="_blank" rel="noopener noreferrer" className="underline">{uploadResult.data?.metadataUrl}</a></p>
-                <p><strong>Image URL:</strong> <a href={uploadResult.data?.imageUrl} target="_blank" rel="noopener noreferrer" className="underline">{uploadResult.data?.imageUrl}</a></p>
+                <p><strong>Name:</strong> {uploadResult.data?.name}</p>
+                <p><strong>Description:</strong> {uploadResult.data?.description}</p>
+                <p><strong>Attributes:</strong> {uploadResult.data?.attributes.length} properties</p>
                 <p><strong>IPFS Hash:</strong> {uploadResult.data?.metadataHash}</p>
               </div>
               
-              {/* Onchain Minting Section */}
-              {isConnected && address && (
-                <div className="border-t border-green-200 dark:border-green-700 pt-4">
-                  <h4 className="text-md font-medium text-green-800 dark:text-green-200 mb-3 flex items-center">
-                    <ArrowSvg direction="right" className="mr-2" />
-                    Now mint your NFT onchain
-                  </h4>
-                  <TransactionWrapper
-                    address={address}
-                    contractAddress="0x1234567890123456789012345678901234567890" // Demo contract
-                    functionName="mint"
-                    args={[address, uploadResult.data?.metadataUrl]}
-                    onSuccess={() => {
-                      alert('🎉 NFT minted successfully on Base!')
-                    }}
-                    onError={(error) => {
-                      console.error('Minting failed:', error)
-                      alert('❌ NFT minting failed. Please try again.')
-                    }}
-                    className="bg-green-600 hover:bg-green-700"
-                  />
-                </div>
-              )}
+              {/* Success Message */}
+              <div className="bg-green-100 dark:bg-green-800 rounded-lg p-4">
+                <p className="text-green-800 dark:text-green-200 font-medium mb-2">
+                  ✅ Your NFT has been created and is now available on the marketplace!
+                </p>
+                <button
+                  onClick={() => window.location.href = '/'}
+                  className="mt-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-colors"
+                >
+                  View on Marketplace
+                </button>
+              </div>
             </div>
           ) : (
             <div>

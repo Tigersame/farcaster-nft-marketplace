@@ -2,9 +2,10 @@
 
 import { useAccount } from 'wagmi'
 import { useActiveListings } from '@/lib/contracts/hooks'
-import { NFTCard } from '@/components/NFTCard'
+import NFTCardOptimized from '@/components/NFTCardOptimized'
+import { getCategoryBlurDataURL } from '@/lib/blurDataURL'
 import { LoadingSpinner } from '@/components/LoadingSpinner'
-import { BackToMainButton } from '@/components/BackToMainButton'
+import NavigationBar from '@/components/NavigationBar'
 
 export default function MyNFTsPage() {
   const { address, isConnected } = useAccount()
@@ -13,8 +14,8 @@ export default function MyNFTsPage() {
   if (!isConnected) {
     return (
       <div className="min-h-screen bg-blue-50 dark:bg-blue-900 p-6">
-        <div className="max-w-4xl mx-auto">
-          <BackToMainButton />
+        <NavigationBar title="My NFTs" />
+        <div className="max-w-4xl mx-auto pt-20">
           <div className="text-center py-12">
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
               My NFTs
@@ -34,8 +35,8 @@ export default function MyNFTsPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-blue-50 dark:bg-blue-900 p-6">
-        <div className="max-w-4xl mx-auto">
-          <BackToMainButton />
+        <NavigationBar title="My NFTs" />
+        <div className="max-w-4xl mx-auto pt-20">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
             My NFTs
           </h1>
@@ -54,8 +55,8 @@ export default function MyNFTsPage() {
 
   return (
     <div className="min-h-screen bg-blue-50 dark:bg-blue-900 p-6">
-      <div className="max-w-4xl mx-auto">
-        <BackToMainButton />
+      <NavigationBar title="My NFTs" />
+      <div className="max-w-4xl mx-auto pt-20">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
             My NFTs
@@ -84,18 +85,18 @@ export default function MyNFTsPage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {myNFTs.map((nft: any) => (
-              <NFTCard
+              <NFTCardOptimized
                 key={nft.tokenId}
-                tokenId={nft.tokenId.toString()}
-                name={`Farcaster NFT #${nft.tokenId}`}
-                description="A unique NFT from the Farcaster marketplace"
-                ethPrice={nft.price}
-                price={nft.price}
-                image="/api/placeholder/400/400"
-                seller={nft.seller}
-                listedAt={new Date(nft.listedAt * 1000).toISOString()}
-                owner={nft.seller}
-                onBuy={() => {}}
+                token={{
+                  id: nft.tokenId.toString(),
+                  name: `Farcaster NFT #${nft.tokenId}`,
+                  collection: 'My NFTs',
+                  image: '/api/placeholder/400/400',
+                  blurDataURL: getCategoryBlurDataURL('Art'),
+                  price: nft.price,
+                  description: 'A unique NFT from the Farcaster marketplace',
+                  verified: true,
+                }}
               />
             ))}
           </div>

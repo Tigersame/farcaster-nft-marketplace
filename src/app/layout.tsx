@@ -3,16 +3,21 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { Providers } from './providers'
 import ErudaProvider from '@/components/providers/ErudaProvider'
+import AnalyticsProvider from '@/components/providers/AnalyticsProvider'
+import AdminDashboard from '@/components/AdminDashboard'
+import { WalletPrompt } from '@/components/WalletPrompt'
+import { NetworkSwitcher } from '@/components/NetworkSwitcher'
+import ProSidebar from '@/components/ProSidebar'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'FarcastSea - Secure NFT Marketplace',
-  description: 'Hack-proof NFT marketplace built for the Base network with Farcaster frames integration and innovative ERC20 gas payments.',
-  keywords: ['NFT', 'marketplace', 'Base', 'Farcaster', 'Web3', 'blockchain', 'secure'],
-  authors: [{ name: 'FarcastSea Team' }],
-  creator: 'FarcastSea',
-  publisher: 'FarcastSea',
+  title: 'Farcast Mints - NFT Marketplace on Base',
+  description: 'An NFT marketplace on Base with Farcaster integration',
+  keywords: ['NFT', 'marketplace', 'Base', 'Farcaster', 'Web3', 'blockchain', 'Farcast Mints'],
+  authors: [{ name: 'Farcast Mints Team' }],
+  creator: 'Farcast Mints',
+  publisher: 'Farcast Mints',
   category: 'Finance',
   viewport: {
     width: 'device-width',
@@ -21,16 +26,16 @@ export const metadata: Metadata = {
     userScalable: false,
   },
   openGraph: {
-    title: 'FarcastSea - Secure NFT Marketplace',
-    description: 'Hack-proof NFT marketplace with Farcaster frames and ERC20 gas payments on Base network.',
-    url: 'https://farcaster-nft-marketplace.vercel.app',
-    siteName: 'FarcastSea',
+    title: 'Farcast Mints - NFT Marketplace on Base',
+    description: 'An NFT marketplace on Base with Farcaster integration',
+    url: 'https://farcastmints.com',
+    siteName: 'Farcast Mints',
     images: [
       {
-        url: '/og-image.svg',
+        url: 'https://farcastmints.com/og-image.svg',
         width: 1200,
         height: 630,
-        alt: 'FarcastSea NFT Marketplace',
+        alt: 'FarcastMints NFT Marketplace',
       },
     ],
     locale: 'en_US',
@@ -38,22 +43,22 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'FarcastSea - Secure NFT Marketplace',
-    description: 'Hack-proof NFT marketplace with Farcaster frames and ERC20 gas payments on Base network.',
-    images: ['/og-image.svg'],
-    creator: '@FarcastSea',
+    title: 'Farcast Mints - NFT Marketplace',
+    description: 'An NFT marketplace on Base with Farcaster integration',
+    images: ['https://farcastmints.com/og-image.svg'],
+    creator: '@FarcastMints',
   },
   manifest: '/manifest.json',
   icons: {
-    icon: '/icon.svg',
+    icon: [{ url: '/favicon.svg', type: 'image/svg+xml' }],
     apple: '/icon.svg',
-    shortcut: '/icon.svg',
+    shortcut: '/favicon.svg',
   },
   other: {
     'fc:frame': 'vNext',
-    'fc:frame:image': '/og-image.svg',
+    'fc:frame:image': 'https://farcastmints.com/og-image.svg',
     'fc:frame:button:1': 'Explore NFTs',
-    'fc:frame:post_url': '/api/frames',
+    'fc:frame:post_url': 'https://farcastmints.com/api/frames',
   },
 }
 
@@ -101,8 +106,20 @@ export default function RootLayout({
       </head>
       <body className={`${inter.className} antialiased`} suppressHydrationWarning>
         <Providers>
-          <ErudaProvider />
-          {children}
+          <AnalyticsProvider>
+            <div className="flex min-h-screen">
+              <ProSidebar />
+              <div className="flex-1 flex flex-col">
+                <ErudaProvider />
+                <AdminDashboard />
+                <WalletPrompt />
+                <NetworkSwitcher />
+                <main className="flex-1">
+                  {children}
+                </main>
+              </div>
+            </div>
+          </AnalyticsProvider>
         </Providers>
       </body>
     </html>

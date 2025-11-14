@@ -1,7 +1,24 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['gateway.pinata.cloud', 'ipfs.io', 'farcastmints.com'],
+    // Support multiple image sources
+    domains: [
+      'gateway.pinata.cloud',
+      'ipfs.io',
+      'farcastmints.com',
+      'images.unsplash.com',
+      'res.cloudinary.com', // Cloudinary CDN
+      'cloudflare-ipfs.com', // IPFS gateway
+      'nftstorage.link',     // NFT.storage
+      'picsum.photos',       // Placeholder images for PRO collection page
+    ],
+    // Modern image formats for better performance
+    formats: ['image/avif', 'image/webp'],
+    // Responsive image sizes
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    // Enable optimization
+    minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days
   },
   // Disable TypeScript checking during development to prevent build failures
   typescript: {

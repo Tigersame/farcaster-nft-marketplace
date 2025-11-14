@@ -1,11 +1,9 @@
 /**
- * Hook to fetch NFTs from Base chain using Alchemy API
+ * Hook to fetch NFTs from Base chain using multi-provider fallback
  */
 
 import { useState, useEffect } from 'react'
-
-const ALCHEMY_API_KEY = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY || 'skI70Usmhsnf0GDuGdYqj'
-const BASE_URL = `https://base-mainnet.g.alchemy.com/nft/v3/${ALCHEMY_API_KEY}`
+import { fetchNFTsWithFallback } from '@/lib/nftProviders'
 
 export interface BaseNFT {
   tokenId: string
@@ -28,33 +26,27 @@ export function useBaseNFTs(contractAddress: string) {
       setLoading(true)
       setError(null)
 
-      const url = new URL(`${BASE_URL}/getNFTsForContract`)
-      url.searchParams.append('contractAddress', contractAddress)
-      url.searchParams.append('withMetadata', 'true')
-      url.searchParams.append('limit', '100')
-      
-      if (nextPageKey) {
-        url.searchParams.append('pageKey', nextPageKey)
-      }
+      // Set timeout to prevent infinite loading
+      const timeoutId = setTimeout(() => {
+        setLoading(false)
+        if (nfts.length === 0) {
+          setError('Request timed out. Check your API key.')
+        }
+      }, 2000) // Reduced from 3s to 2s for instant response
 
-      const response = await fetch(url.toString())
+      // Use multi-provider fetch with automatic fallback
+      const { nfts: fetchedNfts, provider } = await fetchNFTsWithFallback(contractAddress, 100)
       
-      if (!response.ok) {
-        throw new Error(`Failed to fetch NFTs: ${response.status}`)
-      }
-
-      const data = await response.json()
+      clearTimeout(timeoutId) // Clear timeout on response
       
-      const transformedNFTs: BaseNFT[] = (data.nfts || []).map((nft: any) => ({
-        tokenId: nft.tokenId || nft.id?.tokenId || '0',
-        name: nft.name || nft.title || nft.contract?.name || `NFT #${nft.tokenId}`,
-        description: nft.description || nft.contract?.name || '',
-        image: nft.image?.cachedUrl || 
-               nft.image?.thumbnailUrl ||
-               nft.media?.[0]?.gateway || 
-               nft.image?.originalUrl ||
-               '/placeholder-nft.png',
-        contractAddress: nft.contract?.address || contractAddress,
+      console.log(`✅ Fetched ${fetchedNfts.length} NFTs from ${contractAddress} using ${provider}`)
+      
+      const transformedNFTs: BaseNFT[] = fetchedNfts.map(nft => ({
+        tokenId: nft.tokenId,
+        name: nft.name,
+        description: nft.description,
+        image: nft.image,
+        contractAddress: nft.contractAddress,
         price: '0',
         ethPrice: '0.0038', // Default floor price
       }))
@@ -65,7 +57,8 @@ export function useBaseNFTs(contractAddress: string) {
         setNfts(transformedNFTs)
       }
       
-      setPageKey(data.pageKey)
+      // Note: Pagination not supported with multi-provider yet
+      setPageKey(undefined)
       setLoading(false)
     } catch (err) {
       console.error('Error fetching Base NFTs:', err)
@@ -102,37 +95,34 @@ export function useOwnerNFTs(ownerAddress: string, contractAddresses?: string[])
         setLoading(true)
         setError(null)
 
-        const url = new URL(`${BASE_URL}/getNFTsForOwner`)
-        url.searchParams.append('owner', ownerAddress)
-        url.searchParams.append('withMetadata', 'true')
-        
+        // If specific contracts provided, fetch from each
         if (contractAddresses && contractAddresses.length > 0) {
-          contractAddresses.forEach(addr => {
-            url.searchParams.append('contractAddresses[]', addr)
-          })
+          const allNfts: BaseNFT[] = []
+          
+          for (const contractAddr of contractAddresses) {
+            try {
+              const { nfts: fetchedNfts } = await fetchNFTsWithFallback(contractAddr, 50)
+              const ownerNfts = fetchedNfts.map(nft => ({
+                tokenId: nft.tokenId,
+                name: nft.name,
+                description: nft.description,
+                image: nft.image,
+                contractAddress: nft.contractAddress,
+                price: '0',
+                ethPrice: '0.0038',
+              }))
+              allNfts.push(...ownerNfts)
+            } catch (err) {
+              console.warn(`Failed to fetch from ${contractAddr}:`, err)
+            }
+          }
+          
+          setNfts(allNfts)
+        } else {
+          // No contract filter - return empty
+          setNfts([])
         }
 
-        const response = await fetch(url.toString())
-        
-        if (!response.ok) {
-          throw new Error(`Failed to fetch NFTs: ${response.status}`)
-        }
-
-        const data = await response.json()
-        
-        const transformedNFTs: BaseNFT[] = (data.ownedNfts || []).map((nft: any) => ({
-          tokenId: nft.tokenId || nft.id?.tokenId || '0',
-          name: nft.name || nft.title || `NFT #${nft.tokenId}`,
-          description: nft.description || '',
-          image: nft.image?.cachedUrl || 
-                 nft.media?.[0]?.gateway || 
-                 '/placeholder-nft.png',
-          contractAddress: nft.contract?.address || '',
-          price: '0',
-          ethPrice: '0.0',
-        }))
-
-        setNfts(transformedNFTs)
         setLoading(false)
       } catch (err) {
         console.error('Error fetching owner NFTs:', err)

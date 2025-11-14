@@ -95,6 +95,15 @@ export const BASE_NFT_CONTRACTS: NFTContract[] = [
     category: 'PFP',
     verified: true,
   },
+  
+  {
+    address: '0xfA29b4eAA232ff238B40453373220FcbEE1A1bEc',
+    name: 'New Collection',
+    symbol: 'NEW',
+    description: 'Featured NFT collection on Base',
+    category: 'Art',
+    verified: true,
+  },
 ]
 
 /**

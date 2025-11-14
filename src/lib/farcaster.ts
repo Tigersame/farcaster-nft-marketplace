@@ -104,7 +104,7 @@ export const BASE_CHAIN_CONFIG = {
   chainId: 8453, // Base Mainnet
   name: 'Base',
   currency: 'ETH',
-  rpcUrl: process.env.NEXT_PUBLIC_BASE_RPC_URL || `https://base-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY || 'skI70Usmhsnf0GDuGdYqj'}`,
+  rpcUrl: process.env.NEXT_PUBLIC_BASE_RPC_URL || `https://base-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY || ''}` || 'https://mainnet.base.org',
   blockExplorer: 'https://basescan.org',
 }
 
@@ -165,9 +165,13 @@ Join the future of social NFT trading!
  */
 export function validateFarcasterSignature(body: string, signature: string): boolean {
   try {
-    // This is a simplified validation - in production you would use proper cryptographic verification
-    // with the actual Farcaster webhook secret
-    const webhookSecret = process.env.FARCASTER_WEBHOOK_SECRET || 'default-secret'
+    // SECURITY: Webhook secret must be configured
+    const webhookSecret = process.env.FARCASTER_WEBHOOK_SECRET
+    
+    if (!webhookSecret) {
+      console.error('⚠️ CRITICAL: FARCASTER_WEBHOOK_SECRET is not configured')
+      return false
+    }
     
     // Basic signature validation (replace with proper HMAC verification in production)
     const expectedSignature = `fc-signature-${Buffer.from(body + webhookSecret).toString('base64').slice(0, 32)}`

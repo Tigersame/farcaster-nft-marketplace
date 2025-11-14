@@ -1,4 +1,4 @@
-# 🖼️ Farcaster MiniKit NFT Marketplace
+# 🖼️ FarcastMints - NFT Marketplace
 
 <div align="center">
 
@@ -11,7 +11,7 @@
 
 **A complete NFT marketplace built for the Farcaster ecosystem with MiniKit integration and Base network optimization**
 
-[🚀 Live Demo](http://localhost:3000) • [📖 Documentation](#documentation) • [🎯 Features](#features) • [🛠️ Setup](#quick-start)
+[🚀 Live Demo](https://farcastmints.com) • [📖 Documentation](#documentation) • [🎯 Features](#features) • [🛠️ Setup](#quick-start)
 
 </div>
 
@@ -30,6 +30,8 @@
 - **Real-time Updates** - Live marketplace activity and user counters
 
 ### ⚡ **Base Network Optimized**
+- **Gasless Transactions** - FREE gas fees sponsored by Base Paymaster (NEW!)
+- **Smart Accounts** - ERC-4337 Account Abstraction for seamless UX
 - **Low Fees** - Leveraging Base L2 for affordable transactions
 - **Fast Confirmations** - Quick NFT purchases and listings
 - **Wallet Integration** - RainbowKit with Base network support
@@ -117,12 +119,47 @@ src/
 │   ├── DarkModeToggle.tsx      # Theme switching components
 │   ├── FrameShare.tsx          # Frame sharing modal
 │   ├── SocialProof.tsx         # Activity feed & social widgets
+│   ├── GaslessUI.tsx           # Gasless transaction UI components
 │   └── ...                     # Additional UI components
 ├── contexts/
 │   └── ThemeContext.tsx        # Dark mode state management
+├── hooks/
+│   └── useSmartAccount.ts      # Smart Account & gasless transactions
 └── lib/
-    └── wagmi.ts               # Web3 configuration
+    ├── wagmi.ts                # Web3 configuration
+    └── paymaster.ts            # Base Paymaster configuration
 ```
+
+## ✨ Gasless Transactions (NEW!)
+
+**Zero gas fees for your users!** All transaction costs are sponsored by Base Paymaster.
+
+### Quick Setup (5 minutes)
+
+1. **Get Paymaster RPC URL**
+   - Visit [Coinbase Developer Platform](https://portal.cdp.coinbase.com/)
+   - Go to Paymaster → Configuration
+   - Copy your RPC URL
+
+2. **Add to Environment**
+   ```bash
+   # .env.local
+   NEXT_PUBLIC_PAYMASTER_RPC_URL=https://api.developer.coinbase.com/rpc/v1/base/YOUR_KEY
+   ```
+
+3. **Configure Allowlist**
+   - Add your NFT contract address in CDP
+   - Allowlist functions: `mintTo`, `buy`, `list`
+
+4. **Set Spending Limits**
+   - Per-user: $0.05/month, 1 operation
+   - Global: $15,000/month (or your budget)
+
+5. **Done!** 🎉 Users can now mint, buy, and list NFTs **completely free**.
+
+📖 **Full Guide**: [GASLESS_QUICKSTART.md](./GASLESS_QUICKSTART.md)  
+📚 **Documentation**: [GASLESS_TRANSACTIONS.md](./GASLESS_TRANSACTIONS.md)  
+📝 **Implementation**: [GASLESS_IMPLEMENTATION_SUMMARY.md](./GASLESS_IMPLEMENTATION_SUMMARY.md)
 
 ## 🌐 API Endpoints
 

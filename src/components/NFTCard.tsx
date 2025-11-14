@@ -1,7 +1,11 @@
+'use client'
+
 import { motion } from 'framer-motion'
 import { FiHeart, FiEye, FiTag, FiTrendingUp, FiMoreHorizontal } from 'react-icons/fi'
 import { FrameShare } from './FrameShare'
 import { SimpleBasenameAddress } from './BasenameAddress'
+import { useBuyNFT } from '@/lib/contracts/useMarketplace'
+import { useEffect } from 'react'
 
 export interface NFTCardProps {
   tokenId: string
@@ -20,6 +24,26 @@ export interface NFTCardProps {
 export function NFTCard({ 
   tokenId, name, description, image, price, ethPrice, seller, owner, listedAt, onBuy, viewMode = 'grid' 
 }: NFTCardProps) {
+  const { buyNFT, isLoading, isSuccess } = useBuyNFT();
+
+  useEffect(() => {
+    if (isSuccess) {
+      alert(`🎉 Successfully purchased ${name}!`);
+    }
+  }, [isSuccess, name]);
+
+  const handleBuyClick = () => {
+    // Check if contract is deployed (not the default Hardhat address)
+    const contractAddress = process.env.NEXT_PUBLIC_MARKETPLACE_CONTRACT;
+    if (!contractAddress || contractAddress === '0x5FbDB2315678afecb367f032d93F642f64180aa3') {
+      // Demo mode - use callback
+      onBuy();
+    } else {
+      // Real on-chain transaction
+      buyNFT(tokenId, ethPrice);
+    }
+  };
+  
   if (viewMode === 'list') {
     return (
       <motion.div
@@ -53,10 +77,18 @@ export function NFTCard({
               </div>
               <div className="flex gap-2 mt-4">
                 <button 
-                  onClick={onBuy}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors text-sm"
+                  onClick={handleBuyClick}
+                  disabled={isLoading}
+                  className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white px-4 py-2 rounded-lg font-medium transition-colors text-sm flex items-center gap-2"
                 >
-                  Buy Now
+                  {isLoading ? (
+                    <>
+                      <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                      <span>Buying...</span>
+                    </>
+                  ) : (
+                    'Buy Now'
+                  )}
                 </button>
                 <FrameShare tokenId={tokenId} nftName={name} />
               </div>
@@ -73,7 +105,7 @@ export function NFTCard({
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -4, scale: 1.02 }}
       transition={{ duration: 0.2 }}
-      className="bg-gray-900 rounded-xl shadow-lg hover:shadow-2xl transition-all overflow-hidden w-full max-w-[180px] sm:max-w-[270px] h-[250px] sm:h-[340px] flex flex-col mx-auto"
+      className="bg-gray-900 rounded-xl shadow-lg hover:shadow-2xl transition-all overflow-hidden w-full max-w-[180px] sm:max-w-[270px] h-[280px] sm:h-[380px] flex flex-col mx-auto"
     >
       {/* Image Container - 160x160px mobile, 250x250px desktop */}
       <div className="w-full h-[160px] sm:h-[250px] bg-gray-800 flex items-center justify-center relative overflow-hidden flex-shrink-0">
@@ -98,12 +130,20 @@ export function NFTCard({
         
         {/* Price and Action */}
         <div className="flex items-center justify-between mt-3">
-          <div className="text-xs text-gray-200 font-medium">{ethPrice} ETH</div>
+          <div className="text-sm text-gray-200 font-bold">{ethPrice} ETH</div>
           <button 
-            onClick={onBuy}
-            className="text-xs bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded transition-colors"
+            onClick={handleBuyClick}
+            disabled={isLoading}
+            className="text-sm bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white px-4 py-2 rounded-lg transition-colors font-medium flex items-center gap-1"
           >
-            Buy
+            {isLoading ? (
+              <>
+                <div className="animate-spin rounded-full h-3 w-3 border-2 border-white border-t-transparent"></div>
+                <span className="hidden sm:inline">Buying...</span>
+              </>
+            ) : (
+              'Buy'
+            )}
           </button>
         </div>
       </div>

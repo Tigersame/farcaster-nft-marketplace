@@ -1,12 +1,12 @@
 'use client'
 
-import MarketplaceContent from './marketplace'
+import FrontPage from '@/components/FrontPage'
 import { SafeAreaWrapper } from '@/components/SafeAreaWrapper'
 
 export default function Home() {
   return (
     <SafeAreaWrapper>
-      <MarketplaceContent />
+      <FrontPage />
     </SafeAreaWrapper>
   )
 }

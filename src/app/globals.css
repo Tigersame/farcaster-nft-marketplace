@@ -15,6 +15,11 @@ html {
   --card-foreground: 15 23 42;
   --primary: 59 130 246;
   --primary-foreground: 255 255 255;
+  --sidebar-width: 72px;
+}
+
+body {
+  background: #0b0d12;
 }
 
 .dark {
@@ -35,6 +40,77 @@ body {
   background-color: rgb(var(--background));
   color: rgb(var(--foreground));
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ========================================
+   RESPONSIVE NFT GRID - NO LAYOUT SHIFT
+   ======================================== */
+
+/* Marketplace grid with aspect-ratio lock */
+.nft-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .nft-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .nft-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}
+
+/* NFT card with locked aspect ratio - prevents CLS */
+.nft-card {
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  position: relative;
+}
+
+.nft-card-square {
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  position: relative;
+}
+
+/* Image container with reserved space */
+.nft-image-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
+}
+
+/* Skeleton loader for images */
+.nft-skeleton {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }
 
 /* Custom scrollbar for dark mode */
@@ -301,3 +377,239 @@ body {
   }
 }
 
+/* OnchainKit Theme Customization */
+@layer base {
+  /* Base theme light mode customization */
+  [data-ock-theme='base-light'] {
+    --ock-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --ock-radius-default: 0.75rem;
+    --ock-radius-inner: 0.5rem;
+    --ock-primary: #2563eb;
+    --ock-primary-hover: #1d4ed8;
+    --ock-primary-active: #1e40af;
+  }
+
+  /* Base theme dark mode customization */
+  [data-ock-theme='base-dark'] {
+    --ock-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --ock-radius-default: 0.75rem;
+    --ock-radius-inner: 0.5rem;
+    --ock-primary: #3b82f6;
+    --ock-primary-hover: #2563eb;
+    --ock-primary-active: #1d4ed8;
+    --ock-background: #0b0b0b;
+    --ock-background-alternate: #1a1a1a;
+  }
+
+  /* Default theme customization */
+  [data-ock-theme='default-light'],
+  [data-ock-theme='default-dark'] {
+    --ock-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --ock-radius-default: 0.75rem;
+  }
+}
+
+/* Glassmorphism Utilities */
+@layer utilities {
+  .glass {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(8px) saturate(1.1);
+    -webkit-backdrop-filter: blur(8px) saturate(1.1);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 6px 24px rgba(4, 6, 12, 0.6);
+  }
+
+  .glass-light {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px) saturate(1.2);
+    -webkit-backdrop-filter: blur(12px) saturate(1.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(4, 6, 12, 0.4);
+  }
+
+  .glass-strong {
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(16px) saturate(1.3);
+    -webkit-backdrop-filter: blur(16px) saturate(1.3);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 12px 48px rgba(4, 6, 12, 0.5);
+  }
+
+  .glass-dark {
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px) saturate(1.1);
+    -webkit-backdrop-filter: blur(10px) saturate(1.1);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+}
+
+/* Card Hover Effects */
+@layer components {
+  .card-hover {
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  }
+
+  .card-hover:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 18px 40px rgba(10, 12, 20, 0.6);
+  }
+
+  .card-3d {
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .card-3d:hover {
+    transform: translateY(-12px) rotateX(2deg) rotateY(-2deg) scale(1.03);
+    box-shadow: 0 24px 60px rgba(10, 12, 20, 0.7),
+                0 0 0 1px rgba(255, 255, 255, 0.1);
+  }
+
+  .reveal-on-hover {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .reveal-on-hover::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(122, 90, 248, 0.1) 0%, rgba(0, 210, 255, 0.1) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+  }
+
+  .reveal-on-hover:hover::before {
+    opacity: 1;
+  }
+
+  .reveal-on-hover > * {
+    position: relative;
+    z-index: 2;
+  }
+}
+
+/* Skeleton Loading Animation */
+@layer utilities {
+  .skeleton {
+    background: linear-gradient(90deg, 
+      rgba(255, 255, 255, 0.05) 25%, 
+      rgba(255, 255, 255, 0.1) 50%, 
+      rgba(255, 255, 255, 0.05) 75%
+    );
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s ease-in-out infinite;
+  }
+
+  @keyframes skeleton-loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+}
+
+/* Image Blur Placeholder */
+@layer utilities {
+  .blur-load {
+    filter: blur(10px);
+    transform: scale(1.02);
+    transition: filter 0.5s ease, opacity 0.5s ease;
+  }
+
+  .blur-load.loaded {
+    filter: blur(0);
+    transform: scale(1);
+  }
+}
+
+/* Smooth Reveal Animations */
+@layer utilities {
+  .fade-in {
+    animation: fadeIn 0.4s ease-in;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .slide-up {
+    animation: slideUp 0.4s ease-out;
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+}
+
+/* Scroll Snap Utilities */
+.snap-container {
+  height: 80vh;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.snap-item {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  margin-bottom: 1.5rem;
+}
+
+/* Enhanced Scrollbar Styles */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgb(156 163 175);
+  border-radius: 3px;
+}
+
+.dark .scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgb(75 85 99);
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: rgb(107 114 128);
+}
+
+.dark .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: rgb(107 114 128);
+}
+
+/* Hide scrollbar for carousel */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Badge glow animation for network and Farcaster badges */
+@keyframes glowPulse {
+  0% { 
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.0); 
+  }
+  50% { 
+    box-shadow: 0 0 18px 6px rgba(99, 102, 241, 0.12); 
+  }
+  100% { 
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.0); 
+  }
+}
+
+.badge-glow {
+  animation: glowPulse 2.2s infinite ease-in-out;
+}

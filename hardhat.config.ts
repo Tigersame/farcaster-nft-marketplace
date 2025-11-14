@@ -8,7 +8,7 @@ dotenv.config({ path: '.env.local' });
 
 const config: HardhatUserConfig = {
   solidity: {
-    version: "0.8.20",
+    version: "0.8.22",
     settings: {
       optimizer: {
         enabled: true,
@@ -19,7 +19,7 @@ const config: HardhatUserConfig = {
   networks: {
     // Base Mainnet
     base: {
-      url: process.env.NEXT_PUBLIC_BASE_RPC_URL || `https://base-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY || 'skI70Usmhsnf0GDuGdYqj'}`,
+      url: process.env.NEXT_PUBLIC_BASE_RPC_URL || process.env.BASE_RPC_URL || `https://base-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY || ''}`,
       accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
       chainId: 8453,
     },
@@ -35,7 +35,7 @@ const config: HardhatUserConfig = {
     },
   },
   etherscan: {
-    apiKey: process.env.NEXT_PUBLIC_BASE_API_KEY || "IM6NVT4S5QHBX15YXBM274QF27GFG1DSUI",
+    apiKey: process.env.BASESCAN_API_KEY || process.env.NEXT_PUBLIC_BASE_API_KEY || "",
     customChains: [
       {
         network: "base",

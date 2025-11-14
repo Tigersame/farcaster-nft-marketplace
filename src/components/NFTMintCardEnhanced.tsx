@@ -1,10 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useAccount } from 'wagmi'
 import { motion } from 'framer-motion'
-import TransactionWrapper from './TransactionWrapper'
 import { ArrowSvg, BaseSvg, OnchainkitSvg } from './svg'
+import { useMintNFT } from '@/lib/contracts/useMarketplace'
 
 interface NFTMintCardEnhancedProps {
   contractAddress: string
@@ -42,6 +42,14 @@ export function NFTMintCardEnhanced({
   const { address, isConnected } = useAccount()
   const [quantity, setQuantity] = useState(1)
   const [isLoading, setIsLoading] = useState(false)
+  const { mintNFT, isLoading: isMinting, isSuccess: mintSuccess } = useMintNFT()
+
+  useEffect(() => {
+    if (mintSuccess) {
+      setIsLoading(false)
+      if (onMintSuccess) onMintSuccess(tokenId)
+    }
+  }, [mintSuccess, tokenId, onMintSuccess])
 
   const progress = (totalSupply / maxSupply) * 100
   const remaining = maxSupply - totalSupply
@@ -184,25 +192,44 @@ export function NFTMintCardEnhanced({
 
         {/* Mint Button */}
         {isConnected && address ? (
-          <TransactionWrapper
-            address={address}
-            contractAddress={contractAddress as `0x${string}`}
-            functionName="mintNFT"
-            args={[
-              `ipfs://QmExample${tokenId}`, // metadataURI (placeholder)
-              500 // royaltyPercentage (5%)
-            ]}
-            onSuccess={handleMintSuccess}
-            onError={handleMintError}
-            className="w-full"
-            isSponsored={isSponsored}
+          <button
+            onClick={() => {
+              const contractAddress = process.env.NEXT_PUBLIC_MARKETPLACE_CONTRACT
+              
+              if (!contractAddress || contractAddress === '0x5FbDB2315678afecb367f032d93F642f64180aa3') {
+                // Demo mode
+                setIsLoading(true)
+                setTimeout(() => {
+                  setIsLoading(false)
+                  const newTokenId = (parseInt(tokenId) + Math.floor(Math.random() * 1000)).toString()
+                  if (onMintSuccess) onMintSuccess(newTokenId)
+                  alert(`🎉 Successfully minted ${quantity} NFT${quantity > 1 ? 's' : ''}!\n\nToken ID: #${newTokenId}\nTotal Cost: ${totalCost} ETH`)
+                }, 2000)
+              } else {
+                // Real on-chain minting
+                const metadataURI = `ipfs://QmExample${Date.now()}`
+                mintNFT(metadataURI, 500) // 5% royalty
+              }
+            }}
+            disabled={isLoading || isMinting}
+            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 disabled:from-gray-400 disabled:to-gray-500 text-white font-semibold py-4 px-6 rounded-xl transition-all transform hover:scale-105 disabled:scale-100"
           >
-            {`🚀 Mint ${quantity > 1 ? `${quantity} NFTs` : 'NFT'}`}
-          </TransactionWrapper>
+            {isLoading || isMinting ? (
+              <div className="flex items-center justify-center gap-2">
+                <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
+                <span>Minting...</span>
+              </div>
+            ) : (
+              `🚀 Mint ${quantity > 1 ? `${quantity} NFTs` : 'NFT'}`
+            )}
+          </button>
         ) : (
-          <div className="w-full border-2 border-dashed border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400 px-6 py-4 rounded-xl text-center">
+          <button
+            onClick={() => alert('Please connect your wallet first!')}
+            className="w-full border-2 border-dashed border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400 px-6 py-4 rounded-xl hover:border-blue-500 dark:hover:border-blue-500 hover:text-blue-500 dark:hover:text-blue-400 transition-all"
+          >
             🔗 Connect your wallet to mint
-          </div>
+          </button>
         )}
 
         {/* Contract Info */}

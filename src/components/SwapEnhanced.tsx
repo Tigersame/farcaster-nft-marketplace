@@ -11,9 +11,37 @@ import {
   SwapButton,
   SwapMessage,
 } from '@coinbase/onchainkit/swap'
+import { Transaction, TransactionButton, TransactionSponsor, TransactionStatus, TransactionStatusAction, TransactionStatusLabel } from '@coinbase/onchainkit/transaction'
 import type { Token as OnchainToken } from '@coinbase/onchainkit/token'
 import { base } from 'wagmi/chains'
 import { ArrowSvg, BaseSvg, OnchainkitSvg } from './svg'
+
+// TransactionWrapper component
+const TransactionWrapper = ({ address, contractAddress, functionName, args, onSuccess, onError, className, children }: any) => (
+  <Transaction
+    address={address}
+    chainId={base.id}
+    contracts={[{
+      address: contractAddress,
+      abi: [{
+        name: functionName,
+        type: 'function',
+        stateMutability: 'nonpayable',
+        inputs: [{ name: 'tokenIn', type: 'address' }, { name: 'tokenOut', type: 'address' }, { name: 'amountIn', type: 'uint256' }],
+        outputs: []
+      }],
+      functionName,
+      args
+    }]}
+    onSuccess={onSuccess}
+    onError={onError}
+  >
+    <div className={className}>
+      {children}
+      <TransactionButton />
+    </div>
+  </Transaction>
+)
 
 // Custom SwapSettings implementation for our version of OnchainKit
 const SwapSettings = ({ children, text, className = '' }: { children: React.ReactNode, text?: string, className?: string }) => (

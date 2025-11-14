@@ -5,7 +5,7 @@ import { RainbowKitProvider, darkTheme } from '@rainbow-me/rainbowkit'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { OnchainKitProvider } from '@coinbase/onchainkit'
 import { config as wagmiConfig } from '@/lib/wagmi'
-import { base } from 'wagmi/chains'
+import { base, baseSepolia } from 'wagmi/chains'
 import { WalletErrorHandler } from '@/components/WalletErrorHandler'
 import { ThemeProvider } from '@/contexts/ThemeContext'
 import { AdminProvider } from '@/contexts/AdminContext'
@@ -24,6 +24,10 @@ const queryClient = new QueryClient({
   },
 })
 
+// Determine initial chain based on environment
+const isTestnet = process.env.NEXT_PUBLIC_NETWORK === 'baseSepolia'
+const initialChain = isTestnet ? baseSepolia : base
+
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <MiniAppProvider>
@@ -35,7 +39,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
               <QueryClientProvider client={queryClient}>
                 <OnchainKitProvider
                   apiKey={process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY}
-                  chain={base}
+                  chain={initialChain}
                 >
                   <RainbowKitProvider
                     theme={darkTheme({
@@ -46,9 +50,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
                       overlayBlur: 'large',
                     })}
                     modalSize="compact"
-                    initialChain={base}
+                    initialChain={initialChain}
                     appInfo={{
-                      appName: 'FarcasterSea',
+                      appName: 'FarcastMints',
                       learnMoreUrl: 'https://farcaster.xyz',
                     }}
                   >

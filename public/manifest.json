@@ -1,11 +1,11 @@
 {
-  "name": "FarcastSea NFT Marketplace",
-  "short_name": "FarcastSea",
-  "description": "Secure NFT marketplace on Base network with Farcaster frames",
+  "name": "Farcast Mints",
+  "short_name": "Farcast Mints",
+  "description": "An NFT marketplace on Base with Farcaster integration",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#1a1a2e",
-  "theme_color": "#2563eb",
+  "background_color": "#0a1628",
+  "theme_color": "#0a1628",
   "orientation": "portrait",
   "scope": "/",
   "lang": "en",
@@ -17,9 +17,9 @@
       "purpose": "any maskable"
     },
     {
-      "src": "/favicon.ico", 
-      "sizes": "48x48",
-      "type": "image/x-icon"
+      "src": "/favicon.svg", 
+      "sizes": "any",
+      "type": "image/svg+xml"
     }
   ],
   "categories": ["finance", "business"]

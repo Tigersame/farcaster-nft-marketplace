@@ -1,0 +1,7 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Rounded background with exact color from your icon -->
+  <rect width="32" height="32" rx="7" ry="7" fill="#0f1f3d"/>
+  
+  <!-- White F letter - matching your design exactly -->
+  <path d="M9 7h14v4.5h-9v3h8v4.5h-8V25H9V7z" fill="white"/>
+</svg>
