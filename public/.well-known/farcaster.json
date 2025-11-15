@@ -10,25 +10,25 @@
   "miniapp": {
     "version": "1",
     "name": "FarcastMints",
-    "homeUrl": "https://farcastmints.com",
-    "iconUrl": "https://farcastmints.com/icon.svg",
-    "splashImageUrl": "https://farcastmints.com/splash.svg",
+    "homeUrl": "https://farcaster-nft-marketplace-dt6hhumcu-devsminiapp.vercel.app",
+    "iconUrl": "https://farcaster-nft-marketplace-dt6hhumcu-devsminiapp.vercel.app/icon.svg",
+    "splashImageUrl": "https://farcaster-nft-marketplace-dt6hhumcu-devsminiapp.vercel.app/splash.svg",
     "splashBackgroundColor": "#1a1a2e",
-    "webhookUrl": "https://farcastmints.com/api/farcaster/webhook",
+    "webhookUrl": "https://farcaster-nft-marketplace-dt6hhumcu-devsminiapp.vercel.app/api/farcaster/webhook",
     "subtitle": "NFT Marketplace with XP Rewards",
     "description": "Trade NFTs on Base Network and earn XP rewards. Claim Genesis SBT for 5000 XP, trade NFTs, and climb the leaderboard. Features Farcaster frames, ERC20 gas payments, and social trading.",
     "screenshotUrls": [
-      "https://farcastmints.com/screenshots/marketplace.png",
-      "https://farcastmints.com/screenshots/frames.png",
-      "https://farcastmints.com/screenshots/social.png"
+      "https://farcaster-nft-marketplace-dt6hhumcu-devsminiapp.vercel.app/screenshots/marketplace.png",
+      "https://farcaster-nft-marketplace-dt6hhumcu-devsminiapp.vercel.app/screenshots/frames.png",
+      "https://farcaster-nft-marketplace-dt6hhumcu-devsminiapp.vercel.app/screenshots/social.png"
     ],
     "primaryCategory": "finance",
     "tags": ["nft", "marketplace", "base", "defi", "trading", "rewards", "xp"],
-    "heroImageUrl": "https://farcastmints.com/og-image.svg",
+    "heroImageUrl": "https://farcaster-nft-marketplace-dt6hhumcu-devsminiapp.vercel.app/og-image.svg",
     "tagline": "Trade NFTs, Earn XP Rewards",
     "ogTitle": "FarcastMints - NFT Marketplace with XP Rewards",
     "ogDescription": "Trade NFTs on Base and earn XP rewards. Claim Genesis SBT for 5000 XP bonus!",
-    "ogImageUrl": "https://farcastmints.com/og-image.svg",
+    "ogImageUrl": "https://farcaster-nft-marketplace-dt6hhumcu-devsminiapp.vercel.app/og-image.svg",
     "noindex": false
   }
 }
