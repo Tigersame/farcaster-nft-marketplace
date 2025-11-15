@@ -6,6 +6,17 @@ import { useRouter, usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { useAccount } from "wagmi"
 
+// Icon components
+function HomeIcon(){ return (<svg className="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" stroke="currentColor" strokeWidth="1.2"/></svg>) }
+function StoreIcon(){ return (<svg className="w-4 h-4" viewBox="0 0 24 24" fill="none"><rect x="3" y="7" width="18" height="13" rx="2" stroke="currentColor" strokeWidth="1.2"/></svg>) }
+function GridIcon(){ return (<svg className="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M3 3h8v8H3V3zm10 0h8v8h-8V3zM3 13h8v8H3v-8zm10 0h8v8h-8v-8z" stroke="currentColor" strokeWidth="1.2"/></svg>) }
+function LayersIcon(){ return (<svg className="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M12 2l9 5-9 5-9-5 9-5zm0 7l9 5-9 5-9-5 9-5z" stroke="currentColor" strokeWidth="1.2"/></svg>) }
+function PlusIcon(){ return (<svg className="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>) }
+function LightningIcon(){ return (<svg className="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z" stroke="currentColor" strokeWidth="1.2"/></svg>) }
+function StackIcon(){ return (<svg className="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M3 7l9 5 9-5M3 12l9 5 9-5M3 17l9 5 9-5" stroke="currentColor" strokeWidth="1.2"/></svg>) }
+function StarIcon(){ return (<svg className="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" strokeWidth="1.2" fill="currentColor" fillOpacity="0.2"/></svg>) }
+function ArrowIcon(){ return (<svg className="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>) }
+
 const NAV = [
   { label: "Home", href: "/", icon: HomeIcon },
   { label: "Marketplace", href: "/marketplace", icon: StoreIcon },
@@ -14,8 +25,8 @@ const NAV = [
   { label: "Create NFT", href: "/create", icon: PlusIcon },
   { label: "Mint", href: "/mint", icon: LightningIcon },
   { label: "My NFTs", href: "/my-nfts", icon: StackIcon },
+  { label: "Event", href: "/event", icon: StarIcon },
   { label: "Swap", href: "/swap", icon: ArrowIcon },
-  { label: "Swap Settings", href: "/swap/settings", icon: CogIcon },
 ]
 
 interface ProSidebarProps {
@@ -334,15 +345,3 @@ function CollapseIcon({ rotated }: { rotated: boolean }) {
     </svg>
   )
 }
-
-/* Icon components below: keep them simple & small */
-function HomeIcon() { return (<svg className="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M3 10.5L12 4l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V10.5z" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>) }
-function StoreIcon(){ return (<svg className="w-4 h-4" viewBox="0 0 24 24" fill="none"><rect x="3" y="7" width="18" height="13" rx="2" stroke="currentColor" strokeWidth="1.2"/></svg>) }
-function GridIcon(){ return (<svg className="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M3 3h8v8H3V3zm10 0h8v8h-8V3zM3 13h8v8H3v-8zm10 0h8v8h-8v-8z" stroke="currentColor" strokeWidth="1.2"/></svg>) }
-function LayersIcon(){ return (<svg className="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M12 2l9 5-9 5-9-5 9-5zm0 7l9 5-9 5-9-5 9-5z" stroke="currentColor" strokeWidth="1.2"/></svg>) }
-function PlusIcon(){ return (<svg className="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>) }
-function LightningIcon(){ return (<svg className="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z" stroke="currentColor" strokeWidth="1.2"/></svg>) }
-function StackIcon(){ return (<svg className="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M3 7l9 5 9-5M3 12l9 5 9-5M3 17l9 5 9-5" stroke="currentColor" strokeWidth="1.2"/></svg>) }
-function ArrowIcon(){ return (<svg className="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>) }
-function CogIcon(){ return (<svg className="w-4 h-4" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.2"/><path d="M12 1v6m0 6v10M23 12h-6m-6 0H1" stroke="currentColor" strokeWidth="1.2"/></svg>) }
-function DiceIcon(){ return (<svg className="w-4 h-4" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="1.2"/><circle cx="8" cy="8" r="1" fill="currentColor"/><circle cx="16" cy="8" r="1" fill="currentColor"/><circle cx="12" cy="12" r="1" fill="currentColor"/><circle cx="8" cy="16" r="1" fill="currentColor"/><circle cx="16" cy="16" r="1" fill="currentColor"/></svg>) }
