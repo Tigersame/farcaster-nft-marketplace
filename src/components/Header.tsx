@@ -68,12 +68,16 @@ export function Header() {
         <div className="flex justify-between items-center h-16 gap-4">
           {/* Logo */}
           <div className="flex items-center flex-shrink-0">
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">🌊</span>
-              </div>
-              <span className="text-xl font-bold text-gray-900 dark:text-white">FarcastMints</span>
-            </div>
+            <a href="/" className="flex items-center space-x-3 group">
+              <img 
+                src="/icon.svg" 
+                alt="FarcastMints Logo" 
+                className="w-10 h-10 transition-transform group-hover:scale-105"
+              />
+              <span className="text-xl font-bold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                FarcastMints
+              </span>
+            </a>
           </div>
 
           {/* Network & Farcaster Badges */}

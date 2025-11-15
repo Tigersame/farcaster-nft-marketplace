@@ -9,26 +9,26 @@
   },
   "miniapp": {
     "version": "1",
-    "name": "FarcastSea NFT Marketplace",
-    "homeUrl": "https://farcaster-nft-marketplace-fxmwyjgo8-devsminiapp.vercel.app",
-    "iconUrl": "https://farcaster-nft-marketplace-fxmwyjgo8-devsminiapp.vercel.app/icon.png",
-    "splashImageUrl": "https://farcaster-nft-marketplace-fxmwyjgo8-devsminiapp.vercel.app/splash.png",
-    "splashBackgroundColor": "#1a1a2e",
-    "webhookUrl": "https://farcaster-nft-marketplace-fxmwyjgo8-devsminiapp.vercel.app/api/webhook",
-    "subtitle": "Trade NFTs on Base",
-    "description": "Secure, hack-proof NFT marketplace built for the Base network with Farcaster frames integration and innovative ERC20 gas payments.",
+    "name": "FarcastMints",
+    "homeUrl": "https://farcastmints.com",
+    "iconUrl": "https://farcastmints.com/icon.svg",
+    "splashImageUrl": "https://farcastmints.com/splash.svg",
+    "splashBackgroundColor": "#0f1f3d",
+    "webhookUrl": "https://farcastmints.com/api/miniapp/webhook",
+    "subtitle": "Trade NFTs on Base Network",
+    "description": "NFT marketplace with Farcaster frames, ERC20 gas payments, and social trading on Base.",
     "screenshotUrls": [
-      "https://farcaster-nft-marketplace-fxmwyjgo8-devsminiapp.vercel.app/screenshots/marketplace.png",
-      "https://farcaster-nft-marketplace-fxmwyjgo8-devsminiapp.vercel.app/screenshots/frames.png",
-      "https://farcaster-nft-marketplace-fxmwyjgo8-devsminiapp.vercel.app/screenshots/chat.png"
+      "https://farcastmints.com/screenshots/marketplace.png",
+      "https://farcastmints.com/screenshots/frames.png",
+      "https://farcastmints.com/screenshots/social.png"
     ],
-    "primaryCategory": "nft",
-    "tags": ["nft", "marketplace", "base", "defi"],
-    "heroImageUrl": "https://farcaster-nft-marketplace-fxmwyjgo8-devsminiapp.vercel.app/hero.png",
+    "primaryCategory": "finance",
+    "tags": ["nft", "marketplace", "base", "defi", "trading"],
+    "heroImageUrl": "https://farcastmints.com/og-image.svg",
     "tagline": "Trade securely on Base",
-    "ogTitle": "FarcastSea - Secure NFT Marketplace",
-    "ogDescription": "Hack-proof NFT marketplace with Farcaster frames and ERC20 gas payments on Base network.",
-    "ogImageUrl": "https://farcaster-nft-marketplace-fxmwyjgo8-devsminiapp.vercel.app/og-image.png",
+    "ogTitle": "FarcastMints - NFT Marketplace",
+    "ogDescription": "Trade NFTs securely with Farcaster frames and ERC20 gas payments on Base.",
+    "ogImageUrl": "https://farcastmints.com/og-image.svg",
     "noindex": false
   }
 }

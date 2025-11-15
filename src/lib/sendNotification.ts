@@ -56,6 +56,12 @@ export async function sendMiniAppNotification({
     return { state: "no_token" };
   }
 
+  // Validate notification details
+  if (!notificationDetails.url || !notificationDetails.token) {
+    console.error(`❌ Invalid notification details for FID ${fid}:`, notificationDetails);
+    return { state: "no_token" };
+  }
+
   // Default target URL to the app home if not specified
   const finalTargetUrl = targetUrl || process.env.NEXT_PUBLIC_APP_URL || "https://farcastmints.com";
 
@@ -86,12 +92,18 @@ export async function sendMiniAppNotification({
         return { state: "error", error: responseBody.error.errors };
       }
 
-      if (responseBody.data.result.rateLimitedTokens.length > 0) {
+      // Check if result exists before accessing properties
+      if (!responseBody.data.result) {
+        console.error("❌ Response missing result object:", responseJson);
+        return { state: "error", error: "Invalid response structure" };
+      }
+
+      if (responseBody.data.result.rateLimitedTokens?.length > 0) {
         console.log(`⏱️ Notification rate limited for FID ${fid}`);
         return { state: "rate_limit" };
       }
 
-      if (responseBody.data.result.invalidTokens.length > 0) {
+      if (responseBody.data.result.invalidTokens?.length > 0) {
         console.log(`⚠️ Invalid notification token for FID ${fid}, token should be removed`);
         return { state: "error", error: "Invalid token" };
       }
