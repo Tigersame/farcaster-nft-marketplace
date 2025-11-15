@@ -8,43 +8,7 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 const PAGE_SIZE = 12;
 
-/* ---------- Top Header ---------- */
-function TopHeader() {
-  return (
-    <header className="sticky top-0 z-40 bg-gradient-to-b from-black/60 to-transparent backdrop-blur-md border-b border-white/6">
-      <div className="max-w-[1440px] mx-auto px-6 py-3 flex items-center gap-4">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center overflow-hidden">
-            <svg viewBox="0 0 24 24" fill="none" className="w-7 h-7">
-              <path d="M0 0h10v10H0z" fill="#1a1a1a"/>
-              <circle cx="5" cy="5" r="2.5" fill="white"/>
-              <path d="M0 14c0-2.2 1.8-4 4-4h6v10H0V14z" fill="#1a1a1a"/>
-            </svg>
-          </div>
-          <div className="hidden md:flex flex-col leading-tight">
-            <div className="font-bold">Farcast</div>
-            <div className="font-bold -mt-1">Mints</div>
-          </div>
-        </div>
-
-        <div className="flex-1 max-w-2xl mx-6">
-          <div className="relative">
-            <input
-              aria-label="Search NFTs"
-              placeholder="Search NFTs, collections, creators..."
-              className="w-full rounded-full bg-white/5 px-4 py-2 outline-none border border-white/6 placeholder:text-gray-400 focus:border-purple-500 transition"
-            />
-          </div>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <ConnectButton />
-          <a href="/mint" className="px-4 py-2 rounded-full bg-gradient-to-r from-purple-600 to-indigo-500 text-white hover:from-purple-700 hover:to-indigo-600 transition">Mint</a>
-        </div>
-      </div>
-    </header>
-  );
-}
+/* ---------- Note: TopHeader removed - using main Header component from layout ---------- */
 
 /* ---------- Simple NFT Card ---------- */
 function NftCard({ nft, onOpen }) {
@@ -174,45 +138,51 @@ export default function FrontPage() {
   }, [sentinel.current, page, hasMore]);
 
   return (
-    <>
-      <TopHeader />
-
-      <main className="min-h-screen bg-[#05060a] text-white">
-        {/* Full Hero Banner */}
-        <section className="relative w-full min-h-[600px] md:min-h-[700px] flex items-center justify-center overflow-hidden">
-          {/* Gradient Background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-[#1a0f3e] via-[#1e3a8a] to-[#0d47a1]"></div>
-          
-          {/* Animated gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-tr from-purple-600/20 via-transparent to-blue-600/20 animate-pulse"></div>
-          
-          {/* Content */}
-          <div className="relative z-10 max-w-[1440px] mx-auto px-6 py-16 md:py-24 text-center">
-            {/* Title */}
-            <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold mb-6 tracking-tight">
-              FarcastMints
-            </h1>
-
-            {/* Subtitle */}
-            <p className="text-xl md:text-3xl lg:text-4xl text-white/90 max-w-4xl mx-auto mb-12 font-light leading-relaxed">
-              A next-gen NFT marketplace built on Base<br className="hidden md:block" />
-              with seamless Farcaster integration
-            </p>
-
-            {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <a href="/marketplace" className="px-10 py-5 rounded-full bg-white text-blue-900 font-bold text-lg hover:bg-white/90 transition cursor-pointer shadow-2xl shadow-white/20">
-                Explore Marketplace
-              </a>
-              <a href="/mint" className="px-10 py-5 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm font-bold text-lg transition cursor-pointer border-2 border-white/30">
-                Create NFT
-              </a>
-            </div>
+    <main className="min-h-screen bg-[#05060a] text-white">
+      {/* Full Hero Banner */}
+      <section className="relative w-full min-h-[600px] md:min-h-[700px] flex items-center justify-center overflow-hidden">
+        {/* Gradient Background - Design System Colors */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#1A1B25] via-[#2A2B36] to-[#111118]"></div>
+        
+        {/* Animated gradient overlay - Base Blue + Farcaster Purple */}
+        <div className="absolute inset-0 bg-gradient-to-tr from-[#5A61FF]/20 via-transparent to-[#805BFF]/20 animate-pulse"></div>
+        
+        {/* Content */}
+        <div className="relative z-10 max-w-[1440px] mx-auto px-6 py-16 md:py-24 text-center">
+          {/* Logo */}
+          <div className="flex justify-center mb-8">
+            <img 
+              src="/icon.svg" 
+              alt="FarcastMints Logo" 
+              className="w-32 h-32 md:w-40 md:h-40 animate-float"
+            />
           </div>
 
-          {/* Bottom fade to main content */}
-          <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#05060a] to-transparent"></div>
-        </section>
+          {/* Title */}
+          <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold mb-6 tracking-tight">
+            FarcastMints
+          </h1>
+
+          {/* Subtitle */}
+          <p className="text-xl md:text-3xl lg:text-4xl text-white/90 max-w-4xl mx-auto mb-12 font-light leading-relaxed">
+            A next-gen NFT marketplace built on Base<br className="hidden md:block" />
+            with seamless Farcaster integration
+          </p>
+
+          {/* CTAs */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <a href="/marketplace" className="px-10 py-5 rounded-full bg-gradient-to-r from-[#5A61FF] to-[#805BFF] text-white font-bold text-lg hover:from-[#4550FF] hover:to-[#6A49EB] transition cursor-pointer shadow-2xl shadow-[#5A61FF]/30">
+              Explore Marketplace
+            </a>
+            <a href="/mint" className="px-10 py-5 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm font-bold text-lg transition cursor-pointer border-2 border-[#5A61FF]/50 hover:border-[#5A61FF]">
+              Create NFT
+            </a>
+          </div>
+        </div>
+
+        {/* Bottom fade to main content */}
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#05060a] to-transparent"></div>
+      </section>
 
         {/* Stats bar */}
         <section className="max-w-[1440px] mx-auto px-6 py-8 mb-12 -mt-16 relative z-20">
@@ -258,8 +228,7 @@ export default function FrontPage() {
 
         {/* Newsletter / footer CTA */}
         <NewsletterSection />
-      </main>
-    </>
+    </main>
   );
 }
 
