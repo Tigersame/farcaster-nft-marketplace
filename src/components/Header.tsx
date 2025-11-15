@@ -63,7 +63,7 @@ export function Header() {
   }
   
   return (
-    <header className="bg-white dark:bg-[#151b2b] border-b border-gray-200 dark:border-gray-800 transition-colors duration-300 sticky top-0 z-50 backdrop-blur-sm bg-opacity-95 dark:bg-opacity-95">
+    <header className="sticky top-0 z-50 backdrop-blur-lg bg-surface-black/40 border-b border-border-light h-16 transition-all duration-300">
       <div className="w-full px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16 gap-4">
           {/* Logo */}
@@ -72,26 +72,26 @@ export function Header() {
               <img 
                 src="/icon.svg" 
                 alt="FarcastMints Logo" 
-                className="w-10 h-10 transition-transform group-hover:scale-105"
+                className="w-10 h-10 transition-transform duration-200 group-hover:scale-110"
               />
-              <span className="text-xl font-bold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+              <span className="text-xl font-semibold text-text-primary group-hover:text-primary-500 transition-colors duration-200">
                 FarcastMints
               </span>
             </a>
           </div>
 
           {/* Network & Farcaster Badges */}
-          <div className="hidden sm:flex items-center gap-2 ml-2">
-            {/* Network Badge */}
+          <div className="hidden sm:flex items-center gap-3 ml-2">
+            {/* Network Badge - Interactive */}
             <motion.button
               onClick={handleSwitchNetwork}
-              className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold transition-all badge-glow cursor-pointer
+              className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium transition-all shadow-glow
                         ${isOnCorrectNetwork 
-                          ? 'bg-green-500/30 text-green-200 border-2 border-green-400/50' 
-                          : 'bg-orange-500/30 text-orange-200 border-2 border-orange-400/50 hover:bg-orange-500/40 hover:border-orange-400'
+                          ? 'bg-success/20 text-success border border-success/30 hover:bg-success/30' 
+                          : 'bg-warning/20 text-warning border border-warning/30 hover:bg-warning/30 hover:shadow-glow-large'
                         }`}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.05, y: -1 }}
+              whileTap={{ scale: 0.98 }}
               title={isOnCorrectNetwork ? `Connected to ${targetChainName}` : `Click to switch to ${targetChainName}`}
             >
               {isOnCorrectNetwork ? (
@@ -99,7 +99,7 @@ export function Header() {
               ) : (
                 <FiGlobe className="w-4 h-4 animate-pulse" />
               )}
-              <span className="whitespace-nowrap">
+              <span className="whitespace-nowrap font-semibold">
                 {isSwitching ? 'Switching...' : isOnCorrectNetwork ? targetChainName : `Switch to ${targetChainName}`}
               </span>
             </motion.button>
@@ -112,7 +112,7 @@ export function Header() {
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
-                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium bg-purple-500/20 text-purple-300 border border-purple-500/30 badge-glow"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium bg-secondary-500/20 text-secondary-500 border border-secondary-500/30 shadow-glow hover:bg-secondary-500/30 transition-all"
                 >
                   {farcasterProfile.avatar && (
                     <img 
