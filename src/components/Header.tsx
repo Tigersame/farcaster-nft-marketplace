@@ -21,6 +21,7 @@ import { createPortal } from 'react-dom'
 import { useAccount, useChainId, useSwitchChain } from 'wagmi'
 import { useFarcasterOAuth } from '@/hooks/useFarcasterOAuth'
 import { motion, AnimatePresence } from 'framer-motion'
+import { BRANDING, getLogoUrl } from '@/config/branding'
 
 export function Header() {
   const { isFarcasterConnected, farcasterUser, viewProfile } = useMiniApp()
