@@ -36,7 +36,7 @@ export default function EventsPage() {
     }
   }
 
-  const getEventIcon = (type) => {
+  const getEventIcon = (type: string) => {
     switch (type) {
       case 'NFTListed':
         return '📝'
@@ -45,11 +45,11 @@ export default function EventsPage() {
       case 'NFTDelisted':
         return '🚫'
       default:
-        return '📊'
+        return '📦'
     }
   }
 
-  const getEventColor = (type) => {
+  const getEventColor = (type: string) => {
     switch (type) {
       case 'NFTListed':
         return 'text-blue-400'
@@ -62,10 +62,10 @@ export default function EventsPage() {
     }
   }
 
-  const formatTime = (timestamp) => {
+  const formatTime = (timestamp: string) => {
     const date = new Date(timestamp)
     const now = new Date()
-    const diff = now - date
+    const diff = now.getTime() - date.getTime()
     const minutes = Math.floor(diff / 60000)
     const hours = Math.floor(diff / 3600000)
     const days = Math.floor(diff / 86400000)

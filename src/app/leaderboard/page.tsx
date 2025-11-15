@@ -42,14 +42,14 @@ export default function LeaderboardPage() {
     }
   }
 
-  const getLevelColor = (level) => {
+  const getLevelColor = (level: number) => {
     if (level >= 20) return 'text-[#FFD700]' // Gold
     if (level >= 10) return 'text-[#C0C0C0]' // Silver
     if (level >= 5) return 'text-[#CD7F32]' // Bronze
     return 'text-gray-400'
   }
 
-  const getRankBadge = (rank) => {
+  const getRankBadge = (rank: number) => {
     if (rank === 1) return '🥇'
     if (rank === 2) return '🥈'
     if (rank === 3) return '🥉'
@@ -184,7 +184,7 @@ export default function LeaderboardPage() {
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex gap-1">
-                        {user.badges?.slice(0, 5).map((badge, i) => (
+                        {user.badges?.slice(0, 5).map((badge: any, i: number) => (
                           <span key={i} className="text-xl" title={badge.name}>
                             {badge.icon}
                           </span>
