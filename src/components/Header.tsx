@@ -33,6 +33,7 @@ export function Header() {
   const [isPortfolioOpen, setIsPortfolioOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
   const [showFarcasterModal, setShowFarcasterModal] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   // Determine target chain based on environment
   const isTestnet = process.env.NEXT_PUBLIC_NETWORK === 'baseSepolia'
@@ -360,8 +361,12 @@ export function Header() {
             )}
 
             {/* Mobile Menu Button */}
-            <button className="lg:hidden p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors rounded-lg">
-              <FiMenu className="w-5 h-5" />
+            <button 
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="lg:hidden p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors rounded-lg"
+              aria-label="Toggle menu"
+            >
+              {isMobileMenuOpen ? <FiX className="w-5 h-5" /> : <FiMenu className="w-5 h-5" />}
             </button>
           </div>
         </div>
@@ -394,6 +399,126 @@ export function Header() {
         <UserProfile 
           showFullProfile={isPortfolioOpen}
           onClose={() => setIsPortfolioOpen(false)}
+        />
+      )}
+
+      {/* Mobile Sidebar Menu */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            className="fixed top-16 right-0 bottom-0 w-72 bg-white dark:bg-gray-900 border-l border-gray-200 dark:border-gray-800 shadow-2xl z-40 lg:hidden overflow-y-auto"
+          >
+            <nav className="p-6 space-y-2">
+              {/* Events Link */}
+              <a
+                href="/events"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-600 dark:hover:text-blue-400 transition-all group"
+              >
+                <span className="text-2xl">📊</span>
+                <div>
+                  <div className="font-semibold">Events</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-400">Live activity feed</div>
+                </div>
+              </a>
+
+              {/* Leaderboard Link */}
+              <a
+                href="/leaderboard"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:text-purple-600 dark:hover:text-purple-400 transition-all group"
+              >
+                <span className="text-2xl">🏆</span>
+                <div>
+                  <div className="font-semibold">Leaderboard</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-400">Top users by XP</div>
+                </div>
+              </a>
+
+              <div className="border-t border-gray-200 dark:border-gray-700 my-4"></div>
+
+              {/* Marketplace Link */}
+              <a
+                href="/marketplace"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all"
+              >
+                <span className="text-2xl">🛒</span>
+                <div>
+                  <div className="font-semibold">Marketplace</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-400">Browse NFTs</div>
+                </div>
+              </a>
+
+              {/* Mint Link */}
+              <a
+                href="/mint"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all"
+              >
+                <span className="text-2xl">🎨</span>
+                <div>
+                  <div className="font-semibold">Mint NFT</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-400">Create new NFT</div>
+                </div>
+              </a>
+
+              {/* Collections Link */}
+              <a
+                href="/collections"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all"
+              >
+                <span className="text-2xl">📦</span>
+                <div>
+                  <div className="font-semibold">Collections</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-400">Browse collections</div>
+                </div>
+              </a>
+
+              {/* My NFTs Link */}
+              <a
+                href="/my-nfts"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all"
+              >
+                <span className="text-2xl">💼</span>
+                <div>
+                  <div className="font-semibold">My NFTs</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-400">Your collection</div>
+                </div>
+              </a>
+
+              <div className="border-t border-gray-200 dark:border-gray-700 my-4"></div>
+
+              {/* Swap Link */}
+              <button
+                onClick={() => {
+                  setIsSwapOpen(true)
+                  setIsMobileMenuOpen(false)
+                }}
+                className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all"
+              >
+                <span className="text-2xl">🔄</span>
+                <div className="text-left">
+                  <div className="font-semibold">Swap</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-400">Exchange tokens</div>
+                </div>
+              </button>
+            </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Mobile Menu Overlay */}
+      {isMobileMenuOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-30 lg:hidden"
+          onClick={() => setIsMobileMenuOpen(false)}
         />
       )}
     </header>
