@@ -9,25 +9,25 @@
   },
   "miniapp": {
     "version": "1",
-    "name": "FarcastSea",
+    "name": "FarcastMints",
     "homeUrl": "https://farcastmints.com",
     "iconUrl": "https://farcastmints.com/icon.svg",
     "splashImageUrl": "https://farcastmints.com/splash.svg",
     "splashBackgroundColor": "#1a1a2e",
-    "webhookUrl": "https://farcastmints.com/api/miniapp/webhook",
-    "subtitle": "Trade NFTs on Base Network",
-    "description": "NFT marketplace with Farcaster frames, ERC20 gas payments, and social trading on Base.",
+    "webhookUrl": "https://farcastmints.com/api/farcaster/webhook",
+    "subtitle": "NFT Marketplace with XP Rewards",
+    "description": "Trade NFTs on Base Network and earn XP rewards. Claim Genesis SBT for 5000 XP, trade NFTs, and climb the leaderboard. Features Farcaster frames, ERC20 gas payments, and social trading.",
     "screenshotUrls": [
       "https://farcastmints.com/screenshots/marketplace.png",
       "https://farcastmints.com/screenshots/frames.png",
       "https://farcastmints.com/screenshots/social.png"
     ],
     "primaryCategory": "finance",
-    "tags": ["nft", "marketplace", "base", "defi", "trading"],
+    "tags": ["nft", "marketplace", "base", "defi", "trading", "rewards", "xp"],
     "heroImageUrl": "https://farcastmints.com/og-image.svg",
-    "tagline": "Trade securely on Base",
-    "ogTitle": "FarcastSea - NFT Marketplace",
-    "ogDescription": "Trade NFTs securely with Farcaster frames and ERC20 gas payments on Base.",
+    "tagline": "Trade NFTs, Earn XP Rewards",
+    "ogTitle": "FarcastMints - NFT Marketplace with XP Rewards",
+    "ogDescription": "Trade NFTs on Base and earn XP rewards. Claim Genesis SBT for 5000 XP bonus!",
     "ogImageUrl": "https://farcastmints.com/og-image.svg",
     "noindex": false
   }
