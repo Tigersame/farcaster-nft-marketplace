@@ -1,13 +1,13 @@
 // Farcaster OAuth - Get current user profile
 import { NextRequest, NextResponse } from 'next/server';
-import cookie from 'cookie';
+import { parse } from 'cookie';
 
 // Prevent static export - this is a dynamic API route
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
   // Parse cookies from request
-  const cookies = cookie.parse(request.headers.get('cookie') || '');
+  const cookies = parse(request.headers.get('cookie') || '');
   const token = cookies.farcaster_token;
 
   if (!token) {
