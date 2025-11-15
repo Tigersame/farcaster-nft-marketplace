@@ -85,35 +85,6 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* Dark mode initialization script - runs BEFORE any rendering */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                try {
-                  // Get saved theme, default to dark
-                  let theme = localStorage.getItem('farcastsea-theme');
-                  
-                  // If no theme saved, set dark mode as default
-                  if (!theme) {
-                    theme = 'dark';
-                    localStorage.setItem('farcastsea-theme', 'dark');
-                  }
-                  
-                  // Apply dark class immediately if dark mode
-                  if (theme === 'dark') {
-                    document.documentElement.classList.add('dark');
-                  } else {
-                    document.documentElement.classList.remove('dark');
-                  }
-                } catch (e) {
-                  // Fallback to dark mode if localStorage fails
-                  document.documentElement.classList.add('dark');
-                }
-              })();
-            `,
-          }}
-        />
         {/* Preconnect to important domains */}
         <link rel="preconnect" href="https://base-mainnet.g.alchemy.com" />
         <link rel="preconnect" href="https://gateway.pinata.cloud" />

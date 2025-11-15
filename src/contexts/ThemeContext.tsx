@@ -15,16 +15,22 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
+    // Set mounted and initialize theme immediately
     setMounted(true)
+    
     // Check for saved theme preference or default to dark mode
     const savedTheme = localStorage.getItem('farcastsea-theme')
+    const prefersDark = savedTheme === 'dark' || !savedTheme
 
-    if (savedTheme) {
-      setIsDarkMode(savedTheme === 'dark')
-    } else {
-      // Default to dark mode and save it
+    if (prefersDark) {
       setIsDarkMode(true)
-      localStorage.setItem('farcastsea-theme', 'dark')
+      document.documentElement.classList.add('dark')
+      if (!savedTheme) {
+        localStorage.setItem('farcastsea-theme', 'dark')
+      }
+    } else {
+      setIsDarkMode(false)
+      document.documentElement.classList.remove('dark')
     }
   }, [])
 
