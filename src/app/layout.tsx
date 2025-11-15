@@ -8,6 +8,9 @@ import AdminDashboard from '@/components/AdminDashboard'
 import { WalletPrompt } from '@/components/WalletPrompt'
 import { NetworkSwitcher } from '@/components/NetworkSwitcher'
 import ProSidebar from '@/components/ProSidebar'
+import { MiniAppHeader } from '@/components/MiniAppHeader'
+import { MiniAppSplash } from '@/components/MiniAppSplash'
+import { MiniAppContainer } from '@/components/MiniAppContainer'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,6 +23,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
+  viewportFit: 'cover', // For safe area insets on mobile
 }
 
 export const metadata: Metadata = {
@@ -118,18 +122,27 @@ export default function RootLayout({
       <body className={`${inter.className} antialiased`} suppressHydrationWarning>
         <Providers>
           <AnalyticsProvider>
-            <div className="flex min-h-screen">
-              <ProSidebar />
-              <div className="flex-1 flex flex-col">
-                <ErudaProvider />
-                <AdminDashboard />
-                <WalletPrompt />
-                <NetworkSwitcher />
-                <main className="flex-1">
-                  {children}
-                </main>
+            {/* Mini App Splash Screen - shown on initial load in Farcaster */}
+            <MiniAppSplash />
+            
+            {/* Mini App Container - enforces proper sizing for Farcaster */}
+            <MiniAppContainer>
+              <div className="flex min-h-screen">
+                <ProSidebar />
+                <div className="flex-1 flex flex-col">
+                  {/* Mini App Header - shown when in Farcaster environment */}
+                  <MiniAppHeader />
+                  
+                  <ErudaProvider />
+                  <AdminDashboard />
+                  <WalletPrompt />
+                  <NetworkSwitcher />
+                  <main className="flex-1">
+                    {children}
+                  </main>
+                </div>
               </div>
-            </div>
+            </MiniAppContainer>
           </AnalyticsProvider>
         </Providers>
       </body>
