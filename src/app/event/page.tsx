@@ -114,9 +114,9 @@ export default function EventPage(){
       const permit = sigRes.data.signature;
       // call on-chain claim with signer (omitted)
       setTotalMinted(x => Math.min(maxSupply, x+1));
-      setUserXP(x => x + 100);
-      await axios.post(`${process.env.NEXT_PUBLIC_XP_API}/award-xp`, {address, amount:100, reason:'claim'});
-      toast.success('Claimed — +100 XP');
+      setUserXP(x => x + 5000);
+      await axios.post(`${process.env.NEXT_PUBLIC_XP_API}/award-xp`, {address, amount:5000, reason:'claim'});
+      toast.success('Claimed — +5000 XP');
     }catch(e){ console.error(e); toast.error('Claim failed'); }
     finally{ setLoading(false); }
   }
