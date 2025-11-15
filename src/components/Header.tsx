@@ -249,7 +249,7 @@ export function Header() {
           </div>
 
           {/* Center Search Bar */}
-          <div className="flex-1 max-w-xl mx-4 hidden lg:flex items-center gap-4">
+          <div className="flex-1 max-w-xl mx-4 hidden md:flex items-center gap-4">
             {/* Navigation Links */}
             <div className="flex items-center gap-2">
               <a
