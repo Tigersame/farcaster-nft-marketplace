@@ -70,14 +70,18 @@ export function Header() {
           {/* Logo */}
           <div className="flex items-center flex-shrink-0">
             <a href="/" className="flex items-center space-x-3 group">
-              <img 
-                src="/icon.svg" 
-                alt="FarcastMints Logo" 
-                className="w-10 h-10 transition-transform duration-200 group-hover:scale-110"
-              />
-              <span className="text-xl font-semibold text-white group-hover:text-[#5A61FF] transition-colors duration-200">
-                FarcastMints
-              </span>
+              {BRANDING.display.showIcon && (
+                <img 
+                  src={getLogoUrl('main')} 
+                  alt={`${BRANDING.name} Logo`} 
+                  className="w-10 h-10 transition-transform duration-200 group-hover:scale-110"
+                />
+              )}
+              {BRANDING.display.showText && (
+                <span className="text-xl font-semibold text-white group-hover:text-[#5A61FF] transition-colors duration-200">
+                  {BRANDING.name}
+                </span>
+              )}
             </a>
           </div>
 
@@ -378,27 +382,7 @@ export function Header() {
         </div>
       </div>
 
-      {/* Swap Portal Modal */}
-      {mounted && isSwapOpen && createPortal(
-        <div 
-          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 backdrop-blur-sm animate-fadeIn" 
-          onClick={() => setIsSwapOpen(false)}
-        >
-          <div className="relative w-full max-w-md mx-4" onClick={(e) => e.stopPropagation()}>
-            <button
-              onClick={() => setIsSwapOpen(false)}
-              className="absolute -top-12 right-0 p-2 text-white hover:bg-white/10 rounded-lg transition-colors"
-              aria-label="Close swap"
-            >
-              <FiX className="w-6 h-6" />
-            </button>
-            <div className="animate-slideUp">
-              <SwapEnhanced />
-            </div>
-          </div>
-        </div>,
-        document.body
-      )}
+
 
       {/* My Portfolio Modal - Shows Basename & Farcaster Profile */}
       {mounted && isPortfolioOpen && (

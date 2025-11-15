@@ -11,17 +11,18 @@ import { injected } from 'wagmi/connectors';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { BRANDING, getLogoUrl, getBrandColor } from '@/config/branding';
 
 // ------------------ THEME TOKENS (EDIT THESE) ------------------
-const BRAND_NAME = 'Farcastmint';
-const BRAND_PRIMARY = '#6E4BFF'; // main accent (purple)
-const BRAND_ACCENT = '#FF6BA6'; // secondary accent (pink)
-const BRAND_BG_1 = '#0F1724';
-const BRAND_BG_2 = '#0B1220';
-const BRAND_TEXT = '#E6EEF6';
-const BRAND_MUTED = '#9AA4B2';
+const BRAND_NAME = BRANDING.name;
+const BRAND_PRIMARY = BRANDING.colors.primary;
+const BRAND_ACCENT = BRANDING.colors.accent;
+const BRAND_BG_1 = BRANDING.colors.bg1;
+const BRAND_BG_2 = BRANDING.colors.bg2;
+const BRAND_TEXT = BRANDING.colors.text;
+const BRAND_MUTED = BRANDING.colors.muted;
 const BRAND_FONT = 'Inter'; // Google font name
-const BRAND_LOGO = 'https://cdn.example.com/farcastmint-logo.svg'; // replace with your logo CDN URL
+const BRAND_LOGO = getLogoUrl('main');
 // ----------------------------------------------------------------
 
 // Small helper to set CSS variables at runtime (helps Tailwind JIT theming)
@@ -39,24 +40,16 @@ function useApplyTheme() {
 }
 
 function Logo({size = 40}){
-  // Fallback inline SVG if logo URL is not provided
-  if(!BRAND_LOGO || BRAND_LOGO.includes('example.com')){
-    return (
-      <div style={{width:size, height:size}} className="rounded-2xl bg-gradient-to-tr" aria-hidden>
-        <svg width={size} height={size} viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="48" height="48" rx="10" fill="url(#g)" />
-          <defs>
-            <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
-              <stop offset="0" stopColor={BRAND_PRIMARY} />
-              <stop offset="1" stopColor={BRAND_ACCENT} />
-            </linearGradient>
-          </defs>
-          <text x="50%" y="54%" textAnchor="middle" fontFamily={BRAND_FONT} fontSize="18" fill="#fff" fontWeight="700">FM</text>
-        </svg>
-      </div>
-    );
-  }
-  return <img src={BRAND_LOGO} alt={`${BRAND_NAME} logo`} width={size} height={size} className="rounded-2xl"/>;
+  // Always use the configured logo from branding
+  return (
+    <img 
+      src={BRAND_LOGO} 
+      alt={`${BRAND_NAME} logo`} 
+      width={size} 
+      height={size} 
+      className="rounded-lg"
+    />
+  );
 }
 
 // Small UI components (themable)

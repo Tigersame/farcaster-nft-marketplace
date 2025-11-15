@@ -5,6 +5,7 @@ import Link from "next/link"
 import { useRouter, usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { useAccount } from "wagmi"
+import { BRANDING, getLogoUrl } from "@/config/branding"
 
 // Icon components
 function HomeIcon(){ return (<svg className="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" stroke="currentColor" strokeWidth="1.2"/></svg>) }
@@ -94,16 +95,17 @@ export default function ProSidebar({
       {/* Header */}
       <div className="px-4 py-4 flex items-center justify-between border-b border-white/5">
         <div className="flex items-center gap-3">
-          <div
-            className="w-9 h-9 rounded-full bg-gradient-to-br from-purple-600 to-indigo-500 flex items-center justify-center text-white font-semibold flex-shrink-0"
-            aria-hidden
-          >
-            F
-          </div>
+          {BRANDING.display.showIcon && (
+            <img
+              src={getLogoUrl('main')}
+              alt={`${BRANDING.name} Logo`}
+              className="w-9 h-9 rounded-lg flex-shrink-0"
+            />
+          )}
           {!collapsed && (
             <div>
-              <div className="text-lg font-semibold leading-tight">FarcastMints</div>
-              <div className="text-xs text-white/60">NFT Marketplace</div>
+              <div className="text-lg font-semibold leading-tight">{BRANDING.name}</div>
+              <div className="text-xs text-white/60">{BRANDING.tagline}</div>
             </div>
           )}
         </div>
