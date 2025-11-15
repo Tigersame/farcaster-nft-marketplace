@@ -253,6 +253,18 @@ export function Header() {
             {/* Navigation Links */}
             <div className="flex items-center gap-2">
               <a
+                href="/launch"
+                className="px-4 py-2 rounded-full text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-all whitespace-nowrap"
+              >
+                🚀 Launch Event
+              </a>
+              <a
+                href="/genesis"
+                className="px-4 py-2 rounded-full text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-all whitespace-nowrap"
+              >
+                🏆 Genesis SBT
+              </a>
+              <a
                 href="/events"
                 className="px-4 py-2 rounded-full text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-all whitespace-nowrap"
               >
@@ -413,6 +425,32 @@ export function Header() {
             className="fixed top-16 right-0 bottom-0 w-72 bg-white dark:bg-gray-900 border-l border-gray-200 dark:border-gray-800 shadow-2xl z-40 lg:hidden overflow-y-auto"
           >
             <nav className="p-6 space-y-2">
+              {/* Launch Event Link */}
+              <a
+                href="/launch"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:text-purple-600 dark:hover:text-purple-400 transition-all group"
+              >
+                <span className="text-2xl">🚀</span>
+                <div>
+                  <div className="font-semibold">Launch Event</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-400">Earn XP & rewards</div>
+                </div>
+              </a>
+
+              {/* Genesis SBT Link */}
+              <a
+                href="/genesis"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-yellow-50 dark:hover:bg-yellow-900/20 hover:text-yellow-600 dark:hover:text-yellow-400 transition-all group"
+              >
+                <span className="text-2xl">🏆</span>
+                <div>
+                  <div className="font-semibold">Genesis SBT</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-400">Claim exclusive NFT</div>
+                </div>
+              </a>
+
               {/* Events Link */}
               <a
                 href="/events"
@@ -430,9 +468,9 @@ export function Header() {
               <a
                 href="/leaderboard"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:text-purple-600 dark:hover:text-purple-400 transition-all group"
+                className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-green-50 dark:hover:bg-green-900/20 hover:text-green-600 dark:hover:text-green-400 transition-all group"
               >
-                <span className="text-2xl">🏆</span>
+                <span className="text-2xl">📈</span>
                 <div>
                   <div className="font-semibold">Leaderboard</div>
                   <div className="text-xs text-gray-500 dark:text-gray-400">Top users by XP</div>
