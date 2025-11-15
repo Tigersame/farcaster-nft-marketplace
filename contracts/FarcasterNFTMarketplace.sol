@@ -46,14 +46,35 @@ contract FarcasterNFTMarketplace is ERC721URIStorage, ReentrancyGuard, Ownable, 
     mapping(uint256 => NFTMetadata) public nftMetadata;
     mapping(address => uint256) public pendingWithdrawals;
     
-    // Events
-    event NFTMinted(uint256 indexed tokenId, address indexed creator, string metadataURI);
-    event NFTListed(uint256 indexed tokenId, address indexed seller, uint256 price);
-    event NFTSold(uint256 indexed tokenId, address indexed buyer, address indexed seller, uint256 price);
-    event ListingCancelled(uint256 indexed tokenId, address indexed seller);
-    event PriceUpdated(uint256 indexed tokenId, uint256 oldPrice, uint256 newPrice);
+    // Offer system
+    struct Offer {
+        address offeror;
+        uint256 amount;
+        uint256 expiresAt;
+        bool isActive;
+    }
+    mapping(uint256 => Offer[]) public tokenOffers;
+    
+    // Social tracking (off-chain indexed, on-chain logged)
+    mapping(uint256 => uint256) public favoriteCounts;
+    mapping(uint256 => mapping(address => bool)) public hasFavorited;
+    
+    // Events - Enhanced for Mini App notifications
+    event NFTMinted(uint256 indexed tokenId, address indexed creator, string metadataURI, uint256 timestamp);
+    event NFTListed(uint256 indexed tokenId, address indexed seller, uint256 price, uint256 timestamp);
+    event NFTSold(uint256 indexed tokenId, address indexed buyer, address indexed seller, uint256 price, uint256 timestamp);
+    event ListingCancelled(uint256 indexed tokenId, address indexed seller, uint256 timestamp);
+    event PriceUpdated(uint256 indexed tokenId, uint256 oldPrice, uint256 newPrice, uint256 timestamp);
     event RoyaltyPaid(uint256 indexed tokenId, address indexed creator, uint256 amount);
     event PlatformFeeUpdated(uint256 oldFee, uint256 newFee);
+    
+    // New events for trading and social features
+    event NFTTraded(uint256 indexed fromTokenId, uint256 indexed toTokenId, address indexed trader, address counterparty, uint256 timestamp);
+    event OfferMade(uint256 indexed tokenId, address indexed offeror, uint256 offerAmount, uint256 timestamp);
+    event OfferAccepted(uint256 indexed tokenId, address indexed seller, address indexed buyer, uint256 offerAmount, uint256 timestamp);
+    event OfferRejected(uint256 indexed tokenId, address indexed seller, address indexed offeror, uint256 timestamp);
+    event NFTFavorited(uint256 indexed tokenId, address indexed user, uint256 timestamp);
+    event NFTShared(uint256 indexed tokenId, address indexed sharer, string platform, uint256 timestamp);
     
     constructor() ERC721("Farcaster NFT", "FNFT") Ownable(msg.sender) {}
     
@@ -82,7 +103,7 @@ contract FarcasterNFTMarketplace is ERC721URIStorage, ReentrancyGuard, Ownable, 
             mintedAt: block.timestamp
         });
         
-        emit NFTMinted(newTokenId, msg.sender, metadataURI);
+        emit NFTMinted(newTokenId, msg.sender, metadataURI, block.timestamp);
         
         return newTokenId;
     }
@@ -110,7 +131,7 @@ contract FarcasterNFTMarketplace is ERC721URIStorage, ReentrancyGuard, Ownable, 
             listedAt: block.timestamp
         });
         
-        emit NFTListed(tokenId, msg.sender, price);
+        emit NFTListed(tokenId, msg.sender, price, block.timestamp);
     }
     
     /**
@@ -149,7 +170,7 @@ contract FarcasterNFTMarketplace is ERC721URIStorage, ReentrancyGuard, Ownable, 
             payable(msg.sender).transfer(msg.value - listing.price);
         }
         
-        emit NFTSold(tokenId, msg.sender, listing.seller, listing.price);
+        emit NFTSold(tokenId, msg.sender, listing.seller, listing.price, block.timestamp);
     }
     
     /**
@@ -166,7 +187,7 @@ contract FarcasterNFTMarketplace is ERC721URIStorage, ReentrancyGuard, Ownable, 
         // Return NFT to seller
         _transfer(address(this), msg.sender, tokenId);
         
-        emit ListingCancelled(tokenId, msg.sender);
+        emit ListingCancelled(tokenId, msg.sender, block.timestamp);
     }
     
     /**
@@ -184,7 +205,7 @@ contract FarcasterNFTMarketplace is ERC721URIStorage, ReentrancyGuard, Ownable, 
         uint256 oldPrice = listing.price;
         listings[tokenId].price = newPrice;
         
-        emit PriceUpdated(tokenId, oldPrice, newPrice);
+        emit PriceUpdated(tokenId, oldPrice, newPrice, block.timestamp);
     }
     
     /**
@@ -287,5 +308,219 @@ contract FarcasterNFTMarketplace is ERC721URIStorage, ReentrancyGuard, Ownable, 
      */
     function unpause() external onlyOwner {
         _unpause();
+    }
+    
+    // ========================================================================
+    // OFFER SYSTEM
+    // ========================================================================
+    
+    /**
+     * @dev Make an offer on an NFT
+     * @param tokenId Token ID to make offer on
+     * @param expiresIn Seconds until offer expires
+     */
+    function makeOffer(uint256 tokenId, uint256 expiresIn) public payable whenNotPaused {
+        require(tokenId > 0 && tokenId < _nextTokenId, "Token does not exist");
+        require(msg.value > 0, "Offer amount must be greater than 0");
+        require(expiresIn >= 3600, "Offer must last at least 1 hour"); // Minimum 1 hour
+        require(expiresIn <= 30 days, "Offer cannot last more than 30 days");
+        require(ownerOf(tokenId) != msg.sender, "Cannot offer on own NFT");
+        
+        tokenOffers[tokenId].push(Offer({
+            offeror: msg.sender,
+            amount: msg.value,
+            expiresAt: block.timestamp + expiresIn,
+            isActive: true
+        }));
+        
+        emit OfferMade(tokenId, msg.sender, msg.value, block.timestamp);
+    }
+    
+    /**
+     * @dev Accept an offer on your NFT
+     * @param tokenId Token ID
+     * @param offerIndex Index of the offer in the array
+     */
+    function acceptOffer(uint256 tokenId, uint256 offerIndex) public nonReentrant whenNotPaused {
+        require(ownerOf(tokenId) == msg.sender, "Not token owner");
+        require(offerIndex < tokenOffers[tokenId].length, "Invalid offer index");
+        
+        Offer storage offer = tokenOffers[tokenId][offerIndex];
+        require(offer.isActive, "Offer not active");
+        require(block.timestamp <= offer.expiresAt, "Offer expired");
+        
+        uint256 offerAmount = offer.amount;
+        address offeror = offer.offeror;
+        
+        // Calculate fees
+        uint256 platformFeeAmount = (offerAmount * platformFee) / FEE_DENOMINATOR;
+        uint256 royaltyAmount = (offerAmount * nftMetadata[tokenId].royaltyPercentage) / FEE_DENOMINATOR;
+        uint256 sellerAmount = offerAmount - platformFeeAmount - royaltyAmount;
+        
+        // Mark offer as inactive
+        offer.isActive = false;
+        
+        // If NFT is listed, delist it
+        if (listings[tokenId].isActive) {
+            listings[tokenId].isActive = false;
+        }
+        
+        // Update balances
+        pendingWithdrawals[msg.sender] += sellerAmount;
+        pendingWithdrawals[owner()] += platformFeeAmount;
+        
+        if (royaltyAmount > 0) {
+            address creator = nftMetadata[tokenId].creator;
+            pendingWithdrawals[creator] += royaltyAmount;
+            emit RoyaltyPaid(tokenId, creator, royaltyAmount);
+        }
+        
+        // Transfer NFT (from owner or from marketplace if listed)
+        address currentOwner = ownerOf(tokenId);
+        if (currentOwner == address(this)) {
+            _transfer(address(this), offeror, tokenId);
+        } else {
+            _transfer(msg.sender, offeror, tokenId);
+        }
+        
+        emit OfferAccepted(tokenId, msg.sender, offeror, offerAmount, block.timestamp);
+    }
+    
+    /**
+     * @dev Cancel your own offer
+     * @param tokenId Token ID
+     * @param offerIndex Index of the offer
+     */
+    function cancelOffer(uint256 tokenId, uint256 offerIndex) public nonReentrant {
+        require(offerIndex < tokenOffers[tokenId].length, "Invalid offer index");
+        
+        Offer storage offer = tokenOffers[tokenId][offerIndex];
+        require(offer.offeror == msg.sender, "Not your offer");
+        require(offer.isActive, "Offer not active");
+        
+        uint256 refundAmount = offer.amount;
+        offer.isActive = false;
+        
+        // Refund the offer amount
+        payable(msg.sender).transfer(refundAmount);
+        
+        emit OfferRejected(tokenId, ownerOf(tokenId), msg.sender, block.timestamp);
+    }
+    
+    /**
+     * @dev Reject an offer (NFT owner only)
+     * @param tokenId Token ID
+     * @param offerIndex Index of the offer
+     */
+    function rejectOffer(uint256 tokenId, uint256 offerIndex) public nonReentrant {
+        require(ownerOf(tokenId) == msg.sender, "Not token owner");
+        require(offerIndex < tokenOffers[tokenId].length, "Invalid offer index");
+        
+        Offer storage offer = tokenOffers[tokenId][offerIndex];
+        require(offer.isActive, "Offer not active");
+        
+        address offeror = offer.offeror;
+        uint256 refundAmount = offer.amount;
+        offer.isActive = false;
+        
+        // Refund the offeror
+        payable(offeror).transfer(refundAmount);
+        
+        emit OfferRejected(tokenId, msg.sender, offeror, block.timestamp);
+    }
+    
+    /**
+     * @dev Get all offers for a token
+     * @param tokenId Token ID
+     */
+    function getOffers(uint256 tokenId) public view returns (Offer[] memory) {
+        return tokenOffers[tokenId];
+    }
+    
+    /**
+     * @dev Get active offers for a token
+     * @param tokenId Token ID
+     */
+    function getActiveOffers(uint256 tokenId) public view returns (Offer[] memory) {
+        Offer[] memory allOffers = tokenOffers[tokenId];
+        uint256 activeCount = 0;
+        
+        // Count active offers
+        for (uint256 i = 0; i < allOffers.length; i++) {
+            if (allOffers[i].isActive && block.timestamp <= allOffers[i].expiresAt) {
+                activeCount++;
+            }
+        }
+        
+        // Create array of active offers
+        Offer[] memory activeOffers = new Offer[](activeCount);
+        uint256 index = 0;
+        
+        for (uint256 i = 0; i < allOffers.length; i++) {
+            if (allOffers[i].isActive && block.timestamp <= allOffers[i].expiresAt) {
+                activeOffers[index] = allOffers[i];
+                index++;
+            }
+        }
+        
+        return activeOffers;
+    }
+    
+    // ========================================================================
+    // SOCIAL FEATURES (for Mini App integration)
+    // ========================================================================
+    
+    /**
+     * @dev Favorite/like an NFT (gas-efficient social feature)
+     * @param tokenId Token ID to favorite
+     */
+    function favoriteNFT(uint256 tokenId) public {
+        require(tokenId > 0 && tokenId < _nextTokenId, "Token does not exist");
+        require(!hasFavorited[tokenId][msg.sender], "Already favorited");
+        
+        hasFavorited[tokenId][msg.sender] = true;
+        favoriteCounts[tokenId]++;
+        
+        emit NFTFavorited(tokenId, msg.sender, block.timestamp);
+    }
+    
+    /**
+     * @dev Unfavorite an NFT
+     * @param tokenId Token ID to unfavorite
+     */
+    function unfavoriteNFT(uint256 tokenId) public {
+        require(hasFavorited[tokenId][msg.sender], "Not favorited");
+        
+        hasFavorited[tokenId][msg.sender] = false;
+        favoriteCounts[tokenId]--;
+    }
+    
+    /**
+     * @dev Log a share event (for analytics and notifications)
+     * @param tokenId Token ID being shared
+     * @param platform Platform name (e.g., "farcaster", "twitter")
+     */
+    function shareNFT(uint256 tokenId, string memory platform) public {
+        require(tokenId > 0 && tokenId < _nextTokenId, "Token does not exist");
+        require(bytes(platform).length > 0 && bytes(platform).length <= 32, "Invalid platform");
+        
+        emit NFTShared(tokenId, msg.sender, platform, block.timestamp);
+    }
+    
+    /**
+     * @dev Get favorite count for an NFT
+     * @param tokenId Token ID
+     */
+    function getFavoriteCount(uint256 tokenId) public view returns (uint256) {
+        return favoriteCounts[tokenId];
+    }
+    
+    /**
+     * @dev Check if user has favorited an NFT
+     * @param tokenId Token ID
+     * @param user User address
+     */
+    function hasUserFavorited(uint256 tokenId, address user) public view returns (bool) {
+        return hasFavorited[tokenId][user];
     }
 }
