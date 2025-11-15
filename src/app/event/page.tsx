@@ -7,7 +7,7 @@ import React, {useEffect, useState} from 'react';
 import {motion} from 'framer-motion';
 import clsx from 'clsx';
 import { useAccount, useConnect, useDisconnect } from 'wagmi';
-import { InjectedConnector } from 'wagmi/connectors/injected';
+import { injected } from 'wagmi/connectors';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -87,13 +87,13 @@ export default function EventPage(){
   useApplyTheme();
 
   const { address, isConnected } = useAccount();
-  const { connect } = useConnect({ connector: new InjectedConnector() });
+  const { connect } = useConnect();
   const { disconnect } = useDisconnect();
 
   const [totalMinted, setTotalMinted] = useState(0);
   const [maxSupply] = useState(20000);
   const [userXP, setUserXP] = useState(0);
-  const [globalXP] = useState(800_000_000);
+  const [globalXP] = useState(Infinity); // Unlimited XP pool
   const [loading, setLoading] = useState(false);
   const [showConvertModal, setShowConvertModal] = useState(false);
   const [leaderboard, setLeaderboard] = useState<Array<{rank: number, address: string, xp: number}>>([]);
@@ -171,7 +171,7 @@ export default function EventPage(){
                   <button onClick={()=>disconnect()} className="px-3 py-2 rounded-md text-sm" style={{background:'rgba(255,255,255,0.03)'}}>Disconnect</button>
                 </>
               ) : (
-                <button onClick={()=>connect()} className="px-4 py-2 rounded-md text-white text-sm" style={{background:`linear-gradient(90deg, ${BRAND_PRIMARY}, ${BRAND_ACCENT})`}}>Connect Wallet</button>
+                <button onClick={()=>connect({ connector: injected() })} className="px-4 py-2 rounded-md text-white text-sm" style={{background:`linear-gradient(90deg, ${BRAND_PRIMARY}, ${BRAND_ACCENT})`}}>Connect Wallet</button>
               )}
             </div>
           </div>
@@ -221,7 +221,7 @@ export default function EventPage(){
                       <IconSpark />
                       <div>
                         <div className="text-xs" style={{color:'var(--brand-muted)'}}>Event Pool</div>
-                        <div className="font-semibold" style={{color:BRAND_TEXT}}>{globalXP.toLocaleString()} XP</div>
+                        <div className="font-semibold" style={{color:BRAND_TEXT}}>∞ Unlimited XP</div>
                       </div>
                     </div>
                   </div>
