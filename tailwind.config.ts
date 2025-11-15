@@ -7,6 +7,31 @@ const config: Config = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  safelist: [
+    // Design system colors with opacity
+    'bg-[#0A0A0F]/40',
+    'bg-[#30E19F]/20',
+    'bg-[#30E19F]/30',
+    'bg-[#FFBB44]/20',
+    'bg-[#FFBB44]/30',
+    'bg-[#805BFF]/20',
+    'bg-[#805BFF]/30',
+    'text-[#5A61FF]',
+    'text-[#30E19F]',
+    'text-[#FFBB44]',
+    'text-[#805BFF]',
+    'border-[#30E19F]/30',
+    'border-[#FFBB44]/30',
+    'border-[#805BFF]/30',
+    'border-white/10',
+    // Shadows
+    'shadow-[0_0_15px_rgba(48,225,159,0.3)]',
+    'shadow-[0_0_15px_rgba(255,187,68,0.3)]',
+    'shadow-[0_0_15px_rgba(128,91,255,0.3)]',
+    // Backdrop blur
+    'backdrop-blur-lg',
+    'backdrop-blur-sm',
+  ],
   theme: {
     extend: {
       colors: {
