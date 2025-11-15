@@ -236,7 +236,7 @@ const DEFAULT_SETTINGS: MarketplaceSettings = {
   
   // Icon settings
   logoUrl: '/logo.png',
-  faviconUrl: '/favicon.ico',
+  faviconUrl: '/favicon.svg',
   customIcons: {},
   
   // Fee settings

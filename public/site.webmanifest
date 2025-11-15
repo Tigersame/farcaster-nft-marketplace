@@ -1,0 +1,25 @@
+{
+  "name": "FarcastMints",
+  "short_name": "FarcastMints",
+  "description": "NFT marketplace on Base with Farcaster integration",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "32x32",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/favicon.ico",
+      "sizes": "32x32",
+      "type": "image/x-icon"
+    }
+  ],
+  "theme_color": "#0f1f3d",
+  "background_color": "#0f1f3d",
+  "display": "standalone"
+}

@@ -59,7 +59,7 @@ export function NFTPurchaseModal({
   const transactionMetadata = {
     description: TRANSACTION_DESCRIPTIONS.buyNFT(nftName, nftPrice),
     hostname: 'farcastmints.com',
-    faviconUrl: '/favicon.ico',
+    faviconUrl: '/favicon.svg',
     title: 'FarcasterSea NFT Marketplace',
   };
 

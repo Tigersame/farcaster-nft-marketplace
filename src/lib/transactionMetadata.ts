@@ -17,7 +17,7 @@ export function getTransactionMetadata(description: string): TransactionMetadata
   return {
     description,
     hostname: "farcastmints.com",
-    faviconUrl: "https://farcastmints.com/favicon.ico",
+    faviconUrl: "https://farcastmints.com/favicon.svg",
     title: "FarcastMints NFT Marketplace"
   };
 }
