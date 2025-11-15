@@ -7,12 +7,12 @@
   "baseBuilder": {
     "ownerAddress": "0xEaFE5088BCd7eb27fa1e4AA417a55eD5ea2dab8B"
   },
-  "miniapp": {
+  "frame": {
     "version": "1",
     "name": "FarcastMints",
     "homeUrl": "https://farcastmints.com",
-    "iconUrl": "https://farcastmints.com/icon.svg",
-    "splashImageUrl": "https://farcastmints.com/splash.svg",
+    "iconUrl": "https://farcastmints.com/icon.png",
+    "splashImageUrl": "https://farcastmints.com/splash.png",
     "splashBackgroundColor": "#1a1a2e",
     "webhookUrl": "https://farcastmints.com/api/farcaster/webhook",
     "subtitle": "NFT Marketplace with XP Rewards",
@@ -23,12 +23,12 @@
       "https://farcastmints.com/screenshots/social.png"
     ],
     "primaryCategory": "finance",
-    "tags": ["nft", "marketplace", "base", "defi", "trading", "rewards", "xp"],
-    "heroImageUrl": "https://farcastmints.com/og-image.svg",
+    "tags": ["nft", "marketplace", "base", "defi", "trading"],
+    "heroImageUrl": "https://farcastmints.com/hero.png",
     "tagline": "Trade NFTs, Earn XP Rewards",
-    "ogTitle": "FarcastMints - NFT Marketplace with XP Rewards",
+    "ogTitle": "FarcastMints - NFT Marketplace",
     "ogDescription": "Trade NFTs on Base and earn XP rewards. Claim Genesis SBT for 5000 XP bonus!",
-    "ogImageUrl": "https://farcastmints.com/og-image.svg",
+    "ogImageUrl": "https://farcastmints.com/og-image.png",
     "noindex": false
   }
 }

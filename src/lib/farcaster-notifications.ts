@@ -1,127 +1,180 @@
 /**
  * Farcaster Mini App Notifications Service
  * Send notifications to users who have installed your Mini App
+ * 
+ * Follows the Mini App specification:
+ * https://miniapps.farcaster.xyz/docs/specification#notifications
  */
 
-interface NotificationData {
-  title: string
-  body: string
-  targetUrl?: string
-  iconUrl?: string
+interface NotificationPayload {
+  notificationId: string // Max 128 chars - combined with FID for idempotency
+  title: string // Max 32 chars
+  body: string // Max 128 chars
+  targetUrl: string // Max 1024 chars - must be same domain as Mini App
+  tokens: string[] // Max 100 tokens per request
+}
+
+interface NotificationResponse {
+  successfulTokens: string[]
+  invalidTokens: string[] // Tokens to never use again
+  rateLimitedTokens: string[] // Tokens to retry later
 }
 
 export class FarcasterNotifications {
-  private apiKey: string
-  private apiUrl: string
-
-  constructor() {
-    this.apiKey = process.env.FARCASTER_API_KEY || ''
-    this.apiUrl = 'https://api.farcaster.xyz/v1'
-  }
-
   /**
-   * Send notification to a specific user
+   * Send notification to users via their notification tokens
+   * 
+   * @param notificationUrl - URL provided by Farcaster client (from webhook)
+   * @param payload - Notification data
+   * @returns Response indicating success/failure per token
    */
-  async sendNotification(fid: number, notification: NotificationData) {
-    if (!this.apiKey) {
-      console.warn('FARCASTER_API_KEY not configured - notifications disabled')
-      return false
-    }
-
+  async sendNotification(
+    notificationUrl: string,
+    payload: NotificationPayload
+  ): Promise<NotificationResponse | null> {
     try {
-      const response = await fetch(`${this.apiUrl}/notifications`, {
+      // Validate payload
+      if (payload.notificationId.length > 128) {
+        throw new Error('notificationId must be max 128 characters')
+      }
+      if (payload.title.length > 32) {
+        throw new Error('title must be max 32 characters')
+      }
+      if (payload.body.length > 128) {
+        throw new Error('body must be max 128 characters')
+      }
+      if (payload.targetUrl.length > 1024) {
+        throw new Error('targetUrl must be max 1024 characters')
+      }
+      if (payload.tokens.length > 100) {
+        throw new Error('max 100 tokens per request')
+      }
+
+      const response = await fetch(notificationUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.apiKey}`,
         },
-        body: JSON.stringify({
-          fid,
-          ...notification,
-        }),
+        body: JSON.stringify(payload),
       })
 
       if (!response.ok) {
         throw new Error(`Notification API error: ${response.statusText}`)
       }
 
-      console.log(`Notification sent to FID ${fid}:`, notification.title)
-      return true
+      const result: NotificationResponse = await response.json()
+      
+      console.log('Notification sent:', {
+        successful: result.successfulTokens.length,
+        invalid: result.invalidTokens.length,
+        rateLimited: result.rateLimitedTokens.length
+      })
+
+      return result
     } catch (error) {
       console.error('Failed to send notification:', error)
-      return false
+      return null
     }
   }
 
   /**
-   * Send notification to multiple users
+   * Helper methods for common notification types
+   * These generate notification payloads - you need to provide tokens from your database
    */
-  async sendBulkNotifications(fids: number[], notification: NotificationData) {
-    const results = await Promise.allSettled(
-      fids.map(fid => this.sendNotification(fid, notification))
-    )
-
-    const successful = results.filter(r => r.status === 'fulfilled').length
-    console.log(`Sent ${successful}/${fids.length} notifications`)
-    
-    return successful
-  }
 
   /**
-   * NFT Purchase Notification
+   * Create NFT Purchase notification payload
    */
-  async notifyNFTPurchase(sellerFid: number, nftName: string, price: string) {
-    return this.sendNotification(sellerFid, {
+  createNFTPurchaseNotification(nftName: string, price: string): Omit<NotificationPayload, 'tokens'> {
+    return {
+      notificationId: `nft-purchase-${Date.now()}`,
       title: '🎉 NFT Sold!',
-      body: `Your "${nftName}" sold for ${price} ETH`,
+      body: `Your "${nftName}" sold for ${price} ETH`.substring(0, 128),
       targetUrl: 'https://farcastmints.com/my-nfts',
-      iconUrl: 'https://farcastmints.com/icon.svg',
-    })
+    }
   }
 
   /**
-   * XP Milestone Notification
+   * Create XP Milestone notification payload
    */
-  async notifyXPMilestone(fid: number, xp: number, rank: number) {
-    return this.sendNotification(fid, {
-      title: '⭐ XP Milestone Reached!',
-      body: `You've earned ${xp.toLocaleString()} XP! Rank #${rank}`,
+  createXPMilestoneNotification(xp: number, rank: number): Omit<NotificationPayload, 'tokens'> {
+    return {
+      notificationId: `xp-milestone-${xp}`,
+      title: '⭐ XP Milestone!',
+      body: `You earned ${xp.toLocaleString()} XP! Rank #${rank}`.substring(0, 128),
       targetUrl: 'https://farcastmints.com/leaderboard',
-      iconUrl: 'https://farcastmints.com/icon.svg',
-    })
+    }
   }
 
   /**
-   * Genesis SBT Claim Reminder
+   * Create Genesis SBT Claim notification payload
    */
-  async notifyGenesisClaim(fid: number) {
-    return this.sendNotification(fid, {
-      title: '🏆 Claim Your Genesis SBT!',
-      body: 'Get 5000 XP bonus - Limited to 20,000 claims',
+  createGenesisClaimNotification(): Omit<NotificationPayload, 'tokens'> {
+    return {
+      notificationId: 'genesis-claim-reminder',
+      title: '🏆 Claim Genesis SBT!',
+      body: 'Get 5000 XP bonus - Limited!'.substring(0, 128),
       targetUrl: 'https://farcastmints.com/event',
-      iconUrl: 'https://farcastmints.com/icon.svg',
-    })
+    }
   }
 
   /**
-   * NFT Offer Notification
+   * Create NFT Offer notification payload
    */
-  async notifyOffer(ownerFid: number, nftName: string, offerPrice: string) {
-    return this.sendNotification(ownerFid, {
-      title: '💰 New Offer on Your NFT',
-      body: `${offerPrice} ETH offer on "${nftName}"`,
+  createOfferNotification(nftName: string, offerPrice: string): Omit<NotificationPayload, 'tokens'> {
+    return {
+      notificationId: `offer-${Date.now()}`,
+      title: '💰 New Offer!',
+      body: `${offerPrice} ETH on "${nftName}"`.substring(0, 128),
       targetUrl: 'https://farcastmints.com/my-nfts',
-      iconUrl: 'https://farcastmints.com/icon.svg',
-    })
+    }
   }
 
   /**
-   * Daily XP Bonus Available
+   * Create Daily Bonus notification payload
    */
-  async notifyDailyBonus(fid: number) {
-    return this.sendNotification(fid, {
-      title: '🎁 Daily Bonus Available!',
-      body: 'Log in now to claim your 100 XP daily bonus',
+  createDailyBonusNotification(): Omit<NotificationPayload, 'tokens'> {
+    return {
+      notificationId: `daily-bonus-${new Date().toISOString().split('T')[0]}`,
+      title: '🎁 Daily Bonus!',
+      body: 'Claim your 100 XP daily bonus now'.substring(0, 128),
+      targetUrl: 'https://farcastmints.com',
+    }
+  }
+
+  /**
+   * Create Leaderboard Change notification payload
+   */
+  createLeaderboardNotification(oldRank: number, newRank: number): Omit<NotificationPayload, 'tokens'> {
+    const change = oldRank - newRank
+    const emoji = change > 0 ? '📈' : '📉'
+    return {
+      notificationId: `leaderboard-${Date.now()}`,
+      title: `${emoji} Leaderboard Update`,
+      body: `Rank changed: #${oldRank} → #${newRank}`.substring(0, 128),
+      targetUrl: 'https://farcastmints.com/leaderboard',
+    }
+  }
+}
+
+// Export singleton instance
+export const notifications = new FarcasterNotifications()
+
+/**
+ * Example usage:
+ * 
+ * // In your webhook handler, store tokens:
+ * const { notificationUrl, token } = event.notificationDetails
+ * await db.save({ fid, token, url: notificationUrl })
+ * 
+ * // Later, send notifications:
+ * const user = await db.findUser(fid)
+ * const notification = notifications.createNFTPurchaseNotification("Cool NFT", "2.5")
+ * await notifications.sendNotification(user.notificationUrl, {
+ *   ...notification,
+ *   tokens: [user.token]
+ * })
+ * /
       targetUrl: 'https://farcastmints.com/event',
       iconUrl: 'https://farcastmints.com/icon.svg',
     })
