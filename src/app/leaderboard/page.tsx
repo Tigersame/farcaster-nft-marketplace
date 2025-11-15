@@ -5,20 +5,33 @@ import { motion } from 'framer-motion'
 import { useAccount } from 'wagmi'
 
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'
+const XP_API = process.env.NEXT_PUBLIC_XP_API || 'http://localhost:3001'
 
 export default function LeaderboardPage() {
   const { address } = useAccount()
-  const [leaderboard, setLeaderboard] = useState([])
-  const [userRank, setUserRank] = useState(null)
+  const [leaderboard, setLeaderboard] = useState<any[]>([])
+  const [userRank, setUserRank] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState('all') // all, week, month
+  const [xpLeaderboard, setXpLeaderboard] = useState<any[]>([])
 
   useEffect(() => {
     fetchLeaderboard()
+    fetchXPLeaderboard()
     if (address) {
       fetchUserRank()
     }
   }, [address])
+
+  const fetchXPLeaderboard = async () => {
+    try {
+      const response = await fetch(`${XP_API}/leaderboard`)
+      const data = await response.json()
+      setXpLeaderboard(data.top || [])
+    } catch (error) {
+      console.error('Error fetching XP leaderboard:', error)
+    }
+  }
 
   const fetchLeaderboard = async () => {
     try {

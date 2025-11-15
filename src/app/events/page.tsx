@@ -5,16 +5,31 @@ import { motion } from 'framer-motion'
 import { useAccount } from 'wagmi'
 
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'
+const XP_API = process.env.NEXT_PUBLIC_XP_API || 'http://localhost:3001'
 
 export default function EventsPage() {
   const { address } = useAccount()
   const [events, setEvents] = useState([])
   const [filter, setFilter] = useState('all') // all, mine, sales, listings
   const [loading, setLoading] = useState(true)
+  const [userXP, setUserXP] = useState(0)
 
   useEffect(() => {
     fetchEvents()
+    if (address) {
+      fetchUserXP()
+    }
   }, [filter, address])
+
+  const fetchUserXP = async () => {
+    try {
+      const response = await fetch(`${XP_API}/user-xp?address=${address}`)
+      const data = await response.json()
+      setUserXP(data.xp || 0)
+    } catch (error) {
+      console.error('Error fetching user XP:', error)
+    }
+  }
 
   const fetchEvents = async () => {
     try {
@@ -41,9 +56,19 @@ export default function EventsPage() {
       case 'NFTListed':
         return '📝'
       case 'NFTSold':
-        return '💰'
+        return '💰 +100 XP'
       case 'NFTDelisted':
         return '🚫'
+      case 'NFTCreated':
+        return '🎨 +100 XP'
+      case 'Swap':
+        return '🔄 +100 XP'
+      case 'DailyLogin':
+        return '📅 +100 XP'
+      case 'Share':
+        return '📢 +100 XP'
+      case 'GenesisClaim':
+        return '🏆 +5000 XP'
       default:
         return '📦'
     }
