@@ -63,7 +63,7 @@ export function Header() {
   }
   
   return (
-    <header className="sticky top-0 z-50 backdrop-blur-lg bg-surface-black/40 border-b border-border-light h-16 transition-all duration-300">
+    <header className="sticky top-0 z-50 backdrop-blur-lg bg-[#0A0A0F]/40 border-b border-white/10 h-16 transition-all duration-300">
       <div className="w-full px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16 gap-4">
           {/* Logo */}
@@ -74,7 +74,7 @@ export function Header() {
                 alt="FarcastMints Logo" 
                 className="w-10 h-10 transition-transform duration-200 group-hover:scale-110"
               />
-              <span className="text-xl font-semibold text-text-primary group-hover:text-primary-500 transition-colors duration-200">
+              <span className="text-xl font-semibold text-white group-hover:text-[#5A61FF] transition-colors duration-200">
                 FarcastMints
               </span>
             </a>
@@ -85,10 +85,10 @@ export function Header() {
             {/* Network Badge - Interactive */}
             <motion.button
               onClick={handleSwitchNetwork}
-              className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium transition-all shadow-glow
+              className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium transition-all
                         ${isOnCorrectNetwork 
-                          ? 'bg-success/20 text-success border border-success/30 hover:bg-success/30' 
-                          : 'bg-warning/20 text-warning border border-warning/30 hover:bg-warning/30 hover:shadow-glow-large'
+                          ? 'bg-[#30E19F]/20 text-[#30E19F] border border-[#30E19F]/30 hover:bg-[#30E19F]/30 shadow-[0_0_15px_rgba(48,225,159,0.3)]' 
+                          : 'bg-[#FFBB44]/20 text-[#FFBB44] border border-[#FFBB44]/30 hover:bg-[#FFBB44]/30 shadow-[0_0_15px_rgba(255,187,68,0.3)]'
                         }`}
               whileHover={{ scale: 1.05, y: -1 }}
               whileTap={{ scale: 0.98 }}
@@ -112,7 +112,7 @@ export function Header() {
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium bg-secondary-500/20 text-secondary-500 border border-secondary-500/30 shadow-glow hover:bg-secondary-500/30 transition-all"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium bg-[#805BFF]/20 text-[#805BFF] border border-[#805BFF]/30 shadow-[0_0_15px_rgba(128,91,255,0.3)] hover:bg-[#805BFF]/30 transition-all"
                 >
                   {farcasterProfile.avatar && (
                     <img 
@@ -248,8 +248,25 @@ export function Header() {
           </div>
 
           {/* Center Search Bar */}
-          <div className="flex-1 max-w-xl mx-4 hidden lg:block">
-            <div className="relative">
+          <div className="flex-1 max-w-xl mx-4 hidden lg:flex items-center gap-4">
+            {/* Navigation Links */}
+            <div className="flex items-center gap-2">
+              <a
+                href="/events"
+                className="px-4 py-2 rounded-full text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-all whitespace-nowrap"
+              >
+                📊 Events
+              </a>
+              <a
+                href="/leaderboard"
+                className="px-4 py-2 rounded-full text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-all whitespace-nowrap"
+              >
+                🏆 Leaderboard
+              </a>
+            </div>
+
+            {/* Search Input */}
+            <div className="relative flex-1">
               <FiSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input
                 type="text"
