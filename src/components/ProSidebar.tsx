@@ -17,6 +17,7 @@ function LightningIcon(){ return (<svg className="w-4 h-4" viewBox="0 0 24 24" f
 function StackIcon(){ return (<svg className="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M3 7l9 5 9-5M3 12l9 5 9-5M3 17l9 5 9-5" stroke="currentColor" strokeWidth="1.2"/></svg>) }
 function StarIcon(){ return (<svg className="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" strokeWidth="1.2" fill="currentColor" fillOpacity="0.2"/></svg>) }
 function ArrowIcon(){ return (<svg className="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>) }
+function DiceIcon(){ return (<svg className="w-4 h-4" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="1.2"/><circle cx="8" cy="8" r="1" fill="currentColor"/><circle cx="16" cy="8" r="1" fill="currentColor"/><circle cx="12" cy="12" r="1" fill="currentColor"/><circle cx="8" cy="16" r="1" fill="currentColor"/><circle cx="16" cy="16" r="1" fill="currentColor"/></svg>) }
 
 const NAV = [
   { label: "Home", href: "/", icon: HomeIcon },
