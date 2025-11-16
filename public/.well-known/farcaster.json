@@ -7,7 +7,7 @@
   "baseBuilder": {
     "ownerAddress": "0xEaFE5088BCd7eb27fa1e4AA417a55eD5ea2dab8B"
   },
-  "frame": {
+  "miniapp": {
     "version": "1",
     "name": "FarcastMints",
     "homeUrl": "https://farcastmints.com",
