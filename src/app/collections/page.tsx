@@ -7,6 +7,7 @@ import { Footer } from '@/components/Footer'
 import NavigationBar from '@/components/NavigationBar'
 import { BASE_NFT_CONTRACTS } from '@/lib/nftContracts'
 import { FiCheckCircle, FiExternalLink, FiGlobe, FiTwitter } from 'react-icons/fi'
+import { EmbedMetaTags } from '@/components/EmbedMetaTags'
 
 export const dynamic = 'force-dynamic'
 
@@ -19,6 +20,13 @@ export default function CollectionsPage() {
 
   return (
     <div className="min-h-screen bg-[#0b0b0b]">
+      {/* Embed Metadata */}
+      <EmbedMetaTags
+        imageUrl="https://farcastmints.com/screenshots/marketplace.png"
+        buttonTitle="Browse Collections"
+        url="https://farcastmints.com/collections"
+      />
+      
       <NavigationBar title="Collections" />
       <Header />
 

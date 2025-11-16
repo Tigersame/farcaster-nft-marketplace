@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { BRANDING, getLogoUrl } from '@/config/branding'
 import { FiGrid, FiLayers, FiZap, FiShoppingBag } from 'react-icons/fi'
+import { EmbedMetaTags } from '@/components/EmbedMetaTags'
 
 export const dynamic = 'force-dynamic'
 
@@ -41,6 +42,13 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0b0b0b] via-[#1a1a2e] to-[#0b0b0b]">
+      {/* Embed Metadata */}
+      <EmbedMetaTags
+        imageUrl="https://farcastmints.com/og-image.png"
+        buttonTitle="Open App"
+        url="https://farcastmints.com"
+      />
+      
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-pink-500/10 blur-3xl"></div>

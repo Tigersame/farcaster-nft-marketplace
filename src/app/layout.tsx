@@ -73,6 +73,20 @@ export const metadata: Metadata = {
     'fc:frame': 'vNext',
     'fc:frame:image': 'https://farcastmints.com/og-image.svg',
     'fc:frame:button:1': 'Explore NFTs',
+    'fc:miniapp': JSON.stringify({
+      version: 'next',
+      imageUrl: 'https://farcastmints.com/og-image.png',
+      button: {
+        title: 'Open App',
+        action: {
+          type: 'launch_frame',
+          url: 'https://farcastmints.com',
+          name: 'FarcastMints',
+          splashImageUrl: 'https://farcastmints.com/splash.png',
+          splashBackgroundColor: '#0f1f3d'
+        }
+      }
+    }),
     'fc:frame:post_url': 'https://farcastmints.com/api/frames',
   },
 }
