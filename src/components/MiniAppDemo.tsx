@@ -101,7 +101,7 @@ export default function MiniAppDemo() {
 
                 <div>
                   <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Compose Cast</h4>
-                  <Button onClick={() => miniApp.composeCast('Hello from FarcastSea NFT Marketplace! 🌊')}>
+                  <Button onClick={() => miniApp.composeCast('Hello from FarcastMints NFT Marketplace! 🎨')}>
                     Compose Cast
                   </Button>
                 </div>

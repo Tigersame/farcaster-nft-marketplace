@@ -253,9 +253,9 @@ const DEFAULT_SETTINGS: MarketplaceSettings = {
   withdrawalSchedule: 'weekly' as const,
   
   // General settings
-  siteName: 'FarcastSea',
+  siteName: 'FarcastMints',
   siteDescription: 'The premier NFT marketplace for Farcaster community',
-  contactEmail: 'admin@farcastsea.com',
+  contactEmail: 'admin@farcastmints.com',
   socialLinks: {
     twitter: 'https://twitter.com/farcaster',
     discord: 'https://discord.gg/farcaster',

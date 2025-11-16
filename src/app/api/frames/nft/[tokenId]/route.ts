@@ -345,7 +345,7 @@ function generateFrameHtml(nft: NFT, action: 'view' | 'purchase' | 'success' | '
     <!DOCTYPE html>
     <html>
       <head>
-        <title>${nft.name} | FarcastSea</title>
+        <title>${nft.name} | FarcastMints</title>
         <meta property="fc:frame" content="vNext" />
         <meta property="fc:frame:image" content="${frameImage}" />
         <meta property="fc:frame:post_url" content="${postUrl}" />
@@ -367,7 +367,7 @@ function generateFrameHtml(nft: NFT, action: 'view' | 'purchase' | 'success' | '
             ${nft.ethPrice} ETH
           </div>
           <p style="margin-top: 20px; color: #9ca3af; font-size: 14px;">
-            View in <a href="${baseUrl}" style="color: #3b82f6;">FarcastSea</a>
+            View in <a href="${baseUrl}" style="color: #3b82f6;">FarcastMints</a>
           </p>
         </div>
       </body>

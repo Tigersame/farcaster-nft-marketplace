@@ -24,7 +24,7 @@ export function MiniAppActions() {
   const handleComposeCast = () => {
     if (isSDKLoaded) {
       triggerHaptic('light')
-      composeCast('Check out this NFT from FarcastSea! 🌊', ['https://farcaster-nft-marketplace.vercel.app'])
+      composeCast('Check out this NFT from FarcastMints! 🎨', ['https://farcaster-nft-marketplace.vercel.app'])
     } else {
       // Fallback for browser
       alert('📝 Compose Cast: This feature works in Farcaster Mini App')

@@ -43,7 +43,7 @@ function generateIconSVG(size: number) {
     </defs>
     <rect width="${size}" height="${size}" rx="${size * 0.15}" fill="url(#grad1)"/>
     <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="${size * 0.4}" font-weight="bold" fill="white" text-anchor="middle" dominant-baseline="central">⚡</text>
-    <text x="50%" y="75%" font-family="Arial, sans-serif" font-size="${size * 0.08}" fill="white" text-anchor="middle" dominant-baseline="central">FarcastSea</text>
+    <text x="50%" y="75%" font-family="Arial, sans-serif" font-size="${size * 0.08}" fill="white" text-anchor="middle" dominant-baseline="central">FarcastMints</text>
   </svg>`
 }
 
@@ -58,7 +58,7 @@ function generateSplashSVG() {
     </defs>
     <circle cx="195" cy="300" r="80" fill="url(#splashGrad)"/>
     <text x="195" y="310" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="white" text-anchor="middle">⚡</text>
-    <text x="195" y="450" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="white" text-anchor="middle">FarcastSea</text>
+    <text x="195" y="450" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="white" text-anchor="middle">FarcastMints</text>
     <text x="195" y="480" font-family="Arial, sans-serif" font-size="16" fill="#a855f7" text-anchor="middle">NFT Marketplace</text>
     <text x="195" y="550" font-family="Arial, sans-serif" font-size="14" fill="#9ca3af" text-anchor="middle">Secure • Fast • Social</text>
   </svg>`
@@ -74,7 +74,7 @@ function generateHeroSVG() {
       </linearGradient>
     </defs>
     <rect x="0" y="0" width="1200" height="630" fill="url(#heroGrad)"/>
-    <text x="600" y="250" font-family="Arial, sans-serif" font-size="64" font-weight="bold" fill="white" text-anchor="middle">🌊 FarcastSea</text>
+    <text x="600" y="250" font-family="Arial, sans-serif" font-size="64" font-weight="bold" fill="white" text-anchor="middle">🎨 FarcastMints</text>
     <text x="600" y="320" font-family="Arial, sans-serif" font-size="28" fill="white" text-anchor="middle">Secure NFT Marketplace on Base</text>
     <text x="600" y="380" font-family="Arial, sans-serif" font-size="20" fill="#e2e8f0" text-anchor="middle">✨ Farcaster Frames • 🔒 Hack-Proof • ⚡ ERC20 Gas Payments</text>
     <rect x="450" y="450" width="300" height="60" rx="30" fill="rgba(255,255,255,0.2)" stroke="white" stroke-width="2"/>
@@ -93,7 +93,7 @@ function generateOGImageSVG() {
       </linearGradient>
     </defs>
     <rect x="50" y="50" width="1100" height="530" rx="20" fill="url(#ogGrad)"/>
-    <text x="600" y="200" font-family="Arial, sans-serif" font-size="56" font-weight="bold" fill="white" text-anchor="middle">FarcastSea</text>
+    <text x="600" y="200" font-family="Arial, sans-serif" font-size="56" font-weight="bold" fill="white" text-anchor="middle">FarcastMints</text>
     <text x="600" y="280" font-family="Arial, sans-serif" font-size="32" fill="white" text-anchor="middle">Hack-Proof NFT Marketplace</text>
     <text x="600" y="350" font-family="Arial, sans-serif" font-size="24" fill="#e2e8f0" text-anchor="middle">🔒 Enterprise Security • ⚡ Base Network • 🎭 Farcaster Frames</text>
     <text x="600" y="450" font-family="Arial, sans-serif" font-size="20" fill="#cbd5e1" text-anchor="middle">Trade NFTs with innovative ERC20 gas payments</text>

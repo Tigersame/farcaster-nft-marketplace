@@ -19,14 +19,14 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     setMounted(true)
     
     // Check for saved theme preference or default to dark mode
-    const savedTheme = localStorage.getItem('farcastsea-theme')
+    const savedTheme = localStorage.getItem('farcastmints-theme')
     const prefersDark = savedTheme === 'dark' || !savedTheme
 
     if (prefersDark) {
       setIsDarkMode(true)
       document.documentElement.classList.add('dark')
       if (!savedTheme) {
-        localStorage.setItem('farcastsea-theme', 'dark')
+        localStorage.setItem('farcastmints-theme', 'dark')
       }
     } else {
       setIsDarkMode(false)
@@ -38,10 +38,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     // Update document class and save preference
     if (isDarkMode) {
       document.documentElement.classList.add('dark')
-      localStorage.setItem('farcastsea-theme', 'dark')
+      localStorage.setItem('farcastmints-theme', 'dark')
     } else {
       document.documentElement.classList.remove('dark')
-      localStorage.setItem('farcastsea-theme', 'light')
+      localStorage.setItem('farcastmints-theme', 'light')
     }
   }, [isDarkMode])
 

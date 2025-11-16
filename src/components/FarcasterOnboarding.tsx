@@ -26,7 +26,7 @@ export function FarcasterOnboarding({ onComplete, isConnected }: OnboardingProps
 
   const steps = [
     {
-      title: "hey, welcome to FarcastSea! 🖼️",
+      title: "hey, welcome to FarcastMints! 🖼️",
       subtitle: "i'm your guide to discovering, collecting, and trading nfts on base network.",
       content: [
         "• discover unique nfts: browse curated collections from farcaster creators",
