@@ -1,0 +1,20 @@
+﻿{
+  "accountAssociation": {
+    "header": "eyJmaWQiOjI3OTA1NSwidHlwZSI6ImN1c3RvZHkiLCJrZXkiOiIweGU3MzlmNzE5QzBBNTcxNUI3NThGRDY3NDFGQ0MzQzU0OEI3MDcxRjkifQ",
+    "payload": "eyJkb21haW4iOiJmYXJjYXN0bWludHMuY29tIn0",
+    "signature": "MHg4NjA2NzU1YmJiZTM3YjczYjczNmYzNzI3MWVkZDEwZTM2YThhMjcwMzgyZTQ5NmYzYmY3MzUxZDU3MDRjNWU5N2I4YjdkNjQ3YjI3ZjcwODQ3YWQ0YjI2YTYxMDY3NDcxOWY2YjdlMjNjYzFlMzYzZTNjOTFlNjM0OGQ4NDM5YjFi"
+  },
+  "baseBuilder": {
+    "ownerAddress": "0xEaFE5088BCd7eb27fa1e4AA417a55eD5ea2dab8B"
+  },
+  "miniapp": {
+    "version": "1",
+    "name": "FarcastMints",
+    "homeUrl": "https://farcastmints.com",
+    "imageUrl": "https://farcastmints.com/og-image.png",
+    "iconUrl": "https://farcastmints.com/icon.png",
+    "splashImageUrl": "https://farcastmints.com/splash.png",
+    "splashBackgroundColor": "#0f1f3d",
+    "webhookUrl": "https://farcastmints.com/api/miniapp/webhook"
+  }
+}
