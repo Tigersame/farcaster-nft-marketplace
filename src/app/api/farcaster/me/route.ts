@@ -11,7 +11,8 @@ export async function GET(request: NextRequest) {
   const token = cookies.farcaster_token;
 
   if (!token) {
-    return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
+    // Return null instead of 401 to indicate not logged in (not an error)
+    return NextResponse.json({ user: null }, { status: 200 });
   }
 
   try {

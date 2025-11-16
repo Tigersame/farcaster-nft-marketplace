@@ -14,6 +14,7 @@ import { MiniAppProvider } from '@/contexts/MiniAppContext'
 import '@rainbow-me/rainbowkit/styles.css'
 import '@coinbase/onchainkit/styles.css'
 
+// Create QueryClient outside component to prevent reinitialization
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
