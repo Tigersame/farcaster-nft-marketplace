@@ -1,7 +1,7 @@
 {
-  "name": "Farcast Mints",
-  "short_name": "Farcast Mints",
-  "description": "An NFT marketplace on Base with Farcaster integration",
+  "name": "FarcastMints",
+  "short_name": "FarcastMints",
+  "description": "NFT marketplace with Farcaster frames and social trading on Base",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0a1628",
