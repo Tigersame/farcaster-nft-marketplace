@@ -21,7 +21,6 @@ function DiceIcon(){ return (<svg className="w-4 h-4" viewBox="0 0 24 24" fill="
 
 const NAV = [
   { label: "Home", href: "/", icon: HomeIcon },
-  { label: "Marketplace", href: "/marketplace", icon: StoreIcon },
   { label: "Collections", href: "/collections", icon: GridIcon },
   { label: "Collection Pro", href: "/collection-pro", icon: LayersIcon },
   { label: "Create NFT", href: "/create", icon: PlusIcon },

@@ -129,14 +129,6 @@ export default function EventPage(){
 
   return (
     <>
-      <head>
-        <title>{BRAND_NAME} — Launch Event</title>
-        <meta name="description" content="Genesis SBT claim & XP event" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link href={`https://fonts.googleapis.com/css2?family=${encodeURIComponent(BRAND_FONT)}:wght@400;600;700&display=swap`} rel="stylesheet" />
-      </head>
-
       <div style={{background:`linear-gradient(180deg, ${BRAND_BG_1}, ${BRAND_BG_2})`, fontFamily: BRAND_FONT}} className="min-h-screen p-6 text-slate-100">
         <ToastContainer />
 

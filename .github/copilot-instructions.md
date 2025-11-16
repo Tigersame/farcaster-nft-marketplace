@@ -1,23 +1,29 @@
-# Farcaster NFT Marketplace - AI Coding Guidelines
+# FarcastMints NFT Marketplace - AI Coding Guidelines
 
 ## Project Overview
-A **Farcaster-native NFT marketplace** on **Base network** with interactive frames, XMTP chat, and social engagement. Built with **Next.js 14 (App Router) + TypeScript + TailwindCSS**.
+A **Farcaster MiniApp NFT marketplace** on **Base network** with gasless transactions, admin controls, and social engagement. Built with **Next.js 14 (App Router) + TypeScript + TailwindCSS + OnchainKit + Hardhat**.
 
-Key difference from typical marketplaces: **Farcaster Frames** enable NFT transactions directly in social feeds without leaving the Farcaster client.
+**Key differentiators**: Farcaster Frames for in-feed transactions, MiniApp SDK integration, ERC-4337 smart accounts with sponsored gas, and comprehensive admin system with role-based access control.
 
 ## Architecture Components
 
 ### Provider Stack (Critical - Order Matters!)
-`app/page.tsx` wraps components in this specific order:
+`src/app/page.tsx` wraps components in this specific order:
 ```tsx
 <ThemeProvider>              // Dark mode persistence (localStorage + system)
-  <NotificationProvider>      // Toast notifications + celebration effects
-    <WagmiProvider>           // Web3 hooks (defined in providers.tsx)
-      <QueryClientProvider>   // React Query for async state
-        <RainbowKitProvider>  // Wallet connection UI
+  <AdminProvider>             // Admin state + role-based access
+    <NotificationProvider>    // Toast notifications + celebration effects
+      <WagmiProvider>         // Web3 hooks (defined in providers.tsx)
+        <QueryClientProvider> // React Query for async state
+          <OnchainKitProvider chain={base}> // Basename resolution
+            <RainbowKitProvider>  // Wallet connection UI
 ```
 
-**Why it matters**: Theme must be outermost for dark mode on wallet modals. Notifications need access to theme context.
+**Why it matters**: 
+- ThemeProvider outermost enables dark mode on all nested modals
+- AdminProvider before notifications for admin-specific toasts
+- OnchainKitProvider wraps RainbowKit for Basename integration in wallet UI
+- Order affects context access - components can only use contexts above them
 
 ### Farcaster Frames API Routes
 All frame endpoints return **HTML with Open Graph meta tags** (not JSON):
