@@ -158,10 +158,3 @@ export async function GET() {
     message: 'Webhook endpoint is active'
   })
 }
-      'miniapp.install',
-      'miniapp.uninstall', 
-      'miniapp.open',
-      'notification.click'
-    ]
-  })
-}

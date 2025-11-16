@@ -572,7 +572,7 @@ export default function MarketplaceContent() {
         />
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-8">
         {/* Filter Bar */}
         {activeView === 'all' && mounted && (
           <div className="mb-6">
@@ -629,7 +629,7 @@ export default function MarketplaceContent() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
-                className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6"
+                className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4"
               >
                 {paginatedItems.map((item, index) => {
                   const nftData = {
@@ -821,9 +821,9 @@ export default function MarketplaceContent() {
             animate={{ opacity: 1, y: 0 }}
             className="max-w-6xl mx-auto"
           >
-            <div className="grid md:grid-cols-3 gap-6">
-              {/* Main Chat Interface - Takes 2 columns */}
-              <div className="md:col-span-2">
+            <div className="grid grid-cols-1 gap-4 sm:gap-6">
+              {/* Main Chat Interface */}
+              <div>
                 <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700">
                   <div className="flex items-center justify-between mb-6">
                     <div>
@@ -1002,8 +1002,8 @@ export default function MarketplaceContent() {
             animate={{ opacity: 1, y: 0 }}
             className="max-w-4xl mx-auto"
           >
-            <div className="bg-gray-800 rounded-2xl p-8 border border-gray-700">
-              <div className="grid md:grid-cols-2 gap-8">
+            <div className="bg-gray-800 rounded-2xl p-4 sm:p-6 md:p-8 border border-gray-700">
+              <div className="grid grid-cols-1 gap-6">
                 {/* Upload Area */}
                 <div>
                   <input
@@ -1355,10 +1355,10 @@ export default function MarketplaceContent() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+            className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4"
           >
-            <div className="col-span-full mb-6">
-              <h2 className="text-3xl font-bold text-white mb-2">🔥 Trending NFTs</h2>
+            <div className="col-span-full mb-4">
+              <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2">🔥 Trending NFTs</h2>
               <p className="text-gray-400">Hot NFTs right now</p>
             </div>
             {marketItems.slice(0, 4).map((item, index) => (
@@ -1392,7 +1392,7 @@ export default function MarketplaceContent() {
             animate={{ opacity: 1, y: 0 }}
           >
             <h2 className="text-3xl font-bold text-white mb-6">Collections</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               <div className="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-blue-500 transition-colors cursor-pointer">
                 <div className="text-4xl mb-4">🎨</div>
                 <h3 className="text-xl font-bold text-white mb-2">Art Collection</h3>
@@ -1419,7 +1419,7 @@ export default function MarketplaceContent() {
             animate={{ opacity: 1, y: 0 }}
           >
             <h2 className="text-3xl font-bold text-white mb-6">My Portfolio</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div className="grid grid-cols-1 gap-3 sm:gap-4 mb-6">
               <div className="bg-gray-800 rounded-xl p-6 border border-gray-700">
                 <p className="text-gray-400 text-sm mb-2">Total Value</p>
                 <p className="text-3xl font-bold text-white">{marketItems.reduce((sum, item) => sum + parseFloat(item.ethPrice), 0).toFixed(2)} ETH</p>
@@ -1433,7 +1433,7 @@ export default function MarketplaceContent() {
                 <p className="text-3xl font-bold text-white">{(marketItems.reduce((sum, item) => sum + parseFloat(item.ethPrice), 0) / marketItems.length).toFixed(2)} ETH</p>
               </div>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               {marketItems.map((item, index) => (
                 <NFTCardOptimized 
                   key={item.tokenId}
@@ -1482,10 +1482,10 @@ export default function MarketplaceContent() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+            className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4"
           >
-            <div className="col-span-full mb-6">
-              <h2 className="text-3xl font-bold text-white mb-2">❤️ Favorites</h2>
+            <div className="col-span-full mb-4">
+              <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2">❤️ Favorites</h2>
               <p className="text-gray-400">Your favorite NFTs</p>
             </div>
             {marketItems.slice(0, 3).map((item, index) => (
@@ -1537,7 +1537,7 @@ export default function MarketplaceContent() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+            className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4"
           >
             {marketItems.slice(0, 4).map((item, index) => (
               <motion.div
@@ -1569,7 +1569,7 @@ export default function MarketplaceContent() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-6">
               <div className="bg-gray-800 rounded-xl p-6 border border-gray-700">
                 <p className="text-gray-400 text-sm mb-2">Total Sales</p>
                 <p className="text-2xl font-bold text-white">124</p>

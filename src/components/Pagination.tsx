@@ -23,7 +23,7 @@ export default function Pagination({
   // Generate page numbers to display
   const getPageNumbers = () => {
     const pages: (number | string)[] = []
-    const maxVisible = 7 // Maximum number of page buttons to show
+    const maxVisible = typeof window !== 'undefined' && window.innerWidth < 500 ? 5 : 7 // Fewer pages on mobile
 
     if (totalPages <= maxVisible) {
       // Show all pages if total is small
@@ -62,10 +62,10 @@ export default function Pagination({
   const endItem = Math.min(currentPage * itemsPerPage, totalItems)
 
   return (
-    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 py-6 px-4">
-      {/* Items info */}
+    <div className="flex flex-col items-center justify-center gap-3 sm:gap-4 py-4 sm:py-6 px-2 sm:px-4">
+      {/* Items info - desktop */}
       {showItemsInfo && totalItems > 0 && (
-        <div className="text-sm text-gray-600 dark:text-gray-400">
+        <div className="hidden sm:block text-xs sm:text-sm text-gray-600 dark:text-gray-400">
           Showing <span className="font-semibold text-gray-900 dark:text-white">{startItem}</span> to{' '}
           <span className="font-semibold text-gray-900 dark:text-white">{endItem}</span> of{' '}
           <span className="font-semibold text-gray-900 dark:text-white">{totalItems}</span> items
@@ -73,14 +73,14 @@ export default function Pagination({
       )}
 
       {/* Pagination controls */}
-      <div className="flex items-center gap-2">
-        {/* First page button */}
+      <div className="flex items-center gap-1 sm:gap-2">
+        {/* First page button - hide on very small screens */}
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => onPageChange(1)}
           disabled={currentPage === 1}
-          className={`p-2 rounded-lg border transition-colors ${
+          className={`hidden sm:flex p-2 rounded-lg border transition-colors min-h-[44px] min-w-[44px] items-center justify-center ${
             currentPage === 1
               ? 'border-gray-200 dark:border-gray-700 text-gray-400 dark:text-gray-600 cursor-not-allowed'
               : 'border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
@@ -96,7 +96,7 @@ export default function Pagination({
           whileTap={{ scale: 0.95 }}
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className={`p-2 rounded-lg border transition-colors ${
+          className={`p-2 rounded-lg border transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center ${
             currentPage === 1
               ? 'border-gray-200 dark:border-gray-700 text-gray-400 dark:text-gray-600 cursor-not-allowed'
               : 'border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
@@ -113,7 +113,7 @@ export default function Pagination({
               return (
                 <span
                   key={`ellipsis-${index}`}
-                  className="px-3 py-2 text-gray-500 dark:text-gray-400"
+                  className="px-2 sm:px-3 py-2 text-gray-500 dark:text-gray-400 text-xs sm:text-sm"
                 >
                   ...
                 </span>
@@ -129,7 +129,7 @@ export default function Pagination({
                 whileHover={{ scale: isActive ? 1 : 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => onPageChange(pageNum)}
-                className={`min-w-[40px] px-3 py-2 rounded-lg font-medium transition-all ${
+                className={`min-w-[40px] sm:min-w-[44px] min-h-[40px] sm:min-h-[44px] px-2 sm:px-3 py-2 rounded-lg font-medium transition-all text-xs sm:text-sm ${
                   isActive
                     ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/50'
                     : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 border border-gray-300 dark:border-gray-600'
@@ -147,7 +147,7 @@ export default function Pagination({
           whileTap={{ scale: 0.95 }}
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className={`p-2 rounded-lg border transition-colors ${
+          className={`p-2 rounded-lg border transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center ${
             currentPage === totalPages
               ? 'border-gray-200 dark:border-gray-700 text-gray-400 dark:text-gray-600 cursor-not-allowed'
               : 'border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
@@ -157,13 +157,13 @@ export default function Pagination({
           <FiChevronRight className="w-4 h-4" />
         </motion.button>
 
-        {/* Last page button */}
+        {/* Last page button - hide on very small screens */}
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => onPageChange(totalPages)}
           disabled={currentPage === totalPages}
-          className={`p-2 rounded-lg border transition-colors ${
+          className={`hidden sm:flex p-2 rounded-lg border transition-colors min-h-[44px] min-w-[44px] items-center justify-center ${
             currentPage === totalPages
               ? 'border-gray-200 dark:border-gray-700 text-gray-400 dark:text-gray-600 cursor-not-allowed'
               : 'border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
@@ -176,7 +176,7 @@ export default function Pagination({
 
       {/* Items per page info (mobile) */}
       {showItemsInfo && totalItems > 0 && (
-        <div className="sm:hidden text-sm text-gray-600 dark:text-gray-400">
+        <div className="sm:hidden text-xs text-gray-600 dark:text-gray-400">
           Page <span className="font-semibold text-gray-900 dark:text-white">{currentPage}</span> of{' '}
           <span className="font-semibold text-gray-900 dark:text-white">{totalPages}</span>
         </div>
