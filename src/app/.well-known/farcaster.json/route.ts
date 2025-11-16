@@ -7,12 +7,15 @@ export async function GET() {
       payload: "eyJkb21haW4iOiJmYXJjYXN0bWludHMuY29tIn0",
       signature: "FKK/+CegXaVEz+VSWhSs/WYNSFs7yaeFZZboBvQKpw4brV1PzHWeBFJ6sMdlBlXGwxWb5ANEPncQkjY4j4C49Rw="
     },
+    baseBuilder: {
+      ownerAddress: "0xEaFE5088BCd7eb27fa1e4AA417a55eD5ea2dab8B"
+    },
     miniapp: {
       version: "1",
       name: "FarcastMints",
       homeUrl: "https://farcastmints.com",
-      iconUrl: "https://farcastmints.com/icon.svg",
-      splashImageUrl: "https://farcastmints.com/splash.svg",
+      iconUrl: "https://farcastmints.com/icon.png",
+      splashImageUrl: "https://farcastmints.com/splash.png",
       splashBackgroundColor: "#0f1f3d",
       webhookUrl: "https://farcastmints.com/api/miniapp/webhook",
       subtitle: "Trade NFTs on Base Network",
@@ -22,10 +25,12 @@ export async function GET() {
         "https://farcastmints.com/screenshots/frames.png"
       ],
       primaryCategory: "finance",
-      tags: ["nft", "marketplace", "base"]
-    },
-    baseBuilder: {
-      ownerAddress: "0xEaFE5088BCd7eb27fa1e4AA417a55eD5ea2dab8B"
+      tags: ["nft", "marketplace", "base"],
+      heroImageUrl: "https://farcastmints.com/og-image.png",
+      tagline: "Trade securely on Base",
+      ogTitle: "FarcastMints - NFT Marketplace",
+      ogDescription: "Trade NFTs securely on Base",
+      ogImageUrl: "https://farcastmints.com/og-image.png"
     }
   }
 
