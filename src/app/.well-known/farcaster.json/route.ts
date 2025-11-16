@@ -14,7 +14,15 @@ export async function GET() {
       iconUrl: "https://farcastmints.com/icon.svg",
       splashImageUrl: "https://farcastmints.com/splash.svg",
       splashBackgroundColor: "#0f1f3d",
-      webhookUrl: "https://farcastmints.com/api/miniapp/webhook"
+      webhookUrl: "https://farcastmints.com/api/miniapp/webhook",
+      subtitle: "Trade NFTs on Base Network",
+      description: "NFT marketplace with Farcaster frames and social trading on Base",
+      screenshotUrls: [
+        "https://farcastmints.com/screenshots/marketplace.png",
+        "https://farcastmints.com/screenshots/frames.png"
+      ],
+      primaryCategory: "finance",
+      tags: ["nft", "marketplace", "base"]
     },
     baseBuilder: {
       ownerAddress: "0xEaFE5088BCd7eb27fa1e4AA417a55eD5ea2dab8B"
