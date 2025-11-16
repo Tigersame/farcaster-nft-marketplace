@@ -1,6 +1,6 @@
 // Farcaster OAuth - Handle callback and exchange code for token
 import { NextRequest, NextResponse } from 'next/server';
-import cookie from 'cookie';
+import { serialize } from 'cookie';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -65,7 +65,7 @@ export async function GET(request: NextRequest) {
     
     response.headers.set(
       'Set-Cookie',
-      cookie.serialize('farcaster_token', accessToken, {
+      serialize('farcaster_token', accessToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',

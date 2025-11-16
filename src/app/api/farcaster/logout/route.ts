@@ -1,6 +1,6 @@
 // Farcaster OAuth - Logout and clear session
 import { NextResponse } from 'next/server';
-import cookie from 'cookie';
+import { serialize } from 'cookie';
 
 export async function POST() {
   // Clear the Farcaster token cookie
@@ -8,7 +8,7 @@ export async function POST() {
   
   response.headers.set(
     'Set-Cookie',
-    cookie.serialize('farcaster_token', '', {
+    serialize('farcaster_token', '', {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
