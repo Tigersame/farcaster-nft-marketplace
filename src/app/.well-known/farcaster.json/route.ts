@@ -14,6 +14,7 @@ export async function GET() {
       version: "1",
       name: "FarcastMints",
       homeUrl: "https://farcastmints.com",
+      imageUrl: "https://farcastmints.com/og-image.png",
       iconUrl: "https://farcastmints.com/icon.png",
       splashImageUrl: "https://farcastmints.com/splash.png",
       splashBackgroundColor: "#0f1f3d",
