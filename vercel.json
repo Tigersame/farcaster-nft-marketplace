@@ -44,7 +44,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' *.vercel.app *.coinbase.com *.walletconnect.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: *.vercel.app *.coinbase.com; connect-src 'self' *.vercel.app *.coinbase.com *.walletconnect.com wss: https:; frame-ancestors 'none';"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' *.vercel.app *.coinbase.com *.walletconnect.com *.farcaster.xyz https://api.farcaster.xyz; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: blob: *.vercel.app *.coinbase.com; connect-src 'self' *.vercel.app *.coinbase.com *.walletconnect.com *.farcaster.xyz https://api.farcaster.xyz wss: https:; frame-src 'self' *.coinbase.com *.walletconnect.com; frame-ancestors 'none';"
         }
       ]
     },
