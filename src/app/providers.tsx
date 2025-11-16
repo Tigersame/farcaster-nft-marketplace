@@ -11,8 +11,15 @@ import { ThemeProvider } from '@/contexts/ThemeContext'
 import { AdminProvider } from '@/contexts/AdminContext'
 import { NotificationProvider } from '@/components/NotificationSystem'
 import { MiniAppProvider } from '@/contexts/MiniAppContext'
+import { suppressKnownErrors } from '@/lib/suppressConsoleErrors'
+import { useEffect } from 'react'
 import '@rainbow-me/rainbowkit/styles.css'
 import '@coinbase/onchainkit/styles.css'
+
+// Suppress harmless console errors in development
+if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
+  suppressKnownErrors()
+}
 
 // Create QueryClient outside component to prevent reinitialization
 const queryClient = new QueryClient({
