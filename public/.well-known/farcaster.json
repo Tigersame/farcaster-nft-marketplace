@@ -15,6 +15,19 @@
     "iconUrl": "https://farcastmints.com/icon.png",
     "splashImageUrl": "https://farcastmints.com/splash.png",
     "splashBackgroundColor": "#0f1f3d",
-    "webhookUrl": "https://farcastmints.com/api/miniapp/webhook"
+    "webhookUrl": "https://farcastmints.com/api/miniapp/webhook",
+    "primaryCategory": "finance",
+    "tags": ["nft", "marketplace", "base"],
+    "subtitle": "NFT marketplace with social trading",
+    "description": "Discover, mint, and trade NFTs on Base with Farcaster frames integration",
+    "screenshotUrls": [
+      "https://farcastmints.com/screenshots/marketplace.png",
+      "https://farcastmints.com/screenshots/frames.png"
+    ],
+    "heroImageUrl": "https://farcastmints.com/hero.png",
+    "tagline": "Your NFT marketplace on Base",
+    "ogTitle": "FarcastMints - NFT Marketplace",
+    "ogDescription": "Discover, mint, and trade NFTs on Base network",
+    "ogImageUrl": "https://farcastmints.com/og-image.png"
   }
 }
