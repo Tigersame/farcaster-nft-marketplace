@@ -1,5 +1,11 @@
 import { NextResponse } from 'next/server';
 
+// Use Edge Runtime for fastest response
+export const runtime = 'edge';
+
+// Enable aggressive caching
+export const revalidate = 3600; // Cache for 1 hour
+
 export async function GET() {
   const manifest = {
     "accountAssociation": {
@@ -14,15 +20,15 @@ export async function GET() {
       "version": "1",
       "name": "FarcastMints",
       "homeUrl": "https://farcastmints.com",
-      "iconUrl": "https://farcastmints.com/icon.png",
-      "splashImageUrl": "https://farcastmints.com/splash.png",
+      "iconUrl": "https://api.dicebear.com/9.x/shapes/png?seed=farcastmints&size=512",
+      "splashImageUrl": "https://api.dicebear.com/9.x/shapes/png?seed=splash-farcastmints&size=200",
       "splashBackgroundColor": "#0f1f3d",
       "webhookUrl": "https://farcastmints.com/api/miniapp/webhook",
       "subtitle": "NFT Marketplace on Base",
       "description": "Discover and trade NFTs with Farcaster frames on Base network",
       "screenshotUrls": [
-        "https://farcastmints.com/screenshots/marketplace.png",
-        "https://farcastmints.com/screenshots/frames.png"
+        "https://placehold.co/1284x2778/6366f1/white/png?text=Marketplace",
+        "https://placehold.co/1284x2778/8b5cf6/white/png?text=Frames"
       ],
       "primaryCategory": "finance",
       "tags": ["nft", "marketplace", "base"]
@@ -32,7 +38,7 @@ export async function GET() {
   return NextResponse.json(manifest, {
     headers: {
       'Content-Type': 'application/json',
-      'Cache-Control': 'public, max-age=60, s-maxage=60',
+      'Cache-Control': 'public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400',
     },
   });
 }
