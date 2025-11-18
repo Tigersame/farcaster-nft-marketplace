@@ -45,12 +45,15 @@ export function MiniAppProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const load = async () => {
       try {
-        // Check if we're in a Farcaster environment
-        const isFarcasterEnvironment = typeof window !== 'undefined' && 
-          (window.location !== window.parent.location || // In iframe
-           /warpcast|farcaster/i.test(navigator.userAgent)) // Farcaster user agent
+        // Check if we're in a Farcaster/Base environment (iframe)
+        const isInIframe = typeof window !== 'undefined' && window.location !== window.parent.location
+        const isFarcasterUA = typeof window !== 'undefined' && /warpcast|farcaster|base/i.test(navigator.userAgent)
+        const isFarcasterEnvironment = isInIframe || isFarcasterUA
 
-        if (!isFarcasterEnvironment) {
+        // Always try to initialize SDK if in iframe (Base Preview needs this)
+        if (isInIframe) {
+          console.log('Running in iframe - initializing Farcaster SDK')
+        } else if (!isFarcasterEnvironment) {
           console.log('Not in Farcaster environment - SDK features disabled')
           setIsSDKLoaded(true)
           return
