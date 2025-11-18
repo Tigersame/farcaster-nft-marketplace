@@ -84,7 +84,7 @@
     "typechain": "^8.3.0",
     "typescript": "^5.6.2"
   },
-  "overrides": {
+  "resolutions": {
     "ox": "0.1.2"
   }
 }
