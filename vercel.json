@@ -70,27 +70,42 @@
       ]
     }
   ],
-  "redirects": [],
+  "redirects": [
+    {
+      "source": "/icon.png",
+      "destination": "https://api.dicebear.com/9.x/shapes/png?seed=farcastmints&size=512",
+      "permanent": false
+    },
+    {
+      "source": "/icon-192.png",
+      "destination": "https://api.dicebear.com/9.x/shapes/png?seed=farcastmints&size=192",
+      "permanent": false
+    },
+    {
+      "source": "/icon-512.png",
+      "destination": "https://api.dicebear.com/9.x/shapes/png?seed=farcastmints&size=512",
+      "permanent": false
+    },
+    {
+      "source": "/splash.png",
+      "destination": "https://api.dicebear.com/9.x/shapes/png?seed=splash-farcastmints&size=200",
+      "permanent": false
+    },
+    {
+      "source": "/screenshots/marketplace.png",
+      "destination": "https://placehold.co/1284x2778/6366f1/white/png?text=Marketplace",
+      "permanent": false
+    },
+    {
+      "source": "/screenshots/frames.png",
+      "destination": "https://placehold.co/1284x2778/8b5cf6/white/png?text=Frames",
+      "permanent": false
+    }
+  ],
   "rewrites": [
     {
       "source": "/api/frames/:path*",
       "destination": "/api/frames/:path*"
-    },
-    {
-      "source": "/icon.png",
-      "destination": "/api/images?type=icon&size=512"
-    },
-    {
-      "source": "/icon-192.png", 
-      "destination": "/api/images?type=icon&size=192"
-    },
-    {
-      "source": "/icon-512.png",
-      "destination": "/api/images?type=icon&size=512"
-    },
-    {
-      "source": "/splash.png",
-      "destination": "/api/images?type=splash"
     },
     {
       "source": "/hero.png",
@@ -99,14 +114,6 @@
     {
       "source": "/og-image.png",
       "destination": "/api/images?type=og"
-    },
-    {
-      "source": "/screenshots/marketplace.png",
-      "destination": "/api/screenshots?name=marketplace"
-    },
-    {
-      "source": "/screenshots/frames.png",
-      "destination": "/api/screenshots?name=frames"
     },
     {
       "source": "/screenshots/social.png",
