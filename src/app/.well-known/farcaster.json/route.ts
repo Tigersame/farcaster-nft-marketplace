@@ -20,15 +20,15 @@ export async function GET() {
       "version": "1",
       "name": "FarcastMints",
       "homeUrl": "https://farcastmints.com",
-      "iconUrl": "https://api.dicebear.com/9.x/shapes/png?seed=farcastmints&size=512",
-      "splashImageUrl": "https://api.dicebear.com/9.x/shapes/png?seed=splash-farcastmints&size=200",
+      "iconUrl": "https://farcastmints.com/icon.png",
+      "splashImageUrl": "https://farcastmints.com/splash.png",
       "splashBackgroundColor": "#0f1f3d",
       "webhookUrl": "https://farcastmints.com/api/miniapp/webhook",
       "subtitle": "NFT Marketplace on Base",
       "description": "Discover and trade NFTs with Farcaster frames on Base network",
       "screenshotUrls": [
-        "https://placehold.co/1284x2778/6366f1/white/png?text=Marketplace",
-        "https://placehold.co/1284x2778/8b5cf6/white/png?text=Frames"
+        "https://farcastmints.com/screenshots/marketplace.png",
+        "https://farcastmints.com/screenshots/frames.png"
       ],
       "primaryCategory": "finance",
       "tags": ["nft", "marketplace", "base"]
