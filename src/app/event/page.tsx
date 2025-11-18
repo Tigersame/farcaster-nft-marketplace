@@ -7,10 +7,7 @@ import React, {useEffect, useState} from 'react';
 import {motion} from 'framer-motion';
 import clsx from 'clsx';
 import { useAccount, useConnect, useDisconnect } from 'wagmi';
-import { injected } from 'wagmi/connectors';
-import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { injected } from '@wagmi/connectors';
 import { BRANDING, getLogoUrl, getBrandColor } from '@/config/branding';
 
 // ------------------ THEME TOKENS (EDIT THESE) ------------------
@@ -94,34 +91,36 @@ export default function EventPage(){
   useEffect(()=>{ fetchSupply(); if(address) fetchUserXP(address); fetchLeaderboard(); }, [address]);
 
   async function fetchSupply(){ try{ setTotalMinted(Math.min(12000 + (new Date().getDate()*32 % 8000), maxSupply)); }catch(e){} }
-  async function fetchUserXP(addr: string){ try{ const res = await axios.get(`${process.env.NEXT_PUBLIC_XP_API}/user-xp?address=${addr}`); setUserXP(res.data.xp||0); }catch(e){ setUserXP(0); } }
-  async function fetchLeaderboard(){ try{ const res = await axios.get(`${process.env.NEXT_PUBLIC_XP_API}/leaderboard`); setLeaderboard(res.data.top||[]); }catch(e){ setLeaderboard([{rank:1,address:'0xA1...bC12',xp:1200000},{rank:2,address:'0xB2...dE34',xp:1100000},{rank:3,address:'0xC3...fG56',xp:950000}]); } }
+  async function fetchUserXP(addr: string){ try{ const res = await fetch(`${process.env.NEXT_PUBLIC_XP_API}/user-xp?address=${addr}`); const data = await res.json(); setUserXP(data.xp||0); }catch(e){ setUserXP(0); } }
+  async function fetchLeaderboard(){ try{ const res = await fetch(`${process.env.NEXT_PUBLIC_XP_API}/leaderboard`); const data = await res.json(); setLeaderboard(data.top||[]); }catch(e){ setLeaderboard([{rank:1,address:'0xA1...bC12',xp:1200000},{rank:2,address:'0xB2...dE34',xp:1100000},{rank:3,address:'0xC3...fG56',xp:950000}]); } }
 
   const percent = Math.min(100, Math.round((totalMinted/maxSupply)*100));
 
   async function handleClaim(){
-    if(!isConnected) return toast.info('Connect wallet');
+    if(!isConnected) return console.log('Connect wallet');
     setLoading(true);
     try{
-      const sigRes = await axios.post(`${process.env.NEXT_PUBLIC_XP_API}/sign-claim`, {address});
-      const permit = sigRes.data.signature;
+      const sigRes = await fetch(`${process.env.NEXT_PUBLIC_XP_API}/sign-claim`, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({address})});
+      const sigData = await sigRes.json();
+      const permit = sigData.signature;
       // call on-chain claim with signer (omitted)
       setTotalMinted(x => Math.min(maxSupply, x+1));
       setUserXP(x => x + 5000);
-      await axios.post(`${process.env.NEXT_PUBLIC_XP_API}/award-xp`, {address, amount:5000, reason:'claim'});
-      toast.success('Claimed — +5000 XP');
-    }catch(e){ console.error(e); toast.error('Claim failed'); }
+      await fetch(`${process.env.NEXT_PUBLIC_XP_API}/award-xp`, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({address, amount:5000, reason:'claim'})});
+      console.log('Claimed — +5000 XP');
+    }catch(e){ console.error(e); }
     finally{ setLoading(false); }
   }
 
   async function awardDemoXP(type: string){ 
-    if(!isConnected) return toast.info('Connect wallet'); 
+    if(!isConnected) return console.log('Connect wallet'); 
     try{ 
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_XP_API}/award-xp`, {address, amount:100, reason:type}); 
-      setUserXP(res.data.xp); 
-      toast.success('+100 XP awarded'); 
+      const res = await fetch(`${process.env.NEXT_PUBLIC_XP_API}/award-xp`, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({address, amount:100, reason:type})}); 
+      const data = await res.json();
+      setUserXP(data.xp); 
+      console.log('+100 XP awarded'); 
     }catch(e){ 
-      toast.error('Could not award XP'); 
+      console.error('Could not award XP'); 
     } 
   }
 
@@ -130,10 +129,8 @@ export default function EventPage(){
   return (
     <>
       <div style={{background:`linear-gradient(180deg, ${BRAND_BG_1}, ${BRAND_BG_2})`, fontFamily: BRAND_FONT}} className="min-h-screen p-6 text-slate-100">
-        <ToastContainer />
 
-        <header className="max-w-6xl mx-auto flex items-center justify-between py-6">
-          <div className="flex items-center gap-4">
+        <header className="max-w-6xl mx-auto flex items-center justify-between py-6">\n          <div className="flex items-center gap-4">
             <div className="w-14 h-14 flex items-center justify-center shadow-lg" style={{borderRadius:12, background:`linear-gradient(135deg, ${BRAND_PRIMARY}, ${BRAND_ACCENT})`}}>
               <Logo size={44} />
             </div>
@@ -317,7 +314,7 @@ export default function EventPage(){
                   <p className="text-sm mt-2" style={{color:'var(--brand-muted)'}}>On launch day a conversion window will open. SBT holders will burn SBTs and claim fungible tokens. Allocation is influenced by cumulative XP. Exact tokenomics & snapshots will be published before launch.</p>
 
                   <div className="mt-4 flex gap-2">
-                    <button onClick={()=>{ setShowConvertModal(false); toast.info('Conversion will be enabled on-chain at launch'); }} className="px-4 py-2 rounded-md" style={{background:`linear-gradient(90deg, ${BRAND_PRIMARY}, ${BRAND_ACCENT})`, color:'#fff'}}>Understood</button>
+                    <button onClick={()=>{ setShowConvertModal(false); console.log('Conversion will be enabled on-chain at launch'); }} className="px-4 py-2 rounded-md" style={{background:`linear-gradient(90deg, ${BRAND_PRIMARY}, ${BRAND_ACCENT})`, color:'#fff'}}>Understood</button>
                     <button onClick={()=>setShowConvertModal(false)} className="px-4 py-2 rounded-md" style={{background:'rgba(255,255,255,0.03)'}}>Close</button>
                   </div>
                 </div>
