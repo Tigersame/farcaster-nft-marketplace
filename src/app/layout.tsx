@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     siteName: 'Farcast Mints',
     images: [
       {
-        url: 'https://farcastmints.com/og-image.svg',
+        url: 'https://farcastmints.com/og-image.png',
         width: 1200,
         height: 630,
         alt: 'FarcastMints NFT Marketplace',
@@ -54,7 +54,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Farcast Mints - NFT Marketplace',
     description: 'An NFT marketplace on Base with Farcaster integration',
-    images: ['https://farcastmints.com/og-image.svg'],
+    images: ['https://farcastmints.com/og-image.png'],
     creator: '@FarcastMints',
   },
   manifest: '/manifest.json',
