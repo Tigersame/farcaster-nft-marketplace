@@ -71,7 +71,7 @@ export const metadata: Metadata = {
   },
   other: {
     'fc:frame': 'vNext',
-    'fc:frame:image': 'https://farcastmints.com/og-image.svg',
+    'fc:frame:image': 'https://farcastmints.com/og-image.png',
     'fc:frame:button:1': 'Explore NFTs',
     'fc:miniapp': JSON.stringify({
       version: 'next',

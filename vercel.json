@@ -100,20 +100,22 @@
       "source": "/screenshots/frames.png",
       "destination": "https://placehold.co/1284x2778/8b5cf6/white/png?text=Frames",
       "permanent": false
+    },
+    {
+      "source": "/og-image.png",
+      "destination": "https://placehold.co/1200x630/6366f1/white/png?text=FarcastMints+NFT+Marketplace",
+      "permanent": false
+    },
+    {
+      "source": "/hero.png",
+      "destination": "https://placehold.co/1200x630/8b5cf6/white/png?text=FarcastMints",
+      "permanent": false
     }
   ],
   "rewrites": [
     {
       "source": "/api/frames/:path*",
       "destination": "/api/frames/:path*"
-    },
-    {
-      "source": "/hero.png",
-      "destination": "/api/images?type=hero"
-    },
-    {
-      "source": "/og-image.png",
-      "destination": "/api/images?type=og"
     },
     {
       "source": "/screenshots/social.png",
