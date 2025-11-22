@@ -218,4 +218,4 @@ To add new pools:
 
 ## License
 
-This DeFi Hub is part of the FarcastMints project and follows the same licensing terms.
+This DeFi Hub is part of the CurSwap project and follows the same licensing terms.

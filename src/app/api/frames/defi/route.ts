@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(req: NextRequest) {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://farcastmints.com'
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://curswap.com'
 
   const html = `
 <!DOCTYPE html>
@@ -52,7 +52,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://farcastmints.com'
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://curswap.com'
 
   const html = `
 <!DOCTYPE html>

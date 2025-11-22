@@ -27,24 +27,24 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  title: 'Farcast Mints - NFT Marketplace on Base',
-  description: 'An NFT marketplace on Base with Farcaster integration',
-  keywords: ['NFT', 'marketplace', 'Base', 'Farcaster', 'Web3', 'blockchain', 'Farcast Mints'],
-  authors: [{ name: 'Farcast Mints Team' }],
-  creator: 'Farcast Mints',
-  publisher: 'Farcast Mints',
+  title: 'CurSwap - DeFi on Base Network',
+  description: 'Swap tokens, provide liquidity, and earn rewards on Base Network',
+  keywords: ['DeFi', 'swap', 'liquidity', 'Base', 'Farcaster', 'Web3', 'crypto', 'CurSwap'],
+  authors: [{ name: 'CurSwap Team' }],
+  creator: 'CurSwap',
+  publisher: 'CurSwap',
   category: 'Finance',
   openGraph: {
-    title: 'Farcast Mints - NFT Marketplace on Base',
-    description: 'An NFT marketplace on Base with Farcaster integration',
-    url: 'https://farcastmints.com',
-    siteName: 'Farcast Mints',
+    title: 'CurSwap - DeFi on Base Network',
+    description: 'Swap tokens, provide liquidity, and earn rewards on Base Network',
+    url: 'https://curswap.com',
+    siteName: 'CurSwap',
     images: [
       {
-        url: 'https://farcastmints.com/og-image.png',
+        url: 'https://curswap.com/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'FarcastMints NFT Marketplace',
+        alt: 'CurSwap DeFi Platform',
       },
     ],
     locale: 'en_US',
@@ -52,10 +52,10 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Farcast Mints - NFT Marketplace',
-    description: 'An NFT marketplace on Base with Farcaster integration',
-    images: ['https://farcastmints.com/og-image.png'],
-    creator: '@FarcastMints',
+    title: 'CurSwap - DeFi on Base',
+    description: 'Swap tokens, provide liquidity, and earn rewards on Base Network',
+    images: ['https://curswap.com/og-image.png'],
+    creator: '@CurSwap',
   },
   manifest: '/manifest.json',
   icons: {
@@ -71,23 +71,23 @@ export const metadata: Metadata = {
   },
   other: {
     'fc:frame': 'vNext',
-    'fc:frame:image': 'https://farcastmints.com/og-image.png',
-    'fc:frame:button:1': 'Explore NFTs',
+    'fc:frame:image': 'https://curswap.com/og-image.png',
+    'fc:frame:button:1': 'Launch DeFi Hub',
     'fc:miniapp': JSON.stringify({
       version: 'next',
-      imageUrl: 'https://farcastmints.com/og-image.png',
+      imageUrl: 'https://curswap.com/og-image.png',
       button: {
-        title: 'Open App',
+        title: 'Open CurSwap',
         action: {
           type: 'launch_frame',
-          url: 'https://farcastmints.com',
-          name: 'FarcastMints',
-          splashImageUrl: 'https://farcastmints.com/splash.png',
+          url: 'https://curswap.com',
+          name: 'CurSwap',
+          splashImageUrl: 'https://curswap.com/splash.png',
           splashBackgroundColor: '#0f1f3d'
         }
       }
     }),
-    'fc:frame:post_url': 'https://farcastmints.com/api/frames',
+    'fc:frame:post_url': 'https://curswap.com/api/frames',
   },
 }
 

@@ -12,7 +12,7 @@ interface ShareDeFiProps {
 
 export function ShareDeFi({ poolName, apr, type = 'general' }: ShareDeFiProps) {
   const [showShare, setShowShare] = useState(false)
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://farcastmints.com'
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://curswap.com'
 
   const getShareText = () => {
     switch (type) {

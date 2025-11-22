@@ -60,8 +60,8 @@ export function Providers({ children }: { children: React.ReactNode }) {
                     modalSize="compact"
                     initialChain={initialChain}
                     appInfo={{
-                      appName: 'FarcastMints',
-                      learnMoreUrl: 'https://farcaster.xyz',
+                      appName: 'CurSwap',
+                      learnMoreUrl: 'https://base.org',
                     }}
                   >
                     {children}

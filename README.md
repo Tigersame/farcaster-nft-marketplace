@@ -1,210 +1,195 @@
-# 🖼️ FarcastMints - NFT Marketplace
+# CurSwap 🚀
 
-<div align="center">
+**DeFi on Base** - Swap, Earn, Grow
 
-![Farcaster](https://img.shields.io/badge/Farcaster-Framework-8B5CF6)
-![Base](https://img.shields.io/badge/Base-Network-0052FF)
-![Next.js](https://img.shields.io/badge/Next.js-14-black)
-![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)
-![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3-06B6D4)
-![License](https://img.shields.io/badge/License-MIT-green)
+A comprehensive DeFi platform built on Base network featuring token swapping, liquidity pools, and token listings. Fully integrated with Farcaster for social engagement.
 
-**A complete NFT marketplace built for the Farcaster ecosystem with MiniKit integration and Base network optimization**
+## 🌟 Features
 
-[🚀 Live Demo](https://farcastmints.com) • [📖 Documentation](#documentation) • [🎯 Features](#features) • [🛠️ Setup](#quick-start)
+### 💱 Token Swap
+- Powered by OnchainKit Swap component
+- 8+ Base chain tokens (ETH, USDC, DAI, WETH, cbETH, wstETH, rETH, USDbC)
+- Configurable slippage tolerance
+- Real-time price quotes
+- Low fees and fast transactions
 
-</div>
+### 💎 Token List
+- Live token prices and 24h changes
+- Market cap and volume data
+- Search and category filters
+- Direct trading from token list
 
-## 🎯 Features
+### 💧 Liquidity Pools
+- 5 major liquidity pools
+- APR ranging from 8.7% to 18.2%
+- Pool composition and statistics
+- Add/remove liquidity interface
+- Total TVL: $118M+
 
-### 🖼️ **Farcaster Native Experience**
-- **Interactive Frames** - Share NFTs directly in Farcaster feeds with purchase buttons
-- **MiniKit Integration** - Seamless wallet connection and social authentication
-- **Frame Discovery** - Browse and test all available NFT frames
-- **Viral Sharing** - One-click sharing to Warpcast and Farcaster clients
+### 🎯 Farcaster Integration
+- Interactive Farcaster Frames
+- Share trading activity
+- Dynamic frame images
+- Social engagement features
 
-### 🌙 **Modern UI/UX** 
-- **Dark Mode System** - Complete light/dark theme with persistence
-- **Responsive Design** - Perfect experience on mobile and desktop
-- **Smooth Animations** - 60fps transitions with Framer Motion
-- **Real-time Updates** - Live marketplace activity and user counters
+## 🛠️ Tech Stack
 
-### ⚡ **Base Network Optimized**
-- **Gasless Transactions** - FREE gas fees sponsored by Base Paymaster (NEW!)
-- **Smart Accounts** - ERC-4337 Account Abstraction for seamless UX
-- **Low Fees** - Leveraging Base L2 for affordable transactions
-- **Fast Confirmations** - Quick NFT purchases and listings
-- **Wallet Integration** - RainbowKit with Base network support
-- **Chain Validation** - Automatic Base network detection and switching
+- **Framework**: Next.js 14 (App Router) + TypeScript
+- **Styling**: TailwindCSS + Framer Motion
+- **Web3**: Wagmi + RainbowKit + OnchainKit
+- **Network**: Base (Chain ID: 8453)
+- **Identity**: Basename resolution
+- **State**: React Query
+- **UI**: Custom components + Lucide icons
 
-### 🎮 **Advanced Engagement**
-- **Social Proof** - Live user counters and trending items
-- **Activity Feed** - Real-time marketplace transactions and interactions  
-- **XMTP Chat** - Base App Quick Actions integration
-- **Progress Tracking** - User engagement and achievement system
-
-## 🚀 Quick Start
+## 🚀 Getting Started
 
 ### Prerequisites
 - Node.js 18+ and npm
-- Git for version control
-- A Farcaster account for testing frames
+- A Web3 wallet (MetaMask, Coinbase Wallet, etc.)
 
 ### Installation
 
 ```bash
 # Clone the repository
-git clone https://github.com/YOUR_USERNAME/farcaster-nft-marketplace.git
-cd farcaster-nft-marketplace
+git clone <your-repo-url>
+cd curswap
 
 # Install dependencies
 npm install
 
 # Set up environment variables
 cp .env.example .env.local
-# Edit .env.local with your configuration
+# Edit .env.local with your API keys
 
-# Start development server
+# Run development server
 npm run dev
 ```
 
-Visit [http://localhost:3000](http://localhost:3000) to see the marketplace in action!
+Visit [http://localhost:3000](http://localhost:3000) to see your app.
 
-### Environment Setup
-
-Create a `.env.local` file with the following variables:
+### Environment Variables
 
 ```env
-NEXT_PUBLIC_BASE_RPC_URL=https://mainnet.base.org
-NEXT_PUBLIC_FARCASTER_HUB_URL=https://nemes.farcaster.xyz:2283
-MINIKIT_APP_ID=your-minikit-app-id
-NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=your-project-id
+NEXT_PUBLIC_BASE_URL=https://curswap.com
+NEXT_PUBLIC_ONCHAINKIT_API_KEY=your_onchainkit_api_key
+NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=your_walletconnect_project_id
+NEXT_PUBLIC_ALCHEMY_API_KEY=your_alchemy_api_key
+NEXT_PUBLIC_TATUM_API_KEY=your_tatum_api_key
 ```
-
-## 🏗️ Tech Stack
-
-### Frontend
-- **[Next.js 14](https://nextjs.org)** - React framework with App Router
-- **[TypeScript](https://www.typescriptlang.org)** - Type-safe development
-- **[TailwindCSS](https://tailwindcss.com)** - Utility-first styling
-- **[Framer Motion](https://www.framer.com/motion/)** - Smooth animations
-
-### Web3 Integration  
-- **[Wagmi v2](https://wagmi.sh)** - React hooks for Ethereum
-- **[RainbowKit](https://www.rainbowkit.com)** - Wallet connection UI
-- **[Viem](https://viem.sh)** - TypeScript Ethereum library
-- **[Base Network](https://base.org)** - Ethereum L2 for low fees
-
-### Farcaster Ecosystem
-- **[@farcaster/core](https://github.com/farcasterxyz/hub-monorepo)** - Core Farcaster SDK
-- **[@farcaster/hub-nodejs](https://github.com/farcasterxyz/hub-monorepo)** - Hub integration
-- **[Farcaster Frames](https://docs.farcaster.xyz/developers/frames)** - Interactive social content
-- **[MiniKit SDK](https://docs.farcaster.xyz/developers/minikit)** - Native app integration
 
 ## 📁 Project Structure
 
 ```
-src/
-├── app/
-│   ├── page.tsx                 # Main application entry
-│   ├── marketplace.tsx          # Core marketplace component  
-│   ├── providers.tsx            # Web3 and context providers
-│   ├── globals.css              # Global styles + dark mode
-│   └── api/
-│       ├── frames/              # Farcaster Frame endpoints
-│       └── test-frame/          # Frame testing utilities
-├── components/
-│   ├── Header.tsx              # Navigation with dark mode
-│   ├── NFTCard.tsx             # Enhanced NFT display cards
-│   ├── DarkModeToggle.tsx      # Theme switching components
-│   ├── FrameShare.tsx          # Frame sharing modal
-│   ├── SocialProof.tsx         # Activity feed & social widgets
-│   ├── GaslessUI.tsx           # Gasless transaction UI components
-│   └── ...                     # Additional UI components
-├── contexts/
-│   └── ThemeContext.tsx        # Dark mode state management
-├── hooks/
-│   └── useSmartAccount.ts      # Smart Account & gasless transactions
-└── lib/
-    ├── wagmi.ts                # Web3 configuration
-    └── paymaster.ts            # Base Paymaster configuration
+curswap/
+├── src/
+│   ├── app/
+│   │   ├── defi/              # Main DeFi page
+│   │   └── api/
+│   │       └── frames/        # Farcaster Frames
+│   ├── components/
+│   │   └── defi/              # DeFi components
+│   │       ├── EnhancedSwapWidget.tsx
+│   │       ├── TokenList.tsx
+│   │       ├── LiquidityPools.tsx
+│   │       └── ShareDeFi.tsx
+│   ├── lib/
+│   │   ├── baseTokens.ts      # Token & pool data
+│   │   └── wagmi.ts           # Web3 configuration
+│   └── config/
+│       └── branding.ts        # App branding
+├── public/                    # Static assets
+└── package.json
 ```
 
-## ✨ Gasless Transactions (NEW!)
+## 📖 Key Pages
 
-**Zero gas fees for your users!** All transaction costs are sponsored by Base Paymaster.
+- **`/`** - Homepage with feature cards
+- **`/defi`** - Main DeFi hub with tabs:
+  - Swap - Token swapping interface
+  - Tokens - Token list and prices
+  - Pools - Liquidity pool management
 
-### Quick Setup (5 minutes)
+## 🎨 Customization
 
-1. **Get Paymaster RPC URL**
-   - Visit [Coinbase Developer Platform](https://portal.cdp.coinbase.com/)
-   - Go to Paymaster → Configuration
-   - Copy your RPC URL
+### Update Branding
+Edit `/src/config/branding.ts`:
+```typescript
+export const BRANDING = {
+  name: 'CurSwap',
+  tagline: 'DeFi on Base',
+  colors: { ... },
+  links: { ... }
+}
+```
 
-2. **Add to Environment**
-   ```bash
-   # .env.local
-   NEXT_PUBLIC_PAYMASTER_RPC_URL=https://api.developer.coinbase.com/rpc/v1/base/YOUR_KEY
-   ```
+### Add New Tokens
+Edit `/src/lib/baseTokens.ts`:
+```typescript
+export const BASE_TOKENS: Token[] = [
+  {
+    address: '0x...',
+    chainId: 8453,
+    decimals: 18,
+    name: 'Your Token',
+    symbol: 'TKN',
+    image: 'https://...'
+  }
+]
+```
 
-3. **Configure Allowlist**
-   - Add your NFT contract address in CDP
-   - Allowlist functions: `mintTo`, `buy`, `list`
+### Add New Pools
+Edit `/src/lib/baseTokens.ts`:
+```typescript
+export const MOCK_LIQUIDITY_POOLS: LiquidityPool[] = [
+  {
+    id: 'new-pool',
+    name: 'TKN/USDC',
+    token0: yourToken,
+    token1: USDC,
+    tvl: '$...',
+    apr: '...',
+    // ...
+  }
+]
+```
 
-4. **Set Spending Limits**
-   - Per-user: $0.05/month, 1 operation
-   - Global: $15,000/month (or your budget)
-
-5. **Done!** 🎉 Users can now mint, buy, and list NFTs **completely free**.
-
-📖 **Full Guide**: [GASLESS_QUICKSTART.md](./GASLESS_QUICKSTART.md)  
-📚 **Documentation**: [GASLESS_TRANSACTIONS.md](./GASLESS_TRANSACTIONS.md)  
-📝 **Implementation**: [GASLESS_IMPLEMENTATION_SUMMARY.md](./GASLESS_IMPLEMENTATION_SUMMARY.md)
-
-## 🌐 API Endpoints
+## 🔗 API Endpoints
 
 ### Farcaster Frames
-- `GET /api/frames` - Frame discovery page
-- `GET /api/frames/nft/[tokenId]` - Interactive NFT frame
-- `GET /api/frames/nft/[tokenId]/image` - Dynamic frame image
-- `GET /api/test-frame` - Frame testing endpoint
+- `GET /api/frames/defi` - Main DeFi frame
+- `GET /api/frames/defi/image` - Frame OG image
+- `POST /api/frames/defi/pools` - Pools frame
+- `POST /api/frames/defi/tokens` - Tokens frame
 
-### Features Available
-- **Browse NFTs** - Complete marketplace interface
-- **Dark Mode** - Toggle in header (moon/sun icon)  
-- **Frame Sharing** - Click "Share Frame" on NFT cards
-- **Live Activity** - Real-time marketplace updates
-- **Wallet Connect** - RainbowKit integration
+## 📊 Statistics
 
-## 🎨 Screenshots
+- **Total TVL**: $507M+
+- **24h Volume**: $56M+
+- **Tokens**: 8+
+- **Liquidity Pools**: 5
+- **Average APR**: 13.1%
 
-### Light Mode
-![Light Mode Screenshot](docs/images/light-mode.png)
+## 🧪 Development
 
-### Dark Mode  
-![Dark Mode Screenshot](docs/images/dark-mode.png)
-
-### Farcaster Frame
-![Frame Screenshot](docs/images/farcaster-frame.png)
-
-## 🧪 Testing Frames
-
-### Local Testing
 ```bash
-# Start the development server
+# Run development server
 npm run dev
 
-# Test frame endpoints
-curl http://localhost:3000/api/frames/nft/1
-curl http://localhost:3000/api/frames/nft/1/image
+# Build for production
+npm run build
+
+# Start production server
+npm start
+
+# Run linting
+npm run lint
+
+# Type checking
+npm run type-check
 ```
 
-### Farcaster Integration
-1. Share frame URL in a Farcaster cast
-2. View in Warpcast or other Farcaster clients
-3. Test interactive buttons and purchasing flow
-
-## 🚀 Deployment
+## 🚢 Deployment
 
 ### Vercel (Recommended)
 ```bash
@@ -213,98 +198,45 @@ npm i -g vercel
 
 # Deploy
 vercel
-
-# Configure environment variables in Vercel dashboard
-# Set up custom domain and SSL
 ```
 
-### Manual Deployment
-```bash
-# Build for production
-npm run build
+### Environment Setup
+Make sure to set all environment variables in your deployment platform:
+- `NEXT_PUBLIC_BASE_URL`
+- `NEXT_PUBLIC_ONCHAINKIT_API_KEY`
+- `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID`
+- Other API keys as needed
 
-# Start production server  
-npm start
-```
+## 📚 Documentation
 
-See [DEPLOYMENT_CHECKLIST.md](DEPLOYMENT_CHECKLIST.md) for complete deployment guide.
-
-## 📖 Documentation
-
-- **[Implementation Summary](IMPLEMENTATION_SUMMARY.md)** - Complete feature overview
-- **[Dark Mode Guide](DARK_MODE_IMPLEMENTATION.md)** - Theme system documentation  
-- **[Activity Feed Guide](ACTIVITY_FEED_FIX.md)** - Real-time updates system
-- **[Deployment Checklist](DEPLOYMENT_CHECKLIST.md)** - Production deployment
-- **[Project Snapshot](PROJECT_SNAPSHOT.md)** - Current status and features
+- [DeFi Features Guide](./DEFI_FEATURES.md)
+- [OnchainKit Docs](https://onchainkit.xyz)
+- [Base Network](https://base.org)
+- [Wagmi Docs](https://wagmi.sh)
+- [RainbowKit](https://rainbowkit.com)
 
 ## 🤝 Contributing
 
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
-
-### Development Workflow
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/amazing-feature`
-3. Commit changes: `git commit -m 'Add amazing feature'`
-4. Push to branch: `git push origin feature/amazing-feature`  
-5. Open a Pull Request
-
-### Code Standards
-- TypeScript for type safety
-- ESLint + Prettier for code formatting
-- Conventional commits for commit messages
-- Component documentation with JSDoc
-
-## 🐛 Issues & Support
-
-- **Bug Reports**: [Create an issue](https://github.com/YOUR_USERNAME/farcaster-nft-marketplace/issues)
-- **Feature Requests**: [Request a feature](https://github.com/YOUR_USERNAME/farcaster-nft-marketplace/issues)
-- **Documentation**: Check our [docs folder](./docs)
-- **Community**: Join our [Farcaster channel](https://warpcast.com/~/channel/nft-marketplace)
-
-## 🎯 Roadmap
-
-### ✅ Completed (v1.0)
-- [x] Complete marketplace interface with dark mode
-- [x] Farcaster Frame integration with sharing
-- [x] Real-time activity feed with emoji avatars
-- [x] Base network integration with wallet support
-- [x] XMTP chat and Base App Quick Actions
-
-### 🚧 In Progress (v1.1)  
-- [ ] NFT creation and minting flow
-- [ ] Smart contract integration for real transactions
-- [ ] User authentication with Farcaster profiles
-- [ ] WebSocket real-time updates
-
-### 🔮 Future (v2.0)
-- [ ] Multi-chain support (Ethereum, Polygon)
-- [ ] Advanced filtering and search
-- [ ] Auction and bidding system
-- [ ] Creator royalties and revenue sharing
-- [ ] Mobile app with MiniKit
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License.
 
 ## 🙏 Acknowledgments
 
-- **[Farcaster](https://farcaster.xyz)** for the decentralized social protocol
-- **[Base](https://base.org)** for the fast, low-cost L2 network  
-- **[Coinbase](https://coinbase.com)** for MiniKit and developer tools
-- **[Vercel](https://vercel.com)** for excellent Next.js hosting
-- **Community** contributors and testers
+- Built on [Base](https://base.org) network
+- Powered by [OnchainKit](https://onchainkit.xyz)
+- Farcaster integration
+- RainbowKit for wallet connections
 
-## 🌟 Star History
+## 📞 Support
 
-[![Star History Chart](https://api.star-history.com/svg?repos=YOUR_USERNAME/farcaster-nft-marketplace&type=Date)](https://star-history.com/#YOUR_USERNAME/farcaster-nft-marketplace&Date)
+For issues and questions:
+- Open an issue on GitHub
+- Check the [documentation](./DEFI_FEATURES.md)
+- Visit [Base Discord](https://base.org/discord)
 
 ---
 
-<div align="center">
-
-**Built with ❤️ for the Farcaster and Base ecosystem**
-
-[🐦 Follow Updates](https://warpcast.com/YOUR_USERNAME) • [🌐 Website](https://your-domain.com) • [📧 Contact](mailto:your-email@domain.com)
-
-</div>
+**CurSwap** - Made with ❤️ for the Base ecosystem

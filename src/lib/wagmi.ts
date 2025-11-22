@@ -29,7 +29,7 @@ const ankrRpcUrl = process.env.NEXT_PUBLIC_ANKR_RPC_URL || 'https://rpc.ankr.com
 const tatumRpcUrl = tatumApiKey ? `https://base-mainnet.gateway.tatum.io/${tatumApiKey}` : undefined
 
 export const config = getDefaultConfig({
-  appName: 'FarcastMints NFT Marketplace',
+  appName: 'CurSwap DeFi',
   projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID || '',
   chains: isTestnet ? [baseSepolia] : [base],
   transports: {
@@ -81,7 +81,7 @@ export const farcasterFrameConfig = createConfig({
   connectors: [
     injected(), // MetaMask, Rabby, etc.
     coinbaseWallet({
-      appName: 'FarcastMints NFT Marketplace',
+      appName: 'CurSwap DeFi',
       preference: 'smartWalletOnly', // Smart wallet for Farcaster users
     }),
     walletConnect({

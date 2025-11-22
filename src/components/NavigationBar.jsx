@@ -5,7 +5,7 @@ import { ArrowLeft, Home } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-export default function NavigationBar({ title = "FarcastMints" }) {
+export default function NavigationBar({ title = "CurSwap" }) {
   const router = useRouter();
 
   return (

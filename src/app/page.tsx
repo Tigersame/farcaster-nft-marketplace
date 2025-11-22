@@ -94,7 +94,7 @@ export default function Home() {
               transition={{ duration: 0.5, delay: 0.4 }}
               className="text-xl text-gray-300 mb-12 max-w-2xl mx-auto"
             >
-              Trade NFTs on Base Network with gasless transactions and social engagement
+              Swap tokens, provide liquidity, and earn rewards on Base Network
             </motion.p>
 
             <motion.div
@@ -104,16 +104,16 @@ export default function Home() {
               className="flex flex-col sm:flex-row gap-4 justify-center"
             >
               <Link
-                href="/collections"
-                className="px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold rounded-xl transition-all shadow-lg hover:shadow-purple-500/50"
+                href="/defi"
+                className="px-8 py-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 hover:from-blue-700 hover:via-purple-700 hover:to-pink-700 text-white font-semibold rounded-xl transition-all shadow-lg hover:shadow-purple-500/50"
               >
-                Explore Collections
+                Launch DeFi Hub
               </Link>
               <Link
-                href="/mint"
+                href="/defi?tab=pools"
                 className="px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl transition-all border border-white/20"
               >
-                Start Minting
+                View Pools
               </Link>
             </motion.div>
           </motion.div>

@@ -5,8 +5,9 @@
 
 export const BRANDING = {
   // Brand Name
-  name: 'FarcastMints',
-  tagline: 'NFT Marketplace',
+  name: 'CurSwap',
+  tagline: 'DeFi on Base',
+  subtitle: 'Swap, Earn, Grow',
   
   // Logo Files (place your custom logos in /public folder)
   logo: {
@@ -20,7 +21,7 @@ export const BRANDING = {
     showIcon: true,           // Show logo icon in header/sidebar
     showText: true,           // Show brand name text
     iconSize: 40,             // Default icon size in pixels
-    iconInitial: 'F',         // Single letter for gradient badge fallback
+    iconInitial: 'C',         // Single letter for gradient badge fallback
   },
   
   // Brand Colors (for themed components)
@@ -35,7 +36,7 @@ export const BRANDING = {
   
   // Social & External Links
   links: {
-    website: 'https://farcastmints.com',
+    website: 'https://curswap.com',
     base: 'https://www.base.org',
     tamber: 'https://tamberfoundation.org',
     github: 'https://github.com/devsaini',
@@ -43,7 +44,7 @@ export const BRANDING = {
   
   // Copyright & Credits
   footer: {
-    copyright: '© 2025 FarcastMints',
+    copyright: '© 2025 CurSwap',
     builtOn: 'Base',
     poweredBy: 'Tamber Foundation',
     author: 'devsaini',
