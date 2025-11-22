@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { BRANDING, getLogoUrl } from '@/config/branding'
-import { FiGrid, FiLayers, FiZap, FiShoppingBag } from 'react-icons/fi'
+import { FiGrid, FiLayers, FiZap, FiShoppingBag, FiTrendingUp } from 'react-icons/fi'
 import { EmbedMetaTags } from '@/components/EmbedMetaTags'
 
 export const dynamic = 'force-dynamic'
@@ -126,8 +126,51 @@ export default function Home() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.6 }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6"
         >
+          {/* DeFi Feature Card - Highlighted */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.7 }}
+            className="lg:col-span-5"
+          >
+            <Link
+              href="/defi"
+              className="block group"
+            >
+              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 p-8 hover:shadow-2xl hover:shadow-purple-500/50 transition-all">
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 opacity-0 group-hover:opacity-20 transition-opacity"></div>
+                
+                <div className="relative flex items-center justify-between">
+                  <div className="flex items-center gap-6">
+                    <div className="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-xl flex items-center justify-center">
+                      <FiTrendingUp className="w-8 h-8 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-3xl font-bold text-white mb-2">🚀 DeFi Hub - NEW!</h3>
+                      <p className="text-white/90 text-lg">Swap tokens, provide liquidity & earn rewards on Base</p>
+                    </div>
+                  </div>
+                  <div className="hidden md:flex items-center gap-8 text-white">
+                    <div className="text-center">
+                      <div className="text-2xl font-bold">$507M+</div>
+                      <div className="text-sm text-white/80">TVL</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold">8+</div>
+                      <div className="text-sm text-white/80">Tokens</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold">5</div>
+                      <div className="text-sm text-white/80">Pools</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          </motion.div>
+
           {features.map((feature, index) => (
             <motion.div
               key={feature.href}
