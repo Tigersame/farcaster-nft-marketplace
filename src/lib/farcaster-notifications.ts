@@ -174,27 +174,4 @@ export const notifications = new FarcasterNotifications()
  *   ...notification,
  *   tokens: [user.token]
  * })
- * /
-      targetUrl: 'https://farcastmints.com/event',
-      iconUrl: 'https://farcastmints.com/icon.svg',
-    })
-  }
-
-  /**
-   * Leaderboard Position Update
-   */
-  async notifyLeaderboardChange(fid: number, newRank: number, previousRank: number) {
-    const direction = newRank < previousRank ? 'up' : 'down'
-    const emoji = direction === 'up' ? '📈' : '📉'
-    
-    return this.sendNotification(fid, {
-      title: `${emoji} Leaderboard Update`,
-      body: `You moved ${direction} to rank #${newRank}!`,
-      targetUrl: 'https://farcastmints.com/leaderboard',
-      iconUrl: 'https://farcastmints.com/icon.svg',
-    })
-  }
-}
-
-// Export singleton instance
-export const notifications = new FarcasterNotifications()
+ */
