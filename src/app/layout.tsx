@@ -99,6 +99,39 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        {/* Prevent wallet extension conflicts */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              // Prevent wallet provider conflicts
+              if (typeof window !== 'undefined') {
+                window.addEventListener('load', () => {
+                  // Check for multiple Ethereum providers
+                  if (window.ethereum && window.ethereum.providers) {
+                    // Multiple providers detected - use the first one or MetaMask
+                    const provider = window.ethereum.providers.find(p => p.isMetaMask) || window.ethereum.providers[0];
+                    window.ethereum = provider;
+                  }
+                });
+                
+                // Suppress certain console errors
+                const originalError = console.error;
+                console.error = (...args) => {
+                  const message = args[0];
+                  if (typeof message === 'string' && (
+                    message.includes('MetaMask encountered an error setting the global Ethereum provider') ||
+                    message.includes('Could not establish connection. Receiving end does not exist') ||
+                    message.includes('TrustedScript') ||
+                    message.includes('Function constructor')
+                  )) {
+                    return; // Suppress these specific errors
+                  }
+                  originalError.apply(console, args);
+                };
+              }
+            `
+          }}
+        />
         {/* Preconnect to important domains */}
         <link rel="preconnect" href="https://base-mainnet.g.alchemy.com" />
         <link rel="preconnect" href="https://gateway.pinata.cloud" />

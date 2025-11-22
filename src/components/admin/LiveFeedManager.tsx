@@ -38,20 +38,6 @@ export default function LiveFeedManager() {
   const [isLoading, setIsLoading] = useState(false);
   const [autoRefresh, setAutoRefresh] = useState(true);
 
-  if (!hasPermission('canManageFeed')) {
-    return (
-      <div className="text-center py-12">
-        <div className="text-6xl mb-4">🚫</div>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-          Access Denied
-        </h2>
-        <p className="text-gray-600 dark:text-gray-400">
-          You don't have permission to manage the live feed.
-        </p>
-      </div>
-    );
-  }
-
   const generateMockActivity = (): ActivityFeedItem => {
     const activities = [
       { type: 'sale' as const, action: 'bought', nftName: 'Bored Ape #7583', collection: 'Bored Ape Yacht Club', price: 45.2, currency: 'ETH' as const },
@@ -170,6 +156,20 @@ export default function LiveFeedManager() {
     if (filterType === 'all') return true;
     return item.type === filterType;
   });
+
+  if (!hasPermission('canManageFeed')) {
+    return (
+      <div className="text-center py-12">
+        <div className="text-6xl mb-4">🚫</div>
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+          Access Denied
+        </h2>
+        <p className="text-gray-600 dark:text-gray-400">
+          You don't have permission to manage the live feed.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
