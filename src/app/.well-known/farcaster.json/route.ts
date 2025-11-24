@@ -1,44 +1,30 @@
-import { NextResponse } from 'next/server';
-
-// Use Edge Runtime for fastest response
-export const runtime = 'edge';
-
-// Enable aggressive caching
-export const revalidate = 3600; // Cache for 1 hour
+import { NextResponse } from 'next/server'
+import { MINIAPP_MANIFEST, validateManifest } from '@/lib/miniapp/manifest'
 
 export async function GET() {
-  const manifest = {
-    "accountAssociation": {
-      "header": "eyJmaWQiOjI3OTA1NSwidHlwZSI6ImN1c3RvZHkiLCJrZXkiOiIweDRCMjEwOTE1MjJGMDA5OUI4Rjc2Mzk2OGQzNzliMGY4M2E1NWNBYjMifQ",
-      "payload": "eyJkb21haW4iOiJmYXJjYXN0bWludHMuY29tIn0",
-      "signature": "FKK/+CegXaVEz+VSWhSs/WYNSFs7yaeFZZboBvQKpw4brV1PzHWeBFJ6sMdlBlXGwxWb5ANEPncQkjY4j4C49Rw="
-    },
-    "baseBuilder": {
-      "ownerAddress": "0xEaFE5088BCd7eb27fa1e4AA417a55eD5ea2dab8B"
-    },
-    "miniapp": {
-      "version": "1",
-      "name": "FarcastMints",
-      "homeUrl": "https://farcastmints.com",
-      "iconUrl": "https://farcastmints.com/icon.png",
-      "splashImageUrl": "https://farcastmints.com/splash.png",
-      "splashBackgroundColor": "#0f1f3d",
-      "webhookUrl": "https://farcastmints.com/api/miniapp/webhook",
-      "subtitle": "NFT Marketplace on Base",
-      "description": "Discover and trade NFTs with Farcaster frames on Base network",
-      "screenshotUrls": [
-        "https://farcastmints.com/screenshots/marketplace.png",
-        "https://farcastmints.com/screenshots/frames.png"
-      ],
-      "primaryCategory": "finance",
-      "tags": ["nft", "marketplace", "base"]
+  // Validate manifest before returning
+  const validation = validateManifest(MINIAPP_MANIFEST)
+  
+  if (!validation.valid) {
+    console.error('Manifest validation failed:', validation.errors)
+    // Return manifest anyway but log errors in development
+    if (process.env.NODE_ENV === 'development') {
+      return NextResponse.json(
+        {
+          error: 'Invalid manifest',
+          errors: validation.errors,
+          manifest: MINIAPP_MANIFEST
+        },
+        { status: 500 }
+      )
     }
-  };
+  }
 
-  return NextResponse.json(manifest, {
+  return NextResponse.json(MINIAPP_MANIFEST, {
     headers: {
       'Content-Type': 'application/json',
-      'Cache-Control': 'public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400',
-    },
-  });
+      'Cache-Control': 'public, max-age=3600',
+      'Access-Control-Allow-Origin': '*'
+    }
+  })
 }
