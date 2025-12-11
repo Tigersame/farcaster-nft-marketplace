@@ -19,15 +19,18 @@ function StarIcon(){ return (<svg className="w-4 h-4" viewBox="0 0 24 24" fill="
 function ArrowIcon(){ return (<svg className="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>) }
 function DiceIcon(){ return (<svg className="w-4 h-4" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="1.2"/><circle cx="8" cy="8" r="1" fill="currentColor"/><circle cx="16" cy="8" r="1" fill="currentColor"/><circle cx="12" cy="12" r="1" fill="currentColor"/><circle cx="8" cy="16" r="1" fill="currentColor"/><circle cx="16" cy="16" r="1" fill="currentColor"/></svg>) }
 
+function PaletteIcon(){ return (<svg className="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M12 2a10 10 0 0110 10c0 1.1-.9 2-2 2h-2a2 2 0 00-2 2c0 .5.2 1 .5 1.4.3.4.5.9.5 1.4 0 1.1-.9 2-2 2A10 10 0 012 12 10 10 0 0112 2z" stroke="currentColor" strokeWidth="1.2"/><circle cx="8" cy="10" r="1.5" fill="currentColor"/><circle cx="12" cy="8" r="1.5" fill="currentColor"/><circle cx="16" cy="10" r="1.5" fill="currentColor"/></svg>) }
+
 const NAV = [
   { label: "Home", href: "/", icon: HomeIcon },
+  { label: "DeFi Hub", href: "/defi", icon: ArrowIcon },
+  { label: "Themes", href: "/themes", icon: PaletteIcon },
   { label: "Collections", href: "/collections", icon: GridIcon },
   { label: "Collection Pro", href: "/collection-pro", icon: LayersIcon },
   { label: "Create NFT", href: "/create", icon: PlusIcon },
   { label: "Mint", href: "/mint", icon: LightningIcon },
   { label: "My NFTs", href: "/my-nfts", icon: StackIcon },
   { label: "Event", href: "/event", icon: StarIcon },
-  { label: "Swap", href: "/swap", icon: ArrowIcon },
 ]
 
 interface ProSidebarProps {

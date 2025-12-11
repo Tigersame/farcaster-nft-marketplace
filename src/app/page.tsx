@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { BRANDING, getLogoUrl } from '@/config/branding'
-import { FiGrid, FiLayers, FiZap, FiShoppingBag, FiTrendingUp } from 'react-icons/fi'
+import { FiGrid, FiLayers, FiZap, FiShoppingBag, FiTrendingUp, FiPalette } from 'react-icons/fi'
 import { EmbedMetaTags } from '@/components/EmbedMetaTags'
 
 export const dynamic = 'force-dynamic'
@@ -11,32 +11,39 @@ export const dynamic = 'force-dynamic'
 export default function Home() {
   const features = [
     {
+      icon: FiPalette,
+      title: 'Themes',
+      description: 'Customize your experience',
+      href: '/themes',
+      color: 'from-purple-500 to-pink-500'
+    },
+    {
       icon: FiGrid,
       title: 'Collections',
       description: 'Browse verified NFT collections',
       href: '/collections',
-      color: 'from-purple-500 to-pink-500'
+      color: 'from-blue-500 to-cyan-500'
     },
     {
       icon: FiLayers,
       title: 'Collection Pro',
       description: 'Advanced collection analytics',
       href: '/collection-pro',
-      color: 'from-blue-500 to-cyan-500'
+      color: 'from-green-500 to-emerald-500'
     },
     {
       icon: FiZap,
       title: 'Mint NFTs',
       description: 'Create and mint your NFTs',
       href: '/mint',
-      color: 'from-green-500 to-emerald-500'
+      color: 'from-orange-500 to-red-500'
     },
     {
       icon: FiShoppingBag,
       title: 'My NFTs',
       description: 'View your NFT collection',
       href: '/my-nfts',
-      color: 'from-orange-500 to-red-500'
+      color: 'from-red-500 to-pink-500'
     }
   ]
 

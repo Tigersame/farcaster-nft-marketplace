@@ -345,4 +345,11 @@ export function applyTheme(themeName: string): void {
 
   // Store theme preference
   localStorage.setItem('curswap-theme', themeName)
+
+  // Dispatch custom event for components to react
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('themechange', { 
+      detail: { themeName } 
+    }))
+  }
 }
