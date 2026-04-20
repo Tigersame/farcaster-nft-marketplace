@@ -16,6 +16,30 @@ html {
 
 /* Design System CSS Variables */
 :root {
+  /* Theme System - Dynamic colors controlled by theme switcher */
+  --theme-primary: #6E4BFF;
+  --theme-primary-light: #8B6BFF;
+  --theme-primary-dark: #5A3DD9;
+  --theme-accent: #FF6BA6;
+  --theme-accent-light: #FF8FBF;
+  --theme-bg-primary: #0A0A0F;
+  --theme-bg-secondary: #111118;
+  --theme-bg-tertiary: #1A1B25;
+  --theme-surface-card: #1A1B25;
+  --theme-surface-elevated: #2A2B36;
+  --theme-text-primary: #FFFFFF;
+  --theme-text-secondary: #B6B7C3;
+  --theme-text-muted: #6F7080;
+  --theme-border: #2A2B36;
+  --theme-border-light: rgba(255, 255, 255, 0.1);
+  --theme-success: #30E19F;
+  --theme-warning: #FFBB44;
+  --theme-error: #FF5E79;
+  --theme-info: #55B4FF;
+  --theme-gradient-primary: linear-gradient(135deg, #6E4BFF 0%, #8B6BFF 100%);
+  --theme-gradient-accent: linear-gradient(135deg, #FF6BA6 0%, #FF8FBF 100%);
+  --theme-gradient-hero: linear-gradient(135deg, #6E4BFF 0%, #FF6BA6 50%, #FF8FBF 100%);
+
   /* Colors - Primary */
   --color-primary-500: #5A61FF;
   --color-primary-600: #4550FF;

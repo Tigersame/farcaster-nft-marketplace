@@ -11,6 +11,7 @@ import ProSidebar from '@/components/ProSidebar'
 import { MiniAppHeader } from '@/components/MiniAppHeader'
 import { MiniAppSplash } from '@/components/MiniAppSplash'
 import { MiniAppContainer } from '@/components/MiniAppContainer'
+import { ThemeSwitcher } from '@/components/ThemeSwitcher'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -122,6 +123,7 @@ export default function RootLayout({
                   <AdminDashboard />
                   <WalletPrompt />
                   <NetworkSwitcher />
+                  <ThemeSwitcher />
                   <main className="flex-1">
                     {children}
                   </main>
